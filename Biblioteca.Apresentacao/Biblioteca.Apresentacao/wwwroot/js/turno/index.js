@@ -8,7 +8,7 @@ function carregarTurnos() {
   loading.bloquear();
 
   turnoService
-    .obterTurnos()
+    .obter()
     .then((turnos) => {
       const tbody = $("#idTableTurno > tbody");
 

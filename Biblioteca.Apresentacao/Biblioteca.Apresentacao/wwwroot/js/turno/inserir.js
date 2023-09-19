@@ -14,7 +14,7 @@ function inserirTurnoClick() {
   loading.bloquear();
 
   turnoService
-    .inserirTurno(turno)
+    .inserir(turno)
     .then((value) => {
       swal
         .fire({
