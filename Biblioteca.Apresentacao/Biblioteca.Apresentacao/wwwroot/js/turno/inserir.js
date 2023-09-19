@@ -1,42 +1,34 @@
-function inserirTurnoClick() {
+function inserirTurnoButtonClick() {
   const turnoService = new TurnoService();
-  const inputTurnoNome = document.getElementById("idInputTurnoNome");
-  const spanTurnoNome = document.getElementById("idSpanTurnoNome");
-
-  if (inputTurnoNome.value === null || inputTurnoNome.value === "") {
-    spanTurnoNome.innerHTML = "Nome do turno é obrigatório";
-    return;
-  }
-  const turno = {
-    nome: inputTurnoNome.value.trim(),
-  };
 
   loading.bloquear();
 
-  turnoService
-    .inserir(turno)
-    .then(() => {
-      swal
-        .fire({
-          icon: "success",
-          title: "Sucesso",
-          text: "Turno inserido com sucesso",
-        })
-        .then(() => {
-          window.location.href = "/turno/views/index";
-        });
+  setTimeout(() => {
+    turnoService
+      .validarTurno()
+      .then((turno) => {
+        turnoService
+          .inserir(turno)
+          .then(() => {
+            Swal.fire({
+              icon: "success",
+              title: "Sucesso",
+              text: "Turno inserido com sucesso",
+            }).then(() => {
+              window.location.href = "/turno/views/index";
+            });
+            loading.desbloquear();
+          })
+          .catch(() => {
+            Swal.fire({
+              icon: "error",
+              title: "Erro",
+              text: "Erro ao  inserir turno",
+            });
 
-      loading.desbloquear();
-    })
-    .catch((err) => {
-      const erro = err.responseJSON;
-
-      Swal.fire({
-        icon: "error",
-        title: "Erro",
-        text: erro.mensagem,
-      });
-
-      loading.desbloquear();
-    });
+            loading.desbloquear();
+          });
+      })
+      .catch(() => {});
+  }, 10000);
 }

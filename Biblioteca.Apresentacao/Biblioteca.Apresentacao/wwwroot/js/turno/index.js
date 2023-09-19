@@ -1,5 +1,5 @@
 (function () {
-    carregarTurnos();
+  carregarTurnos();
 })();
 
 function carregarTurnos() {
@@ -30,8 +30,13 @@ function carregarTurnos() {
 
       loading.desbloquear();
     })
-    .catch((error) => {
-      console.log(error);
+    .catch(() => {
+      Swal.fire({
+        icon: "error",
+        title: "Erro",
+        text: "Ocorreu algum erro ao recuperar os dados do servidor",
+      });
+      
       loading.desbloquear();
     });
 }

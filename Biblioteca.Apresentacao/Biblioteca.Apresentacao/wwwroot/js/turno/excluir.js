@@ -4,7 +4,7 @@
 
 function obterTurno() {
   const turnoService = new TurnoService();
-  const idTurno = turnoService.ObterIdPathParameter();
+  const idTurno = turnoService.obterIdPathParameter();
 
   loading.bloquear();
 
@@ -14,13 +14,11 @@ function obterTurno() {
       const turno = value;
       $("#idSpanTurnoNome").text(turno.nome);
     })
-    .catch((reason) => {
-      const error = reason.responseJSON;
-
+    .catch(() => {
       Swal.fire({
         icon: "error",
         title: "Erro",
-        text: error.mensagem,
+        text: "Ocorreu algum erro ao recuperar o turno",
       });
     })
     .finally(() => {
@@ -30,7 +28,7 @@ function obterTurno() {
 
 function excluirTurnoButtonClick() {
   const turnoService = new TurnoService();
-  const idTurno = turnoService.ObterIdPathParameter();
+  const idTurno = turnoService.obterIdPathParameter();
 
   loading.bloquear();
 
@@ -45,13 +43,11 @@ function excluirTurnoButtonClick() {
         window.location.href = "/turno/views/index";
       });
     })
-    .catch((reason) => {
-      const error = reason.responseJSON;
-
+    .catch(() => {
       Swal.fire({
         icon: "error",
         title: "Erro",
-        text: error.mensagem,
+        text: "Ocorreu algum erro ao excluir o turno",
       });
     })
     .finally(() => {

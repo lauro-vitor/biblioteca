@@ -11,6 +11,7 @@ class TurnoService {
           resolve(value);
         })
         .fail((reason) => {
+          console.error(reason);
           reject(reason);
         });
     });
@@ -20,7 +21,6 @@ class TurnoService {
     return new Promise((resolve, reject) => {
       $.ajax({
         headers: {
-          Accept: "application/json",
           "Content-Type": "application/json",
         },
         type: "POST",
@@ -32,13 +32,13 @@ class TurnoService {
           resolve(value);
         })
         .fail((reason) => {
+          console.error(reason);
           reject(reason);
         });
     });
   }
 
   obterPorId(idTurno) {
-  
     return new Promise((resolve, reject) => {
       $.ajax({
         type: "GET",
@@ -50,6 +50,7 @@ class TurnoService {
           resolve(value);
         })
         .fail((reason) => {
+          console.error(reason);
           reject(reason);
         });
     });
@@ -72,15 +73,49 @@ class TurnoService {
   }
 
   editar(turno) {
-    
+    return new Promise((resolve, reject) => {
+      $.ajax({
+        headers: {
+          "Content-Type": "application/json",
+        },
+        type: "PUT",
+        url: "/turno/editar/",
+        cache: false,
+        data: JSON.stringify(turno),
+      })
+        .done((value) => {
+          resolve(value);
+        })
+        .fail((reason) => {
+          console.error(reason);
+          reject(reason);
+        });
+    });
   }
 
-  ObterIdPathParameter() {
+  obterIdPathParameter() {
     const id = window.location.pathname.split("/")[4];
 
     if (id == undefined || id == "")
       throw "Não foi possível encontrar id do turno";
 
     return id;
+  }
+
+  validarTurno() {
+    return new Promise((resolve, reject) => {
+      const inputTurnoNome = document.getElementById("idInputTurnoNome");
+      const spanTurnoNome = document.getElementById("idSpanTurnoNome");
+
+      if (inputTurnoNome.value === null || inputTurnoNome.value === "") {
+        spanTurnoNome.innerHTML = "Nome do turno é obrigatório";
+        reject();
+      }
+      const turno = {
+        nome: inputTurnoNome.value.trim(),
+      };
+
+      resolve(turno);
+    });
   }
 }
