@@ -1,0 +1,30 @@
+﻿@{
+    ViewData["title"] = "inserir turno";
+}
+
+<div class="container">
+    <div class="row mb-15">
+        <div class="col-xs-12">
+            <div class="header">
+                <h4>Inserir Turno</h4>
+                <button onclick="inserirTurnoButtonClick();" class="btn btn-success btn-sm">Salvar</button>
+            </div>
+        </div>
+    </div>
+    <form>
+        <div class="row">
+            <div class="col-xs-12 col-sm-6">
+                <div class="form-group">
+                    <label for="idInputTurnoNome">Nome:</label> <span class="cor-vermelha">*</span>
+                    <input id="idInputTurnoNome" class="form-control" />
+                    <span id="idSpanTurnoNome" class="cor-vermelha"></span>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts{
+    <script type="text/javascript" src="/js/turno/turnoService.js"></script>
+    <script type="text/javascript" src="/js/turno/inserir.js"></script>
+}

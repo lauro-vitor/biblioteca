@@ -1,0 +1,33 @@
+﻿@{
+	ViewData["title"] = "Turno";
+}
+
+<div class="container">
+	<div class="row">
+		<div class="col-xs-12">
+			<div class="header">
+				<h4>Turno</h4>
+				<a href="/turno/views/inserir" class="btn btn-primary btn-sm">Inserir</a>
+			</div>
+		</div>
+		<div class="col-xs-12">
+			<table id="idTableTurno" class="table" style="margin-top:50px;">
+				<thead>
+					<tr>
+						<th>
+							Nome
+						</th>
+						<th>
+							Ações
+						</th>
+					</tr>
+				</thead>
+				<tbody></tbody>
+			</table>
+		</div>
+	</div>
+</div>
+@section Scripts{
+	<script type="text/javascript" src="/js/turno/turnoService.js"></script>
+	<script type="text/javascript" src="/js/turno/index.js"></script>
+}
