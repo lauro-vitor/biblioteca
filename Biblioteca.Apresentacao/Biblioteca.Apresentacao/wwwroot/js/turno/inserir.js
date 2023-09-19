@@ -15,14 +15,14 @@ function inserirTurnoClick() {
 
   turnoService
     .inserir(turno)
-    .then((value) => {
+    .then(() => {
       swal
         .fire({
           icon: "success",
           title: "Sucesso",
           text: "Turno inserido com sucesso",
         })
-        .then((result) => {
+        .then(() => {
           window.location.href = "/turno/views/index";
         });
 
