@@ -19,9 +19,28 @@ namespace Biblioteca.Apresentacao.Controllers
             _turnoServico = turnoServico;
         }
 
+        [Route("views/index")]
         public ViewResult Index()
         {
-            return View();
+            return View("~/Views/Turno/Index.cshtml");
+        }
+
+        [Route("views/inserir")]
+        public ViewResult Inserir()
+        {
+            return View("~/Views/Turno/Inserir.cshtml");
+        }
+
+        [Route("views/editar/{id}")]
+        public ViewResult Editar(Guid id)
+        {
+            return View("~/Views/Turno/Editar.cshtml");
+        }
+
+        [Route("views/excluir/{id}")]
+        public ViewResult Excluir(Guid id)
+        {
+            return View("~/Views/Turno/Excluir.cshtml");
         }
 
         [HttpGet("obter")]
@@ -103,7 +122,7 @@ namespace Biblioteca.Apresentacao.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, erroResponse);
             }
         }
-    
+
         [HttpPut("editar")]
         [ProducesResponseType(typeof(Turno), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
@@ -124,7 +143,7 @@ namespace Biblioteca.Apresentacao.Controllers
 
                 var turnoParaEditar = await _turnoRepositorio.ObterPorId(turno.IdTurno.Value);
 
-                if(turnoParaEditar == null)
+                if (turnoParaEditar == null)
                 {
                     var errorResponse = new ErrorResponse();
                     errorResponse.AtribuirErroNotFound("idTurno", "Turno não encontrado para esse id");
