@@ -16,3 +16,22 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid black;
+  padding-bottom: 10px;
+  align-items: center;
+}
+
+.cor-vermelha{
+  color:red;  
+}
+
+.mb-15{
+  margin-bottom: 15px;
+}
+a{
+  text-decoration: none;
+}
