@@ -1,16 +1,13 @@
-#idMainLayout{
-    position:relative;
-}
+
 .loading-container {
     position: absolute;
     background-color: white;
-    width: 1150px;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
     top:0;
     left:0;
 }
 
 .loading-container>div {
-    position: absolute;
-    top: 30%;
+    margin-top:10%;
 }
