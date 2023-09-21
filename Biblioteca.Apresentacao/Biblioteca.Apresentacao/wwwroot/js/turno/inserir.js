@@ -1,11 +1,12 @@
 function inserirTurnoButtonClick() {
     const turnoService = new TurnoService();
 
-    loading.bloquear();
-
     turnoService
         .validarTurno()
         .then((turno) => {
+
+            loading.bloquear();
+
             turnoService
                 .inserir(turno)
                 .then(() => {
