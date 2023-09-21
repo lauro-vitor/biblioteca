@@ -3,7 +3,6 @@ using Biblioteca.Dominio.Entidades;
 using Biblioteca.Dominio.Repositorio;
 using Biblioteca.Dominio.Servico;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
 
 namespace Biblioteca.Apresentacao.Controllers
 {
