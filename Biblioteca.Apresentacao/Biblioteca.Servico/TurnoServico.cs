@@ -7,18 +7,21 @@ namespace Biblioteca.Servico
 {
     public class TurnoServico : ITurnoServico
     {
+        private readonly string _mensagemTurnoObrigatorio = "nome do turno é obrigatório";
+        private readonly string _mensagemTurnoExiste = "nome do turno existe";
+
         public ErrorResponse? ValidarInserirTurno(Turno turnoParaInserir, IList<Turno> turnosCadastrados)
         {
             var erroResponse = new ErrorResponse();
 
             if (string.IsNullOrEmpty(turnoParaInserir.Nome))
             {
-                erroResponse.AtribuirErro("nome", "nome do turno é obrigatório");
+                erroResponse.AtribuirErro("nome", _mensagemTurnoObrigatorio);
             }
 
             if (turnosCadastrados.Any(t => t.Nome.ToLower().Trim().Equals(turnoParaInserir.Nome.ToLower().Trim())))
             {
-                erroResponse.AtribuirErro("nome", "nome do turno existe");
+                erroResponse.AtribuirErro("nome", _mensagemTurnoExiste);
             }
 
             if (erroResponse.Erros.Any())
@@ -44,13 +47,13 @@ namespace Biblioteca.Servico
 
             if (string.IsNullOrEmpty(turnoParaEditar.Nome))
             {
-                erroResponse.AtribuirErro("nome", "nome do turno é obrigatório");
+                erroResponse.AtribuirErro("nome", _mensagemTurnoObrigatorio);
             }
 
             if (turnosCadastrados.Any(t => t.IdTurno != turnoParaEditar.IdTurno
                                         && t.Nome.ToLower().Trim().Equals(turnoParaEditar.Nome.ToLower().Trim())))
             {
-                erroResponse.AtribuirErro("nome", "nome do turno existe");
+                erroResponse.AtribuirErro("nome", _mensagemTurnoExiste);
             }
 
             if (erroResponse.Erros.Any())

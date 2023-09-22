@@ -16,4 +16,15 @@
     <PackageReference Include="coverlet.collector" Version="3.2.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Biblioteca.Apresentacao\Biblioteca.Apresentacao.csproj" />
+    <ProjectReference Include="..\Biblioteca.Dominio\Biblioteca.Dominio.csproj" />
+    <ProjectReference Include="..\Biblioteca.Servico\Biblioteca.Servico.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Biblioteca.Repositorio\" />
+    <Folder Include="Biblioteca.Apresentacao\" />
+  </ItemGroup>
+
 </Project>
