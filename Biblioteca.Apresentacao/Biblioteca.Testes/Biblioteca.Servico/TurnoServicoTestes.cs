@@ -37,10 +37,10 @@ namespace Biblioteca.Testes.Biblioteca.Servico
             var erroResponse = turnoServico.ValidarInserirTurno(turnoParaInserir, turnosCadastrados);
 
             Assert.IsNotNull(erroResponse);
-            Assert.AreEqual(erroResponse.Status, 400);
-            Assert.AreEqual(erroResponse.Mensagem, "Ocorreram alguns erros de validação");
             Assert.IsTrue(erroResponse.Erros.ContainsKey("nome"));
-            Assert.AreEqual(erroResponse.Erros["nome"][0], "nome do turno é obrigatório");
+            Assert.AreEqual(400, erroResponse.Status);
+            Assert.AreEqual("Ocorreram alguns erros de validação", erroResponse.Mensagem);
+            Assert.AreEqual("nome do turno é obrigatório", erroResponse.Erros["nome"][0]);
         }
 
         [TestMethod]
@@ -56,10 +56,10 @@ namespace Biblioteca.Testes.Biblioteca.Servico
             var erroResponse = turnoServico.ValidarInserirTurno(turnoParaInserir, _turnoCadastros);
 
             Assert.IsNotNull(erroResponse);
-            Assert.AreEqual(erroResponse.Status, 400);
-            Assert.AreEqual(erroResponse.Mensagem, "Ocorreram alguns erros de validação");
             Assert.IsTrue(erroResponse.Erros.ContainsKey("nome"));
-            Assert.AreEqual(erroResponse.Erros["nome"][0], "nome do turno existe");
+            Assert.AreEqual(400, erroResponse.Status);
+            Assert.AreEqual("Ocorreram alguns erros de validação", erroResponse.Mensagem);
+            Assert.AreEqual("nome do turno existe", erroResponse.Erros["nome"][0]);
         }
 
         [TestMethod]
@@ -92,9 +92,9 @@ namespace Biblioteca.Testes.Biblioteca.Servico
             var erroResponse = turnoServico.ValidarEditarTurno(turnoParaEditar, _turnoCadastros);
 
             Assert.IsNotNull(erroResponse);
-            Assert.AreEqual(erroResponse.Status, 400);
             Assert.IsTrue(erroResponse.Erros.ContainsKey("idturno"));
-            Assert.AreEqual(erroResponse.Erros["idturno"][0], "id do turno é obrigatório");
+            Assert.AreEqual(400, erroResponse.Status);
+            Assert.AreEqual("id do turno é obrigatório", erroResponse.Erros["idturno"][0]);
         }
 
         [TestMethod]
@@ -110,9 +110,9 @@ namespace Biblioteca.Testes.Biblioteca.Servico
             var erroResponse = turnoServico.ValidarEditarTurno(turnoParaEditar, _turnoCadastros);
 
             Assert.IsNotNull(erroResponse);
-            Assert.AreEqual(erroResponse.Status, 400);
             Assert.IsTrue(erroResponse.Erros.ContainsKey("nome"));
-            Assert.AreEqual(erroResponse.Erros["nome"][0], "nome do turno é obrigatório");
+            Assert.AreEqual(400, erroResponse.Status);
+            Assert.AreEqual("nome do turno é obrigatório",erroResponse.Erros["nome"][0]);
         }
 
         [TestMethod]
@@ -127,9 +127,9 @@ namespace Biblioteca.Testes.Biblioteca.Servico
             var erroResponse = turnoServico.ValidarEditarTurno(turnoParaEditar, _turnoCadastros);
 
             Assert.IsNotNull(erroResponse);
-            Assert.AreEqual(erroResponse.Status, 400);
             Assert.IsTrue(erroResponse.Erros.ContainsKey("nome"));
-            Assert.AreEqual(erroResponse.Erros["nome"][0], "nome do turno existe");
+            Assert.AreEqual(400, erroResponse.Status);
+            Assert.AreEqual("nome do turno existe", erroResponse.Erros["nome"][0]);
         }
 
         [TestMethod]
