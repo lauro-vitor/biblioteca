@@ -5,9 +5,10 @@ namespace Biblioteca.Dominio.Servico
 {
     public interface ITurnoServico
     {
+        public ErrorResponse? ValidarInserirTurno(Turno turnoParaInserir, IList<Turno> turnosCadastrados);
 
-        public Dictionary<string,List<string>>? ValidarInserir(Turno turno);
+        public ErrorResponse? ValidarEditarTurno(Turno turnoParaEditar, IList<Turno> turnosCadastrados);
 
-        public Dictionary<string,List<string>>? ValidarEditar(Turno turno);
+        public ErrorResponse? ValidarTurnoNaoExiste(Guid id, IList<Turno> turnoCadastrados);
     }
 }
