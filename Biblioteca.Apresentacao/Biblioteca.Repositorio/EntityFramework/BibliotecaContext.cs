@@ -1,8 +1,10 @@
 ﻿using Biblioteca.Dominio.Entidades;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Biblioteca.Repositorio.EntityFramework
 {
+    [ExcludeFromCodeCoverage]
     public class BibliotecaContext : DbContext
     {
         public DbSet<Turno> Turno => Set<Turno>();
