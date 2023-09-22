@@ -2,9 +2,11 @@
 using Biblioteca.Dominio.Repositorio;
 using Biblioteca.Repositorio.EntityFramework;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Biblioteca.Repositorio
 {
+    [ExcludeFromCodeCoverage]
     public class TurnoRepositorio : ITurnoRepositorio
     {
         private readonly BibliotecaContext _context;

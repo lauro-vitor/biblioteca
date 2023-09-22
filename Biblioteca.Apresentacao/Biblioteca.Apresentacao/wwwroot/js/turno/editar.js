@@ -36,7 +36,7 @@ function editarTurnoButtonClick() {
       turno.idTurno = idTurno;
 
       turnoService
-        .editar(turno)
+        .editar(idTurno,turno)
         .then(() => {
           Swal.fire({
             icon: "success",

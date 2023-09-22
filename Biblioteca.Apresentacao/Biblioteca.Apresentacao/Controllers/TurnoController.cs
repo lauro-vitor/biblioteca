@@ -3,7 +3,6 @@ using Biblioteca.Dominio.Entidades;
 using Biblioteca.Dominio.Repositorio;
 using Biblioteca.Dominio.Servico;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
 
 namespace Biblioteca.Apresentacao.Controllers
 {
@@ -22,25 +21,41 @@ namespace Biblioteca.Apresentacao.Controllers
         [Route("views/index")]
         public ViewResult Index()
         {
-            return View("~/Views/Turno/Index.cshtml");
+            var view = View("~/Views/Turno/Index.cshtml");
+
+            view.ViewData["title"] = "Turno";
+
+            return view;
         }
 
         [Route("views/inserir")]
         public ViewResult Inserir()
         {
-            return View("~/Views/Turno/Inserir.cshtml");
+            var view = View("~/Views/Turno/Inserir.cshtml");
+
+            view.ViewData["title"] = "Inserir turno";
+
+            return view;
         }
 
         [Route("views/editar/{id}")]
         public ViewResult Editar(Guid id)
         {
-            return View("~/Views/Turno/Editar.cshtml");
+            var view = View("~/Views/Turno/Editar.cshtml");
+
+            view.ViewData["title"] = "Editar turno";
+
+            return view;
         }
 
         [Route("views/excluir/{id}")]
         public ViewResult Excluir(Guid id)
         {
-            return View("~/Views/Turno/Excluir.cshtml");
+            var view = View("~/Views/Turno/Excluir.cshtml");
+
+            view.ViewData["title"] = "Excluir turno";
+           
+            return view;
         }
 
         [HttpGet("obter")]
@@ -72,17 +87,21 @@ namespace Biblioteca.Apresentacao.Controllers
             {
                 if (id == null)
                 {
-                    var erroResponse = new ErrorResponse();
-                    erroResponse.AtribuirErroBadRequest("idTurno", "id do turno é obrigatório");
-                    return BadRequest(erroResponse);
+                    return ObterErroIdObrigatorio();
                 }
 
                 var turno = await _turnoRepositorio.ObterPorId(id.Value);
 
                 if (turno == null)
                 {
-                    var erroResponse = new ErrorResponse();
-                    erroResponse.AtribuirErroNotFound("idTurno", "Turno não encontrado para esse ID");
+                    var erroResponse = new ErrorResponse()
+                    {
+                        Status = StatusCodes.Status404NotFound,
+                        Mensagem = "Não encontrado"
+                    };
+
+                    erroResponse.AtribuirErro("idturno", "Não foi econtrado turno para esse ID");
+
                     return NotFound(erroResponse);
                 }
 
@@ -94,27 +113,27 @@ namespace Biblioteca.Apresentacao.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, erroResponse);
             }
         }
-        //ok
+
         [HttpPost("inserir")]
         [ProducesResponseType(typeof(Turno), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Inserir([FromBody] Turno turno)
+        public async Task<IActionResult> Inserir([FromBody] Turno turnoParaInserir)
         {
             try
             {
-                var resultadoValidacao = _turnoServico.ValidarInserir(turno);
+                var turnosCadastrados = await _turnoRepositorio.Obter();
+
+                var resultadoValidacao = _turnoServico.ValidarInserirTurno(turnoParaInserir, turnosCadastrados);
 
                 if (resultadoValidacao != null)
                 {
-                    var errorResponse = new ErrorResponse();
-                    errorResponse.AtribuirErroBadRequest(resultadoValidacao);
-                    return BadRequest(errorResponse);
+                    return BadRequest(resultadoValidacao);
                 }
 
-                await _turnoRepositorio.Inserir(turno);
+                await _turnoRepositorio.Inserir(turnoParaInserir);
 
-                return CreatedAtAction(nameof(ObterPorId), new { id = turno.IdTurno }, turno);
+                return CreatedAtAction(nameof(ObterPorId), new { id = turnoParaInserir.IdTurno }, turnoParaInserir);
             }
             catch (Exception ex)
             {
@@ -123,31 +142,34 @@ namespace Biblioteca.Apresentacao.Controllers
             }
         }
 
-        [HttpPut("editar")]
+        [HttpPut("editar/{id}")]
         [ProducesResponseType(typeof(Turno), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Editar([FromBody] Turno turno)
+        public async Task<IActionResult> Editar([FromRoute] Guid? id, [FromBody] Turno turno)
         {
             try
             {
-                var resultadoValidacao = _turnoServico.ValidarEditar(turno);
+                if (id == null)
+                {
+                    return ObterErroIdObrigatorio();
+                }
+
+                var turnosCadastrados = await _turnoRepositorio.Obter();
+
+                var resultadoTurnoNaoExiste = _turnoServico.ValidarTurnoNaoExiste(id.Value, turnosCadastrados);
+
+                if (resultadoTurnoNaoExiste != null)
+                {
+                    return NotFound(resultadoTurnoNaoExiste);
+                }
+
+                var resultadoValidacao = _turnoServico.ValidarEditarTurno(turno, turnosCadastrados);
 
                 if (resultadoValidacao != null)
                 {
-                    var errorResponse = new ErrorResponse();
-                    errorResponse.AtribuirErroBadRequest(resultadoValidacao);
-                    return BadRequest(errorResponse);
-                }
-
-                var turnoParaEditar = await _turnoRepositorio.ObterPorId(turno.IdTurno.Value);
-
-                if (turnoParaEditar == null)
-                {
-                    var errorResponse = new ErrorResponse();
-                    errorResponse.AtribuirErroNotFound("idTurno", "Turno não encontrado para esse id");
-                    return NotFound(errorResponse);
+                    return BadRequest(resultadoValidacao);
                 }
 
                 await _turnoRepositorio.Editar(turno);
@@ -172,18 +194,16 @@ namespace Biblioteca.Apresentacao.Controllers
             {
                 if (id == null)
                 {
-                    var erroResponse = new ErrorResponse();
-                    erroResponse.AtribuirErroBadRequest("idTurno", "id do turno é obrigatório");
-                    return BadRequest(erroResponse);
+                    return ObterErroIdObrigatorio();
                 }
 
-                var turnoParaExcluir = await _turnoRepositorio.ObterPorId(id.Value);
+                var turnosCadastrados = await _turnoRepositorio.Obter();
 
-                if (turnoParaExcluir == null)
+                var resultadoTurnoNaoExiste = _turnoServico.ValidarTurnoNaoExiste(id.Value, turnosCadastrados);
+
+                if (resultadoTurnoNaoExiste != null)
                 {
-                    var erroResponse = new ErrorResponse();
-                    erroResponse.AtribuirErroNotFound("idTurno", "Turno não encontrado para esse ID");
-                    return NotFound(erroResponse);
+                    return NotFound(resultadoTurnoNaoExiste);
                 }
 
                 await _turnoRepositorio.Excluir(id.Value);
@@ -196,5 +216,22 @@ namespace Biblioteca.Apresentacao.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, errorResponse);
             }
         }
+
+        #region AUXILIAR
+
+        private IActionResult ObterErroIdObrigatorio()
+        {
+            var errorResponse = new ErrorResponse()
+            {
+                Status = StatusCodes.Status400BadRequest,
+                Mensagem = "Requisição inválida",
+            };
+
+            errorResponse.AtribuirErro("idturno", "id do turno é obrigatório");
+
+            return BadRequest(errorResponse);
+        }
+
+        #endregion
     }
 }
