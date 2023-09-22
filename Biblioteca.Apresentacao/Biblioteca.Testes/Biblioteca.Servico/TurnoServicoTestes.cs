@@ -1,7 +1,5 @@
 ﻿using Biblioteca.Dominio.Entidades;
-using Biblioteca.Dominio.Servico;
 using Biblioteca.Servico;
-using System.Security.Cryptography.X509Certificates;
 
 namespace Biblioteca.Testes.Biblioteca.Servico
 {
