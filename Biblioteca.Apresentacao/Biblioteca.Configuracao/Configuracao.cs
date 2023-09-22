@@ -1,7 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Biblioteca.Configuracao
 {
+    [ExcludeFromCodeCoverage]
     public class Configuracao
     {
         public void Configurar(IServiceCollection servies)
