@@ -21,25 +21,41 @@ namespace Biblioteca.Apresentacao.Controllers
         [Route("views/index")]
         public ViewResult Index()
         {
-            return View("~/Views/Turno/Index.cshtml");
+            var view = View("~/Views/Turno/Index.cshtml");
+
+            view.ViewData["title"] = "Turno";
+
+            return view;
         }
 
         [Route("views/inserir")]
         public ViewResult Inserir()
         {
-            return View("~/Views/Turno/Inserir.cshtml");
+            var view = View("~/Views/Turno/Inserir.cshtml");
+
+            view.ViewData["title"] = "Inserir turno";
+
+            return view;
         }
 
         [Route("views/editar/{id}")]
         public ViewResult Editar(Guid id)
         {
-            return View("~/Views/Turno/Editar.cshtml");
+            var view = View("~/Views/Turno/Editar.cshtml");
+
+            view.ViewData["title"] = "Editar turno";
+
+            return view;
         }
 
         [Route("views/excluir/{id}")]
         public ViewResult Excluir(Guid id)
         {
-            return View("~/Views/Turno/Excluir.cshtml");
+            var view = View("~/Views/Turno/Excluir.cshtml");
+
+            view.ViewData["title"] = "Excluir turno";
+           
+            return view;
         }
 
         [HttpGet("obter")]
