@@ -72,14 +72,14 @@ class TurnoService {
         });
     }
 
-    editar(turno) {
+    editar(idturno, turno) {
         return new Promise((resolve, reject) => {
             $.ajax({
                 headers: {
                     "Content-Type": "application/json",
                 },
                 type: "PUT",
-                url: "/turno/editar/",
+                url: `/turno/editar/${idturno}`,
                 cache: false,
                 data: JSON.stringify(turno),
             })
