@@ -7,6 +7,7 @@ namespace Biblioteca.Repositorio.EntityFramework
     [ExcludeFromCodeCoverage]
     public class BibliotecaContext : DbContext
     {
+        public DbSet<Turma> Turma => Set<Turma>();
         public DbSet<Turno> Turno => Set<Turno>();
 
         public BibliotecaContext(DbContextOptions<BibliotecaContext> options): base(options)
