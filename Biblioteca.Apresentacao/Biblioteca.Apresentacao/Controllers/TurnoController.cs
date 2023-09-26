@@ -19,7 +19,7 @@ namespace Biblioteca.Apresentacao.Controllers
         }
 
         [Route("views/index")]
-        public ViewResult Index()
+        public ViewResult IndexVW()
         {
             var view = View("~/Views/Turno/Index.cshtml");
 
@@ -29,7 +29,7 @@ namespace Biblioteca.Apresentacao.Controllers
         }
 
         [Route("views/inserir")]
-        public ViewResult Inserir()
+        public ViewResult InserirVW()
         {
             var view = View("~/Views/Turno/Inserir.cshtml");
 
@@ -39,7 +39,7 @@ namespace Biblioteca.Apresentacao.Controllers
         }
 
         [Route("views/editar/{id}")]
-        public ViewResult Editar(Guid id)
+        public ViewResult EditarVW(Guid id)
         {
             var view = View("~/Views/Turno/Editar.cshtml");
 
@@ -49,7 +49,7 @@ namespace Biblioteca.Apresentacao.Controllers
         }
 
         [Route("views/excluir/{id}")]
-        public ViewResult Excluir(Guid id)
+        public ViewResult ExcluirVW(Guid id)
         {
             var view = View("~/Views/Turno/Excluir.cshtml");
 

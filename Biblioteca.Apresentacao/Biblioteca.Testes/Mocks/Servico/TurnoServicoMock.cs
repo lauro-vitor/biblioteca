@@ -14,11 +14,6 @@ namespace Biblioteca.Testes.Mocks.Servico
             _mock = new Mock<ITurnoServico>();
         }
 
-        public static TurnoServicoMock Instance()
-        {
-            return new TurnoServicoMock();
-        }
-
         public ITurnoServico Build()
         {
             return _mock.Object;

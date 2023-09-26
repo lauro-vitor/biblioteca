@@ -1,11 +1,6 @@
 ﻿using Biblioteca.Dominio.Entidades;
 using Biblioteca.Dominio.Repositorio;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Biblioteca.Testes.Mocks.Repositorio
 {
@@ -15,11 +10,6 @@ namespace Biblioteca.Testes.Mocks.Repositorio
         public TurnoRepositorioMock()
         {
             _mock = new Mock<ITurnoRepositorio>();  
-        }
-
-        public static TurnoRepositorioMock Instance()
-        {
-            return new TurnoRepositorioMock();
         }
 
         public ITurnoRepositorio Build()
@@ -42,12 +32,20 @@ namespace Biblioteca.Testes.Mocks.Repositorio
 
             return this;
         }
+     
 
 
-        public TurnoRepositorioMock Configurar_ObterPorId(Turno turno)
+        public TurnoRepositorioMock Configurar_ObterPorId(Turno? turno)
         {
             _mock.Setup(x => x.ObterPorId(It.IsAny<Guid>()).Result)
                 .Returns(turno);
+
+            return this;
+        }
+        public TurnoRepositorioMock Configurar_ObterPorIdExcessao()
+        {
+            _mock.Setup(x => x.ObterPorId(It.IsAny<Guid>()))
+                .ThrowsAsync(new Exception("Excessão ao obter turno por ID"));
 
             return this;
         }
@@ -58,6 +56,13 @@ namespace Biblioteca.Testes.Mocks.Repositorio
 
             return this;
         }
+        public TurnoRepositorioMock Configurar_InserirComExcessao()
+        {
+            _mock.Setup(x => x.Inserir(It.IsAny<Turno>()))
+                .ThrowsAsync(new Exception("Erro ao inserir turno"));
+
+            return this;
+        }
 
         public TurnoRepositorioMock Configurar_Editar()
         {
@@ -65,10 +70,25 @@ namespace Biblioteca.Testes.Mocks.Repositorio
 
             return this;
         }
+        public TurnoRepositorioMock Configurar_EditarComExcessao()
+        {
+            _mock.Setup(x => x.Editar(It.IsAny<Turno>()))
+                .ThrowsAsync(new Exception("Erro ao editar"));
+              
+            return this;
+        }
 
         public TurnoRepositorioMock Configurar_Excluir()
         {
             _mock.Setup(x => x.Excluir(It.IsAny<Guid>()));
+
+            return this;
+        }
+
+        public TurnoRepositorioMock Configurar_ExcluirComExcessao()
+        {
+            _mock.Setup(x => x.Excluir(It.IsAny<Guid>()))
+                .ThrowsAsync(new Exception("Erro ao excluir turno"));
 
             return this;
         }
