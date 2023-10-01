@@ -1,19 +1,57 @@
 (function () {
-  carregarTurnos();
+    carregarTurnos();
 })();
 
 function carregarTurnos() {
-  var turnoService = new TurnoService();
+    var turnoService = new TurnoService();
 
-  loading.bloquear();
+    loading.bloquear();
 
-  turnoService
-    .obter()
-    .then((turnos) => {
-      const tbody = $("#idTableTurno > tbody");
+    turnoService
+        .obter()
+        .then((turnos) => {
 
-      turnos.map((turnoItem) => {
-        const tr = `
+            let componente = null;
+
+            if (Array.isArray(turnos) && turnos.length > 0) {
+                componente = turnoHTML.obterTabelaTurno(turnos);
+            } else {
+                componente = turnoHTML.obterDivTurnoVazio();
+            }
+
+            $("#tableContainer")
+                .empty()
+                .append(componente);
+
+            loading.desbloquear();
+        })
+        .catch(() => {
+            Swal.fire({
+                icon: "error",
+                title: "Erro",
+                text: "Ocorreu algum erro ao recuperar os dados do servidor",
+            });
+
+            loading.desbloquear();
+        });
+}
+
+const turnoHTML = {
+    obterTabelaTurno(turnos) {
+        const table = $('<table class="table mt-50"> </table>')
+
+        const thead = $(`
+            <thead>
+	            <tr>
+		            <th>Nome</th>
+				    <th></th>
+			    </tr>
+	        </thead>`);
+
+        const tbody = $("<tbody></tbody>");
+
+        turnos.map((turnoItem) => {
+            const tr = `
                 <tr>
                     <td>${turnoItem.nome}</td>
                     <td>
@@ -25,18 +63,19 @@ function carregarTurnos() {
                         </a>
                     </td>
                 </tr>`;
-        tbody.append(tr);
-      });
 
-      loading.desbloquear();
-    })
-    .catch(() => {
-      Swal.fire({
-        icon: "error",
-        title: "Erro",
-        text: "Ocorreu algum erro ao recuperar os dados do servidor",
-      });
-      
-      loading.desbloquear();
-    });
+            tbody.append(tr);
+        });
+
+        table.append(thead);
+        table.append(tbody);
+
+        return table;
+    },
+
+    obterDivTurnoVazio() {
+        return $("<div class='alert alert-secondary mt-50'> Nehum turno foi encontrado</div>")
+    }
 }
+
+
