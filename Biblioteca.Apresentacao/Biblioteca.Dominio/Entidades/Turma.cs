@@ -1,10 +1,8 @@
 ﻿using Biblioteca.Dominio.Objetos;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Biblioteca.Dominio.Entidades
 {
-	public class Turma
+    public class Turma
 	{
 		private Guid _idTurma;
 
@@ -25,7 +23,7 @@ namespace Biblioteca.Dominio.Entidades
 
 				if (value == Guid.Empty)
 				{
-					throw new BibliotecaException("Id de turma inválido");
+					throw new BibliotecaException("IdTurma: inválido");
 				}
 
 				_idTurma = value.Value;
@@ -46,12 +44,12 @@ namespace Biblioteca.Dominio.Entidades
 			{
 				if (value == null)
 				{
-					throw new BibliotecaException("Id turno é inválido!");
+					throw new BibliotecaException("IdTurno: inválido");
 				}
 
 				if (value == Guid.Empty)
 				{
-					throw new BibliotecaException("Id turno é obrigatório");
+					throw new BibliotecaException("IdTurno: obrigatório");
 				}
 
 				_idTurno = value.Value;
@@ -70,7 +68,7 @@ namespace Biblioteca.Dominio.Entidades
 			{
 				if (string.IsNullOrEmpty(value))
 				{
-					throw new BibliotecaException("nome da turma é obrigatório");
+					throw new BibliotecaException("Nome: obrigatório");
 				}
 
 				_nome = value;
@@ -91,7 +89,7 @@ namespace Biblioteca.Dominio.Entidades
 			{
 				if (value <= 0)
 				{
-					throw new BibliotecaException("Período da turma inválido");
+					throw new BibliotecaException("Período: inválido");
 				}
 
 				_periodo = value;

@@ -1,32 +1,18 @@
 ﻿
 <div class="container">
 	<div class="col-xs-12">
-
+		<div class="header">
+			<h4>Turma</h4>
+			<a href="/turma/views/inserir" class="btn btn-primary btn-sm">Inserir</a>
+		</div>
 	</div>
 	<div class="row">
 		<div class="col-xs-12">
-			
-				<table class="table">
-					<thead>
-						<tr>
-							<th>
-								Nome
-							</th>
-							<th>
-								Período
-							</th>
-							<th>
-								Sigla
-							</th>
-							<th>
-								Ações
-							</th>
-						</tr>
-					</thead>
-					<tbody>
-
-					</tbody>
-				</table>
+			<div id="tableTurmaContainer"></div>
 		</div>
 	</div>
 </div>
+@section scripts{
+	<script src="/js/turma/TurmaService.js" type="text/javascript"></script>
+	<script src="/js/turma/Index.js" type="text/javascript"></script>
+}
