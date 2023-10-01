@@ -1,4 +1,4 @@
-﻿using Biblioteca.Dominio.DTO;
+﻿using Biblioteca.Dominio.ViewModel;
 using Biblioteca.Dominio.Entidades;
 using Biblioteca.Dominio.Servico;
 using System.Net;
@@ -10,9 +10,9 @@ namespace Biblioteca.Servico
         private readonly string _mensagemTurnoObrigatorio = "nome do turno é obrigatório";
         private readonly string _mensagemTurnoExiste = "nome do turno existe";
 
-        public ErrorResponse? ValidarInserirTurno(Turno turnoParaInserir, IList<Turno> turnosCadastrados)
+        public ErroViewModel? ValidarInserirTurno(Turno turnoParaInserir, IList<Turno> turnosCadastrados)
         {
-            var erroResponse = new ErrorResponse();
+            var erroResponse = new ErroViewModel();
 
             if (string.IsNullOrEmpty(turnoParaInserir.Nome))
             {
@@ -36,9 +36,9 @@ namespace Biblioteca.Servico
             return null;
         }
 
-        public ErrorResponse? ValidarEditarTurno(Turno turnoParaEditar, IList<Turno> turnosCadastrados)
+        public ErroViewModel? ValidarEditarTurno(Turno turnoParaEditar, IList<Turno> turnosCadastrados)
         {
-            var erroResponse = new ErrorResponse();
+            var erroResponse = new ErroViewModel();
 
             if (turnoParaEditar.IdTurno == Guid.Empty)
             {
@@ -68,9 +68,9 @@ namespace Biblioteca.Servico
             return null;
         }
 
-        public ErrorResponse? ValidarTurnoNaoExiste(Guid id, IList<Turno> turnoCadastrados)
+        public ErroViewModel? ValidarTurnoNaoExiste(Guid id, IList<Turno> turnoCadastrados)
         {
-            var erroResponse = new ErrorResponse();
+            var erroResponse = new ErroViewModel();
 
             if (!turnoCadastrados.Any(t => t.IdTurno == id))
             {

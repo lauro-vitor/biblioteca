@@ -1,5 +1,5 @@
 ﻿using Biblioteca.Apresentacao.Controllers;
-using Biblioteca.Dominio.DTO;
+using Biblioteca.Dominio.ViewModel;
 using Biblioteca.Dominio.Entidades;
 using Biblioteca.Testes.Mocks.Repositorio;
 using Biblioteca.Testes.Mocks.Servico;
@@ -31,7 +31,7 @@ namespace Biblioteca.Testes.Biblioteca.Apresentacao.Controllers.TurnoControllerT
         [TestMethod]
         public async Task Excluir_DeveRetornarBadRequestSeTurnoExistir()
         {
-            var erroResponse = new ErrorResponse()
+            var erroResponse = new ErroViewModel()
             {
                 Mensagem = "Erro de validação",
                 Erros = new Dictionary<string, List<string>>
@@ -103,7 +103,7 @@ namespace Biblioteca.Testes.Biblioteca.Apresentacao.Controllers.TurnoControllerT
 
                 Assert.IsNotNull(resultado);
                 Assert.AreEqual(500, resultado.StatusCode);
-                Assert.IsInstanceOfType(resultado.Value, typeof(ErrorResponse));
+                Assert.IsInstanceOfType(resultado.Value, typeof(ErroViewModel));
             });
         }
     }

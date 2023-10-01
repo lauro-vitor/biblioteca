@@ -1,5 +1,6 @@
 using Biblioteca.Configuracao;
 using System.Diagnostics.CodeAnalysis;
+using Newtonsoft.Json;
 
 [ExcludeFromCodeCoverage]
 public class Program
@@ -10,8 +11,10 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
-        builder.Services.AddControllersWithViews();
-
+        builder.Services
+            .AddControllersWithViews()
+            .AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
+         
         new Configuracao().Configurar(builder.Services);
 
         var app = builder.Build();

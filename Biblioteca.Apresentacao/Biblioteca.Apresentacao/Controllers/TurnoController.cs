@@ -1,4 +1,4 @@
-﻿using Biblioteca.Dominio.DTO;
+﻿using Biblioteca.Dominio.ViewModel;
 using Biblioteca.Dominio.Entidades;
 using Biblioteca.Dominio.Repositorio;
 using Biblioteca.Dominio.Servico;
@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Biblioteca.Apresentacao.Controllers
 {
     [Route("turno")]
-    public class TurnoController : Controller
+    public class TurnoController : ApiBaseController
     {
         private readonly ITurnoServico _turnoServico;
         private readonly ITurnoRepositorio _turnoRepositorio;
@@ -60,7 +60,7 @@ namespace Biblioteca.Apresentacao.Controllers
 
         [HttpGet("obter")]
         [ProducesResponseType(typeof(List<Turno>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(typeof(ErroViewModel), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Obter()
         {
             try
@@ -71,53 +71,36 @@ namespace Biblioteca.Apresentacao.Controllers
             }
             catch (Exception ex)
             {
-                var error = new ErrorResponse(ex);
-                return StatusCode(StatusCodes.Status500InternalServerError, error);
-            }
+				return InternalServerErrorResult(ex);
+			}
         }
 
         [HttpGet("obter/{id}")]
-        [ProducesResponseType(typeof(Turno), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> ObterPorId(Guid? id)
         {
             try
             {
                 if (id == null)
                 {
-                    return ObterErroIdObrigatorio();
+                    return BadRequestResultIdInvalid();
                 }
 
                 var turno = await _turnoRepositorio.ObterPorId(id.Value);
 
                 if (turno == null)
                 {
-                    var erroResponse = new ErrorResponse()
-                    {
-                        Status = StatusCodes.Status404NotFound,
-                        Mensagem = "Não encontrado"
-                    };
-
-                    erroResponse.AtribuirErro("idturno", "Não foi econtrado turno para esse ID");
-
-                    return NotFound(erroResponse);
+                    return NotFoundResult();
                 }
 
                 return Ok(turno);
             }
             catch (Exception ex)
             {
-                var erroResponse = new ErrorResponse(ex);
-                return StatusCode(StatusCodes.Status500InternalServerError, erroResponse);
-            }
+				return InternalServerErrorResult(ex);
+			}
         }
 
         [HttpPost("inserir")]
-        [ProducesResponseType(typeof(Turno), StatusCodes.Status201Created)]
-        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Inserir([FromBody] Turno turnoParaInserir)
         {
             try
@@ -137,24 +120,19 @@ namespace Biblioteca.Apresentacao.Controllers
             }
             catch (Exception ex)
             {
-                var erroResponse = new ErrorResponse(ex);
-                return StatusCode(StatusCodes.Status500InternalServerError, erroResponse);
-            }
+				return InternalServerErrorResult(ex);
+			}
         }
 
         [HttpPut("editar/{id}")]
-        [ProducesResponseType(typeof(Turno), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Editar([FromRoute] Guid? id, [FromBody] Turno turno)
         {
             try
             {
                 if (id == null)
                 {
-                    return ObterErroIdObrigatorio();
-                }
+                    return BadRequestResultIdInvalid();
+				}
 
                 var turnosCadastrados = await _turnoRepositorio.Obter();
 
@@ -178,24 +156,19 @@ namespace Biblioteca.Apresentacao.Controllers
             }
             catch (Exception ex)
             {
-                var errorResponse = new ErrorResponse(ex);
-                return StatusCode(StatusCodes.Status500InternalServerError, errorResponse);
-            }
+				return InternalServerErrorResult(ex);
+			}
         }
 
         [HttpDelete("excluir/{id}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Excluir(Guid? id)
         {
             try
             {
                 if (id == null)
                 {
-                    return ObterErroIdObrigatorio();
-                }
+                    return BadRequestResultIdInvalid();
+				}
 
                 var turnosCadastrados = await _turnoRepositorio.Obter();
 
@@ -212,26 +185,9 @@ namespace Biblioteca.Apresentacao.Controllers
             }
             catch (Exception ex)
             {
-                var errorResponse = new ErrorResponse(ex);
-                return StatusCode(StatusCodes.Status500InternalServerError, errorResponse);
-            }
+				return InternalServerErrorResult(ex);
+			}
         }
 
-        #region AUXILIAR
-
-        private IActionResult ObterErroIdObrigatorio()
-        {
-            var errorResponse = new ErrorResponse()
-            {
-                Status = StatusCodes.Status400BadRequest,
-                Mensagem = "Requisição inválida",
-            };
-
-            errorResponse.AtribuirErro("idturno", "id do turno é obrigatório");
-
-            return BadRequest(errorResponse);
-        }
-
-        #endregion
     }
 }

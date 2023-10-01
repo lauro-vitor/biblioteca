@@ -7,11 +7,13 @@ COMMIT TRANSACTION;
 BEGIN TRANSACTION;
 
     CREATE TABLE Turma(
-        Id CHAR(36) NOT NULL,
+        IdTurma CHAR(36) NOT NULL,
+        IdTurno CHAR(36) NOT NULL,
         Nome VARCHAR(255) NOT NULL,
         Periodo INTEGER NOT NULL,
         Sigla VARCHAR(255),
-        PRIMARY KEY(Id)
+        PRIMARY KEY(IdTurma),
+        FOREIGN KEY(IdTurno) REFERENCES Turno(IdTurno)
     );
 
 COMMIT TRANSACTION;
