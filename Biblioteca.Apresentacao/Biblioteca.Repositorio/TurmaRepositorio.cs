@@ -61,7 +61,7 @@ namespace Biblioteca.Repositorio
 
 			if (!string.IsNullOrEmpty(nome))
 			{
-				query = query.Where(t => t.Nome.ToLower().Trim().Contains(nome.ToLower().Trim()));
+				query = query.Where(t => t.Nome != null && t.Nome.ToLower().Trim().Contains(nome.ToLower().Trim()));
 			}
 
 			if (periodo.HasValue && periodo > 0)
@@ -71,7 +71,7 @@ namespace Biblioteca.Repositorio
 
 			if (!string.IsNullOrEmpty(sigla))
 			{
-				query = query.Where(t => t.Sigla.ToLower().Trim().Contains(sigla.ToLower().Trim()));
+				query = query.Where(t => t.Sigla != null && t.Sigla.ToLower().Trim().Contains(sigla.ToLower().Trim()));
 			}
 
 			if (!string.IsNullOrEmpty(ordenacaoCampo))
@@ -80,12 +80,8 @@ namespace Biblioteca.Repositorio
 
 				switch (ordenacaoCampo)
 				{
-					case "nome":
-						funcOrder = t => t.Nome;
-						break;
-
 					case "sigla":
-						funcOrder = t => t.Sigla;
+						funcOrder = t => t.Sigla ?? "";
 						break;
 
 					case "periodo":
@@ -93,11 +89,11 @@ namespace Biblioteca.Repositorio
 						break;
 
 					case "turnoNome":
-						funcOrder = t => t.Turno.Nome;
+						funcOrder = t => t.Turno != null ? t.Turno.Nome : "";
 						break;
 
 					default:
-						funcOrder = t => t.Nome;
+						funcOrder = t => t.Nome ?? "";
 						break;
 				}
 

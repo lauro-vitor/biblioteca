@@ -4,12 +4,12 @@
 
 async function carregarTurmas() {
 
-    const turmaService = new TurmaService();
+    const turmaHttpService = new TurmaHttpService();
 
     loading.bloquear();
 
     try {
-        const turmasResponse = await turmaService.Obter();
+        const turmasResponse = await turmaHttpService.Obter();
 
         if (Array.isArray(turmasResponse.data) && turmasResponse.data.length > 0) {
             const tabelaTurma = turmaHTML.ObterTabelaTurma(turmasResponse);

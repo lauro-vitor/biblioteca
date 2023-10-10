@@ -58,6 +58,7 @@ namespace Biblioteca.Dominio.Entidades
 
 
 		private string? _nome;
+
 		public string? Nome
 		{
 			get

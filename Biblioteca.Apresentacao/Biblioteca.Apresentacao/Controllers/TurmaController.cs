@@ -172,7 +172,7 @@ namespace Biblioteca.Apresentacao.Controllers
 		[Route("views/inserir")]
 		public ViewResult InserirVW()
 		{
-			return View();
+			return View("~/Views/Turma/Inserir.cshtml");
 		}
 
 		[Route("views/editar/{id}")]
