@@ -1,5 +1,5 @@
 ﻿using Biblioteca.Apresentacao.Controllers;
-using Biblioteca.Dominio.DTO;
+using Biblioteca.Dominio.ViewModel;
 using Biblioteca.Testes.Mocks.Repositorio;
 using Biblioteca.Testes.Mocks.Servico;
 using Microsoft.AspNetCore.Mvc;
@@ -44,7 +44,7 @@ namespace Biblioteca.Testes.Biblioteca.Apresentacao.Controllers.TurnoControllerT
 
                 Assert.IsNotNull(resultado);
                 Assert.AreEqual(resultado.StatusCode, 500);
-                Assert.IsInstanceOfType(resultado.Value, typeof(ErrorResponse));
+                Assert.IsInstanceOfType(resultado.Value, typeof(ErroViewModel));
             });
         }
 

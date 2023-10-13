@@ -1,4 +1,4 @@
-﻿using Biblioteca.Dominio.DTO;
+﻿using Biblioteca.Dominio.ViewModel;
 
 namespace Biblioteca.Testes.Biblioteca.Dominio
 {
@@ -8,7 +8,7 @@ namespace Biblioteca.Testes.Biblioteca.Dominio
         [TestMethod]
         public void DeveAtribuirErro()
         {
-            var erroResponse = new ErrorResponse();
+            var erroResponse = new ErroViewModel();
 
             erroResponse.AtribuirErro("nome", "nome ja existe");
             erroResponse.AtribuirErro("nome", "nome não pode conter espaços em branco");

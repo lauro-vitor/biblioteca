@@ -11,6 +11,7 @@ namespace Biblioteca.Configuracao
         public void Configurar(IServiceCollection services)
         {
             services.AddTransient<ITurnoRepositorio, TurnoRepositorio>();
+            services.AddTransient<ITurmaRepositorio, TurmaRepositorio>();
         }
     }
 }

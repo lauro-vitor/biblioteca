@@ -9,11 +9,11 @@ namespace Biblioteca.Configuracao
     {
         public  void Configurar(IServiceCollection services)
         {
-            string caminhoBanco = "../../../biblioteca-banco-dados/biblioteca-dev.db";
+            string caminhoBanco = "./biblioteca-dev.db";
 
             if (!File.Exists(caminhoBanco))
             {
-                throw new Exception("Banco de dados não encontrado!");
+                File.Create(caminhoBanco);
             }
 
             services.AddSqlite<BibliotecaContext>("Data Source=" + caminhoBanco);

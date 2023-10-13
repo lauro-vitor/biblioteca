@@ -1,5 +1,5 @@
 ﻿using Biblioteca.Apresentacao.Controllers;
-using Biblioteca.Dominio.DTO;
+using Biblioteca.Dominio.ViewModel;
 using Biblioteca.Dominio.Entidades;
 using Biblioteca.Testes.Mocks.Repositorio;
 using Biblioteca.Testes.Mocks.Servico;
@@ -18,7 +18,7 @@ namespace Biblioteca.Testes.Biblioteca.Apresentacao.Controllers.TurnoControllerT
                 Nome = "matutino",
             };
 
-            var erroResponseMock = new ErrorResponse()
+            var erroResponseMock = new ErroViewModel()
             {
                 Mensagem = "Ocorreram alguns erros de validação",
                 Status = 400,
@@ -40,7 +40,7 @@ namespace Biblioteca.Testes.Biblioteca.Apresentacao.Controllers.TurnoControllerT
 
             Assert.IsNotNull(resultado);
             Assert.IsInstanceOfType(resultado, typeof(BadRequestObjectResult));
-            Assert.IsInstanceOfType(resultado.Value, typeof(ErrorResponse));
+            Assert.IsInstanceOfType(resultado.Value, typeof(ErroViewModel));
         }
 
         [TestMethod]
@@ -90,7 +90,7 @@ namespace Biblioteca.Testes.Biblioteca.Apresentacao.Controllers.TurnoControllerT
 
                 Assert.IsNotNull(resultado);
                 Assert.AreEqual(500, resultado.StatusCode);
-                Assert.IsInstanceOfType(resultado.Value, typeof(ErrorResponse));
+                Assert.IsInstanceOfType(resultado.Value, typeof(ErroViewModel));
             });
         }
 

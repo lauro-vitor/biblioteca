@@ -7,6 +7,7 @@ namespace Biblioteca.Repositorio.EntityFramework
     [ExcludeFromCodeCoverage]
     public class BibliotecaContext : DbContext
     {
+        public DbSet<Turma> Turma => Set<Turma>();
         public DbSet<Turno> Turno => Set<Turno>();
 
         public BibliotecaContext(DbContextOptions<BibliotecaContext> options): base(options)
@@ -16,6 +17,7 @@ namespace Biblioteca.Repositorio.EntityFramework
         protected override void OnModelCreating(ModelBuilder modelbuilder)
         {
             new TurnoEntityTypeConfiguration().Configure(modelbuilder.Entity<Turno>());
+            new TurmaConfigurationEntityType().Configure(modelbuilder.Entity<Turma>());
         }
     }
 }

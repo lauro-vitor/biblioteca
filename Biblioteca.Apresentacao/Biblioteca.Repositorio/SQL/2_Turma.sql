@@ -1,0 +1,19 @@
+BEGIN TRANSACTION;
+
+    DROP TABLE IF EXISTS Turma;
+    
+COMMIT TRANSACTION;
+
+BEGIN TRANSACTION;
+
+    CREATE TABLE Turma(
+        IdTurma CHAR(36) NOT NULL,
+        IdTurno CHAR(36) NOT NULL,
+        Nome VARCHAR(255) NOT NULL,
+        Periodo INTEGER NOT NULL,
+        Sigla VARCHAR(255),
+        PRIMARY KEY(IdTurma),
+        FOREIGN KEY(IdTurno) REFERENCES Turno(IdTurno)
+    );
+
+COMMIT TRANSACTION;
