@@ -41,6 +41,15 @@ body {
     margin-top: 50px;
 }
 
+.mr-15{
+    margin-right: 15px;
+}
+
+.flex-center {
+    display:flex;
+    justify-content:center;
+}
+
 a {
     text-decoration: none;
 }

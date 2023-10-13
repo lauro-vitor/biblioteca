@@ -24,7 +24,7 @@ namespace Biblioteca.Apresentacao.Controllers
 			string? sigla = null,
 			string? ordenacaoCampo = null,
 			string? ordenacaoDirecao = null,
-			int? pageIndex = null,
+			int? pageNumber = null,
 			int? pageSize = null
 		 )
 		{
@@ -37,7 +37,7 @@ namespace Biblioteca.Apresentacao.Controllers
 					sigla,
 					ordenacaoCampo,
 					ordenacaoDirecao,
-					pageIndex,
+					pageNumber,
 					pageSize
 				);
 

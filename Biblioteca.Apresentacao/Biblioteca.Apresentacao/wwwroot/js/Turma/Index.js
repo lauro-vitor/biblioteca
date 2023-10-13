@@ -1,51 +1,71 @@
 (function () {
-    carregarTurmas();
+    carregarTurmas(null);
 })();
 
-async function carregarTurmas() {
+async function carregarTurmas(nome) {
 
-    const turmaHttpService = new TurmaHttpService();
+    const url = new URLSearchParams();
 
-    loading.bloquear();
-
-    try {
-        const turmasResponse = await turmaHttpService.Obter();
-
-        if (Array.isArray(turmasResponse.data) && turmasResponse.data.length > 0) {
-            const tabelaTurma = turmaHTML.ObterTabelaTurma(turmasResponse);
-
-            $("#tableTurmaContainer")
-                .empty()
-                .append(tabelaTurma);
-        }
-
-    } catch (err) {
-        console.error(err);
-    } finally {
-        loading.desbloquear();
+    if (nome !== null) {
+        url.append("nome", nome);
     }
+
+    $("#paginacao_turma").pagination({
+        locator: "data",
+        pageSize: 5,
+        dataSource: "/turma/obter?" + url.toString(),
+
+        totalNumberLocator: function (response) {
+            return response.totalCount;
+        },
+
+        ajax: {
+            beforeSend: function () {
+                loading.bloquear();
+            }
+        },
+        callback: function (data, pagination) {
+            const response = pagination.originalResponse;
+
+            if (data.length > 0) {
+
+                construirTabelaDeTurmas(data);
+
+                $("#paginacao_turma_totalVisto").text(response.totalItensViewed);
+
+                $("#paginacao_turma_totalResultado").text(response.totalCount);
+
+                $("#tabelaTurmaPanel").css("display", "block");
+                $("#tabelaTurmaSemConteudoPanel").css("display", "none");
+            } else {
+                $("#tabelaTurmaSemConteudoPanel").css("display", "block");
+                $("#tabelaTurmaPanel").css("display", "none");
+            }
+
+            loading.desbloquear();
+        },
+
+        formatAjaxError: function (jqXhr, textStatus, errorThrown) {
+            console.error(jqXhr);
+            loading.desbloquear();
+        }
+    });
 }
 
+function pesquisarTurmaButtonClick() {
 
-const turmaHTML = {
-    ObterTabelaTurma(turmas) {
-        const table = $("<table class='table mt-50'></table>");
+    const valorDigitado = $("#idInputTurmaNome").val();
 
-        const thead = $(`
-            <thead>
-                <tr>
-                    <th>Nome</th>
-                    <th>per&iacute;odo</th>
-                    <th>Sigla</th>
-                    <th>Turno</th>
-                    <th></th>
-                </tr>
-            </thead>`);
+    carregarTurmas(valorDigitado);
+}
 
-        const tbody = $("<tbody></tbody>");
+function construirTabelaDeTurmas(turmas) {
+    const tbody = $("#idTableTurma > tbody");
 
-        turmas.data.map(t => {
-            const tr = `
+    tbody.empty();
+
+    turmas.map(t => {
+        const tr = `
                 <tr>
                     <td>${t.nome}</td>
                     <td>${t.periodo}</td>
@@ -62,12 +82,6 @@ const turmaHTML = {
                 </tr>
             `;
 
-            tbody.append(tr);
-        });
-
-        table.append(thead);
-        table.append(tbody);
-
-        return table;
-    }
-};
+        tbody.append(tr);
+    });
+}

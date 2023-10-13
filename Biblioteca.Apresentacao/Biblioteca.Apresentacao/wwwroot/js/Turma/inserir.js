@@ -29,7 +29,7 @@ function inserirTurmaButtonClick() {
         loading.bloquear();
 
         turmaHttpService.Inserir(turma)
-            .then(result => {
+            .then(() => {
 
                 Swal.fire({
                     icon: "success",
@@ -52,6 +52,4 @@ function inserirTurmaButtonClick() {
                 loading.desbloquear();
             });
     }
-
-    console.log(turma);
 }

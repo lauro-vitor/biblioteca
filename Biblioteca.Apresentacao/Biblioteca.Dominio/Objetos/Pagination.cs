@@ -6,6 +6,8 @@
 		public int PageSize { get; }
 		public int TotalCount { get; }
 		public int TotalPages { get; }
+		public int TotalItensViewed { get; private set; }
+
 		public List<T> Data { get; }
 
 		public Pagination(IQueryable<T> source, int? pageIndex, int? pageSize)
@@ -42,7 +44,9 @@
 
 			TotalPages = (int)Math.Ceiling(TotalCount / (double)PageSize);
 
-			Data = source
+			SetTotalViewed();
+
+            Data = source
 				.Skip((PageIndex - 1) * PageSize)
 				.Take(PageSize)
 				.ToList();
@@ -62,6 +66,17 @@
 				return (PageIndex < TotalPages);
 			}
 		}
+		private void SetTotalViewed()
+		{
+            int value = PageIndex * PageSize;
+
+            if (value > TotalCount)
+            {
+                value = TotalCount;
+            }
+
+            TotalItensViewed = value;
+        }
 
 	}
 }
