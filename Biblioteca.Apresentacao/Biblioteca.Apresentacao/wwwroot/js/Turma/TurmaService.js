@@ -1,39 +1,23 @@
 class Turma {
 
-    IdTurma = null;
-    IdTurno = null;
-    Nome = null;
-    Sigla = null;
-    Periodo = null;
+    #EhValido = true;
 
-    #valida = true;
 
-    constructor() {
-        this.#setTurno();
-        this.#setNome();
-        this.#setSigla();
-        this.#setPeriodo();
+    static getInstance() {
+        var _turma = new Turma();
+
+        const turma = {
+            Nome: _turma.Nome,
+            Sigla: _turma.Sigla,
+            Periodo: _turma.Periodo,
+            IdTurno: _turma.IdTurno,
+            EhValido: _turma.EhValido
+        }
+
+        return turma;
     }
 
-    Valida() {
-        return this.#valida;
-    }
-
-    static constuirTurnoSelectList(turnos) {
-
-        $("#idSelectTurno").empty();
-
-        $("#idSelectTurno").append("<option value=''>(Selecione o turno)</option>");
-
-        turnos.map(t => {
-
-            const option = `<option value="${t.idTurno}">${t.nome}</option>`;
-
-            $("#idSelectTurno").append(option);
-        });
-    }
-
-    #setNome() {
+    get Nome() {
         const _input = $("#idInputNome");
 
         const _span = $("#idSpanNome");
@@ -51,26 +35,27 @@ class Turma {
 
         if (_mensagem != null) {
             this.#inserirMensagemErro(_input, _span, _mensagem);
-            this.#valida = false;
-            return;
+            this.#EhValido = false;
+            return null;
         }
 
         this.#limparMensagemErro(_input, _span);
 
-        this.Nome = _nome;
+        return _nome;
     }
 
-    #setSigla() {
-        let _sigla = $("#idInputSigla").val();
+    get Sigla() {
+
+        const _sigla = $("#idInputSigla").val();
 
         if (_sigla === undefined || _sigla === "") {
-            _sigla = null;
+            return null;
         }
 
-        this.Sigla = _sigla;
+        return _sigla;
     }
 
-    #setPeriodo() {
+    get Periodo() {
         const _input = $("#idInputPeriodo");
         const _span = $("#idSpanPeriodo");
         let _mensagem = null;
@@ -92,25 +77,31 @@ class Turma {
 
         if (_mensagem !== null) {
             this.#inserirMensagemErro(_input, _span, _mensagem);
-            this.#valida = false;
-            return;
+            this.#EhValido = false;
+            return null;
         }
 
         this.#limparMensagemErro(_input, _span);
 
-        this.Periodo = parseInt(_input.val());
+        return parseInt(_input.val());
     }
 
-    #setTurno() {
-        const _idTurno = $("#idSelectTurno").val();
+    get IdTurno() {
+        const _input = $("#idSelectTurno");
+        const _span = $("#idSpanTurno");
+        const _idTurno = _input.val();
 
         if (_idTurno === "" || _idTurno === undefined || _idTurno === null) {
-            this.#inserirMensagemErro($("#idSelectTurno"), $("#idSpanTurno"), "turno &eacute; obrigat&oacute;rio");
-            this.#valida = false;
-            return;
+            this.#inserirMensagemErro(_input, _span, "turno &eacute; obrigat&oacute;rio");
+            this.#EhValido = false;
+            return null;
         }
 
-        this.IdTurno = _idTurno;
+        this.#limparMensagemErro(_input, _span);
+        return _idTurno;
+    }
+    get EhValido() {
+        return this.#EhValido;
     }
 
     #inserirMensagemErro(input, span, mensagem) {
@@ -123,7 +114,19 @@ class Turma {
         span.text("");
     }
 
-  
+    static constuirTurnoSelectList(turnos) {
+
+        $("#idSelectTurno").empty();
+
+        $("#idSelectTurno").append("<option value=''>(Selecione o turno)</option>");
+
+        turnos.map(t => {
+
+            const option = `<option value="${t.idTurno}">${t.nome}</option>`;
+
+            $("#idSelectTurno").append(option);
+        });
+    }
 }
 
 class TurmaHttpService {

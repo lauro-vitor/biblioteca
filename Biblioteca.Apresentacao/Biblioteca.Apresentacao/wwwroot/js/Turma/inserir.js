@@ -21,35 +21,37 @@ $(document).ready(function () {
 
 
 function inserirTurmaButtonClick() {
-    const turma = new Turma();
 
-    if (turma.Valida()) {
-        const turmaHttpService = new TurmaHttpService();
+    var turma = Turma.getInstance();
 
-        loading.bloquear();
+    if (!turma.EhValido)
+        return;
 
-        turmaHttpService.Inserir(turma)
-            .then(() => {
+    const turmaHttpService = new TurmaHttpService();
 
-                Swal.fire({
-                    icon: "success",
-                    title: "Sucesso",
-                    text: "Turma inserida com sucesso"
-                }).then(() => {
-                    window.location.href = "/turma/views/index";
-                });
-            })
-            .catch(reason => {
-                Swal.fire({
-                    icon: "error",
-                    title: "Erro",
-                    Text: "Ocorreu algum erro ao inserir a turma"
-                });
+    loading.bloquear();
 
-                console.error(reason);
+    turmaHttpService.Inserir(turma)
+        .then(() => {
 
-            }).finnaly(() => {
-                loading.desbloquear();
+            Swal.fire({
+                icon: "success",
+                title: "Sucesso",
+                text: "Turma inserida com sucesso"
+            }).then(() => {
+                window.location.href = "/turma/views/index";
             });
-    }
+        })
+        .catch(reason => {
+            Swal.fire({
+                icon: "error",
+                title: "Erro",
+                Text: "Ocorreu algum erro ao inserir a turma"
+            });
+
+            console.error(reason);
+
+        }).finnaly(() => {
+            loading.desbloquear();
+        });
 }

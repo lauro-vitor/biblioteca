@@ -30,8 +30,6 @@ namespace Biblioteca.Dominio.Entidades
 			}
 		}
 
-
-
 		private Guid _idTurno;
 
 		public Guid? IdTurno
