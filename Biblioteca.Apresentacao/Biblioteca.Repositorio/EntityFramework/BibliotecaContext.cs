@@ -9,6 +9,7 @@ namespace Biblioteca.Repositorio.EntityFramework
     {
         public DbSet<Turma> Turma => Set<Turma>();
         public DbSet<Turno> Turno => Set<Turno>();
+        public DbSet<Editora> Editora => Set<Editora>();
 
         public BibliotecaContext(DbContextOptions<BibliotecaContext> options): base(options)
         {   
