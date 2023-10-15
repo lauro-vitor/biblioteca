@@ -32,6 +32,26 @@ namespace Biblioteca.Dominio.Entidades
 			}
 		}
 
+		private Guid _idEditora;
+		public Guid? IdEditora
+		{
+			get { return _idEditora; } 
+			set 
+			{
+				if(value == null)
+				{
+					throw new BibliotecaException("IdEditora: Obrigatorio");
+				}
+
+				if(value == Guid.Empty)
+				{
+					throw new BibliotecaException("IdEditora: Invalido");
+				}
+
+				_idEditora = value.Value;
+			}
+		}
+
 		private string _titulo;
 		public string? Titulo
 		{
