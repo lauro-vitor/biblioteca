@@ -1,5 +1,4 @@
 ﻿using Biblioteca.Dominio.Entidades;
-using Biblioteca.Dominio.Objetos;
 using Biblioteca.Dominio.Repositorio;
 using Biblioteca.Dominio.ViewModel;
 using Microsoft.AspNetCore.Mvc;
@@ -76,7 +75,6 @@ namespace Biblioteca.Apresentacao.Controllers
 			await _turmaRepositorio.Inserir(turmaParaInserir);
 
 			return Created($"/turma/obterPorId/{turmaParaInserir.IdTurma}", turma);
-
 		}
 
 		[HttpPut("editar")]
@@ -148,9 +146,6 @@ namespace Biblioteca.Apresentacao.Controllers
 			return View();
 		}
 		#endregion
-
-
-
 
 	}
 }
