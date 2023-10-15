@@ -30,8 +30,6 @@ namespace Biblioteca.Dominio.Entidades
 			}
 		}
 
-
-
 		private Guid _idTurno;
 
 		public Guid? IdTurno
@@ -57,22 +55,22 @@ namespace Biblioteca.Dominio.Entidades
 		}
 
 
-		private string? _nome;
+		private string? _sigla;
 
-		public string? Nome
+		public string? Sigla
 		{
 			get
 			{
-				return _nome;
+				return _sigla;
 			}
 			private set
 			{
 				if (string.IsNullOrEmpty(value))
 				{
-					throw new BibliotecaException("Nome: obrigatório");
+					throw new BibliotecaException("Sigla: obrigatório");
 				}
 
-				_nome = value;
+				_sigla = value;
 			}
 		}
 
@@ -97,7 +95,7 @@ namespace Biblioteca.Dominio.Entidades
 			}
 		}
 
-		public string? Sigla { get; private set; }
+		public string? Nome { get; private set; }
 
 		public virtual Turno? Turno { get; private set; }
 
