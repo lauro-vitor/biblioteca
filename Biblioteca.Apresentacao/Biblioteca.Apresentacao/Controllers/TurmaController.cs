@@ -28,58 +28,67 @@ namespace Biblioteca.Apresentacao.Controllers
 			int? pageSize = null
 		 )
 		{
-			try
-			{
-				var turmas = _turmaRepositorio.Obter(
-					idTurno,
-					nome,
-					periodo,
-					sigla,
-					ordenacaoCampo,
-					ordenacaoDirecao,
-					pageNumber,
-					pageSize
-				);
 
-				return Ok(turmas);
-			}
-			catch (Exception ex)
-			{
-				return InternalServerErrorResult(ex);
-			}
+			var turmas = _turmaRepositorio.Obter(
+				idTurno,
+				nome,
+				periodo,
+				sigla,
+				ordenacaoCampo,
+				ordenacaoDirecao,
+				pageNumber,
+				pageSize
+			);
+
+			return Ok(turmas);
 		}
 
 		[HttpGet("obterPorId/{id}")]
 		public async Task<IActionResult> ObterPorId(Guid id)
 		{
-			try
-			{
-				var turma = await _turmaRepositorio.ObterPorId(id);
+			var turma = await _turmaRepositorio.ObterPorId(id);
 
-				if (turma == null)
-				{
-					return NotFoundResult();
-				}
-
-				return Ok(turma);
-			}
-			catch (Exception ex)
+			if (turma == null)
 			{
-				return InternalServerErrorResult(ex);
+				return NotFoundResult();
 			}
+
+			return Ok(turma);
 		}
 
 		[HttpPost("inserir")]
 		public async Task<IActionResult> Inserir([FromBody] TurmaViewModel turma)
 		{
-			try
-			{
-				if (turma == null)
-				{
-					return BadRequestResult();
-				}
 
-				var turmaParaInserir = new Turma(
+			if (turma == null)
+			{
+				return BadRequestResult();
+			}
+
+			var turmaParaInserir = new Turma(
+				turma.IdTurma,
+				turma.IdTurno,
+				turma.Nome,
+				turma.Periodo,
+				turma.Sigla
+			);
+
+			await _turmaRepositorio.Inserir(turmaParaInserir);
+
+			return Created($"/turma/obterPorId/{turmaParaInserir.IdTurma}", turma);
+
+		}
+
+		[HttpPut("editar")]
+		public async Task<IActionResult> Editar([FromBody] TurmaViewModel turma)
+		{
+
+			if (turma == null)
+			{
+				return BadRequestResult();
+			}
+
+			var turmaParaEditar = new Turma(
 					turma.IdTurma,
 					turma.IdTurno,
 					turma.Nome,
@@ -87,78 +96,30 @@ namespace Biblioteca.Apresentacao.Controllers
 					turma.Sigla
 				);
 
-				await _turmaRepositorio.Inserir(turmaParaInserir);
+			await _turmaRepositorio.Editar(turmaParaEditar);
 
-				return Created($"/turma/obterPorId/{turmaParaInserir.IdTurma}", turma);
-			}
-			catch (BibliotecaException ex)
-			{
-				return BadRequestResult(ex);
-			}
-			catch (Exception ex)
-			{
-				return InternalServerErrorResult(ex);
-			}
-		}
-
-		[HttpPut("editar")]
-		public async Task<IActionResult> Editar([FromBody] TurmaViewModel turma)
-		{
-			try
-			{
-				if (turma == null)
-				{
-					return BadRequestResult();
-				}
-
-				var turmaParaEditar = new Turma(
-						turma.IdTurma,
-						turma.IdTurno,
-						turma.Nome,
-						turma.Periodo,
-						turma.Sigla
-					);
-
-				await _turmaRepositorio.Editar(turmaParaEditar);
-
-				return Ok(turma);
-			}
-			catch (BibliotecaException ex)
-			{
-				return BadRequestResult(ex);
-			}
-			catch (Exception ex)
-			{
-				return InternalServerErrorResult(ex);
-			}
+			return Ok(turma);
 		}
 
 		[HttpDelete]
 		[Route("excluir/{id}")]
 		public async Task<IActionResult> Excluir([FromRoute] Guid id)
 		{
-			try
+			if (id == Guid.Empty)
 			{
-				if (id == Guid.Empty)
-				{
-					return BadRequestResultIdInvalid();
-				}
-
-				var turma = await _turmaRepositorio.ObterPorId(id);
-
-				if (turma == null)
-				{
-					return NotFoundResult();
-				}
-
-				await _turmaRepositorio.Excluir(id);
-
-				return NoContent();
+				return BadRequestResultIdInvalid();
 			}
-			catch (Exception ex)
+
+			var turma = await _turmaRepositorio.ObterPorId(id);
+
+			if (turma == null)
 			{
-				return InternalServerErrorResult(ex);
+				return NotFoundResult();
 			}
+
+			await _turmaRepositorio.Excluir(id);
+
+			return NoContent();
 		}
 
 		#region VIEWS

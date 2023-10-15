@@ -52,20 +52,6 @@ namespace Biblioteca.Apresentacao.Controllers
 			return BadRequest(erroResponse);
 		}
 
-		protected ObjectResult BadRequestResult(BibliotecaException exception)
-		{
-			var erroResponse = new ErroViewModel()
-			{
-				Mensagem = "Erros de validação",
-				Status = StatusCodes.Status400BadRequest
-			};
-
-			erroResponse.AtribuirErro("mensagem", exception.Message);
-
-			return BadRequest(erroResponse);
-		}
-
-
 		protected ObjectResult NotFoundResult()
 		{
 			var erroResponse = new ErroViewModel()
@@ -89,28 +75,5 @@ namespace Biblioteca.Apresentacao.Controllers
 			return NotFound(erroResponse);
 		}
 
-		protected ObjectResult InternalServerErrorResult(Exception exception)
-		{
-			var erroResponse = new ErroViewModel()
-			{
-				Status = StatusCodes.Status500InternalServerError,
-
-				Mensagem = "Ocorreu algum erro interno",
-
-				Erros = new Dictionary<string, List<string>>
-				{
-					{
-						"message",
-						new List<string> { exception.Message }
-					},
-					{
-						"stackTrace",
-						new List<string> { exception.StackTrace ?? "" }
-					}
-				}
-			};
-
-			return StatusCode(StatusCodes.Status500InternalServerError, erroResponse);
-		}
 	}
 }

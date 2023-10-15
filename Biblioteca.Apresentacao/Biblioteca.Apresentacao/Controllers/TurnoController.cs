@@ -6,188 +6,153 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Biblioteca.Apresentacao.Controllers
 {
-    [Route("turno")]
-    public class TurnoController : ApiBaseController
-    {
-        private readonly ITurnoServico _turnoServico;
-        private readonly ITurnoRepositorio _turnoRepositorio;
-        public TurnoController(ITurnoRepositorio turnoRepositorio,
-                               ITurnoServico turnoServico)
-        {
-            _turnoRepositorio = turnoRepositorio;
-            _turnoServico = turnoServico;
-        }
+	[Route("turno")]
+	public class TurnoController : ApiBaseController
+	{
+		private readonly ITurnoServico _turnoServico;
+		private readonly ITurnoRepositorio _turnoRepositorio;
+		public TurnoController(ITurnoRepositorio turnoRepositorio,
+							   ITurnoServico turnoServico)
+		{
+			_turnoRepositorio = turnoRepositorio;
+			_turnoServico = turnoServico;
+		}
 
-        [Route("views/index")]
-        public ViewResult IndexVW()
-        {
-            var view = View("~/Views/Turno/Index.cshtml");
+		[Route("views/index")]
+		public ViewResult IndexVW()
+		{
+			var view = View("~/Views/Turno/Index.cshtml");
 
-            view.ViewData["title"] = "Turno";
+			view.ViewData["title"] = "Turno";
 
-            return view;
-        }
+			return view;
+		}
 
-        [Route("views/inserir")]
-        public ViewResult InserirVW()
-        {
-            var view = View("~/Views/Turno/Inserir.cshtml");
+		[Route("views/inserir")]
+		public ViewResult InserirVW()
+		{
+			var view = View("~/Views/Turno/Inserir.cshtml");
 
-            view.ViewData["title"] = "Inserir turno";
+			view.ViewData["title"] = "Inserir turno";
 
-            return view;
-        }
+			return view;
+		}
 
-        [Route("views/editar/{id}")]
-        public ViewResult EditarVW(Guid id)
-        {
-            var view = View("~/Views/Turno/Editar.cshtml");
+		[Route("views/editar/{id}")]
+		public ViewResult EditarVW(Guid id)
+		{
+			var view = View("~/Views/Turno/Editar.cshtml");
 
-            view.ViewData["title"] = "Editar turno";
+			view.ViewData["title"] = "Editar turno";
 
-            return view;
-        }
+			return view;
+		}
 
-        [Route("views/excluir/{id}")]
-        public ViewResult ExcluirVW(Guid id)
-        {
-            var view = View("~/Views/Turno/Excluir.cshtml");
+		[Route("views/excluir/{id}")]
+		public ViewResult ExcluirVW(Guid id)
+		{
+			var view = View("~/Views/Turno/Excluir.cshtml");
 
-            view.ViewData["title"] = "Excluir turno";
-           
-            return view;
-        }
+			view.ViewData["title"] = "Excluir turno";
 
-        [HttpGet("obter")]
-        [ProducesResponseType(typeof(List<Turno>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ErroViewModel), StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Obter()
-        {
-            try
-            {
-                var resultado = await _turnoRepositorio.Obter();
+			return view;
+		}
 
-                return Ok(resultado);
-            }
-            catch (Exception ex)
-            {
-				return InternalServerErrorResult(ex);
+		[HttpGet("obter")]
+		[ProducesResponseType(typeof(List<Turno>), StatusCodes.Status200OK)]
+		[ProducesResponseType(typeof(ErroViewModel), StatusCodes.Status500InternalServerError)]
+		public async Task<IActionResult> Obter()
+		{
+			var resultado = await _turnoRepositorio.Obter();
+
+			return Ok(resultado);
+		}
+
+		[HttpGet("obter/{id}")]
+		public async Task<IActionResult> ObterPorId(Guid? id)
+		{
+			if (id == null)
+			{
+				return BadRequestResultIdInvalid();
 			}
-        }
 
-        [HttpGet("obter/{id}")]
-        public async Task<IActionResult> ObterPorId(Guid? id)
-        {
-            try
-            {
-                if (id == null)
-                {
-                    return BadRequestResultIdInvalid();
-                }
+			var turno = await _turnoRepositorio.ObterPorId(id.Value);
 
-                var turno = await _turnoRepositorio.ObterPorId(id.Value);
-
-                if (turno == null)
-                {
-                    return NotFoundResult();
-                }
-
-                return Ok(turno);
-            }
-            catch (Exception ex)
-            {
-				return InternalServerErrorResult(ex);
+			if (turno == null)
+			{
+				return NotFoundResult();
 			}
-        }
 
-        [HttpPost("inserir")]
-        public async Task<IActionResult> Inserir([FromBody] Turno turnoParaInserir)
-        {
-            try
-            {
-                var turnosCadastrados = await _turnoRepositorio.Obter();
+			return Ok(turno);
+		}
 
-                var resultadoValidacao = _turnoServico.ValidarInserirTurno(turnoParaInserir, turnosCadastrados);
+		[HttpPost("inserir")]
+		public async Task<IActionResult> Inserir([FromBody] Turno turnoParaInserir)
+		{
+			var turnosCadastrados = await _turnoRepositorio.Obter();
 
-                if (resultadoValidacao != null)
-                {
-                    return BadRequest(resultadoValidacao);
-                }
+			var resultadoValidacao = _turnoServico.ValidarInserirTurno(turnoParaInserir, turnosCadastrados);
 
-                await _turnoRepositorio.Inserir(turnoParaInserir);
-
-                return CreatedAtAction(nameof(ObterPorId), new { id = turnoParaInserir.IdTurno }, turnoParaInserir);
-            }
-            catch (Exception ex)
-            {
-				return InternalServerErrorResult(ex);
+			if (resultadoValidacao != null)
+			{
+				return BadRequest(resultadoValidacao);
 			}
-        }
 
-        [HttpPut("editar/{id}")]
-        public async Task<IActionResult> Editar([FromRoute] Guid? id, [FromBody] Turno turno)
-        {
-            try
-            {
-                if (id == null)
-                {
-                    return BadRequestResultIdInvalid();
-				}
+			await _turnoRepositorio.Inserir(turnoParaInserir);
 
-                var turnosCadastrados = await _turnoRepositorio.Obter();
+			return CreatedAtAction(nameof(ObterPorId), new { id = turnoParaInserir.IdTurno }, turnoParaInserir);
+		}
 
-                var resultadoTurnoNaoExiste = _turnoServico.ValidarTurnoNaoExiste(id.Value, turnosCadastrados);
-
-                if (resultadoTurnoNaoExiste != null)
-                {
-                    return NotFound(resultadoTurnoNaoExiste);
-                }
-
-                var resultadoValidacao = _turnoServico.ValidarEditarTurno(turno, turnosCadastrados);
-
-                if (resultadoValidacao != null)
-                {
-                    return BadRequest(resultadoValidacao);
-                }
-
-                await _turnoRepositorio.Editar(turno);
-
-                return Ok(turno);
-            }
-            catch (Exception ex)
-            {
-				return InternalServerErrorResult(ex);
+		[HttpPut("editar/{id}")]
+		public async Task<IActionResult> Editar([FromRoute] Guid? id, [FromBody] Turno turno)
+		{
+			if (id == null)
+			{
+				return BadRequestResultIdInvalid();
 			}
-        }
 
-        [HttpDelete("excluir/{id}")]
-        public async Task<IActionResult> Excluir(Guid? id)
-        {
-            try
-            {
-                if (id == null)
-                {
-                    return BadRequestResultIdInvalid();
-				}
+			var turnosCadastrados = await _turnoRepositorio.Obter();
 
-                var turnosCadastrados = await _turnoRepositorio.Obter();
+			var resultadoTurnoNaoExiste = _turnoServico.ValidarTurnoNaoExiste(id.Value, turnosCadastrados);
 
-                var resultadoTurnoNaoExiste = _turnoServico.ValidarTurnoNaoExiste(id.Value, turnosCadastrados);
-
-                if (resultadoTurnoNaoExiste != null)
-                {
-                    return NotFound(resultadoTurnoNaoExiste);
-                }
-
-                await _turnoRepositorio.Excluir(id.Value);
-
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-				return InternalServerErrorResult(ex);
+			if (resultadoTurnoNaoExiste != null)
+			{
+				return NotFound(resultadoTurnoNaoExiste);
 			}
-        }
 
-    }
+			var resultadoValidacao = _turnoServico.ValidarEditarTurno(turno, turnosCadastrados);
+
+			if (resultadoValidacao != null)
+			{
+				return BadRequest(resultadoValidacao);
+			}
+
+			await _turnoRepositorio.Editar(turno);
+
+			return Ok(turno);
+		}
+
+		[HttpDelete("excluir/{id}")]
+		public async Task<IActionResult> Excluir(Guid? id)
+		{
+			if (id == null)
+			{
+				return BadRequestResultIdInvalid();
+			}
+
+			var turnosCadastrados = await _turnoRepositorio.Obter();
+
+			var resultadoTurnoNaoExiste = _turnoServico.ValidarTurnoNaoExiste(id.Value, turnosCadastrados);
+
+			if (resultadoTurnoNaoExiste != null)
+			{
+				return NotFound(resultadoTurnoNaoExiste);
+			}
+
+			await _turnoRepositorio.Excluir(id.Value);
+
+			return NoContent();
+		}
+
+	}
 }

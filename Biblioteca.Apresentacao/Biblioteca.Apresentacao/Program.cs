@@ -1,6 +1,7 @@
 using Biblioteca.Configuracao;
 using System.Diagnostics.CodeAnalysis;
 using Newtonsoft.Json;
+using Biblioteca.Apresentacao.Filter;
 
 [ExcludeFromCodeCoverage]
 public class Program
@@ -17,7 +18,12 @@ public class Program
          
         new Configuracao().Configurar(builder.Services);
 
-        var app = builder.Build();
+        builder.Services.AddMvc(options =>
+        {
+            options.Filters.Add(new ErrorHandlingFilter());
+        });
+
+		var app = builder.Build();
 
         // Configure the HTTP request pipeline.
         if (!app.Environment.IsDevelopment())
