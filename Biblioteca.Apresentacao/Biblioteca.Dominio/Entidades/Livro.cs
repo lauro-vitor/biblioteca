@@ -52,7 +52,7 @@ namespace Biblioteca.Dominio.Entidades
 			}
 		}
 
-		private string _titulo;
+		private string? _titulo;
 		public string? Titulo
 		{
 			get

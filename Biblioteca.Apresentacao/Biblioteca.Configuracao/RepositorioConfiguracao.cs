@@ -13,6 +13,7 @@ namespace Biblioteca.Configuracao
             services.AddTransient<ITurnoRepositorio, TurnoRepositorio>();
             services.AddTransient<ITurmaRepositorio, TurmaRepositorio>();
             services.AddTransient<IEditoraRepositorio, EditoraRepositorio>();
+            services.AddTransient<IAutorRepositorio, AutorRepositorio>();
         }
     }
 }

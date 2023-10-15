@@ -6,6 +6,5 @@
 		Task Editar(T obj);
 		Task Excluir(Guid id);
 		Task<T?> ObterPorId(Guid id);
-		Task<List<T>> ObterTodos();
 	}
 }

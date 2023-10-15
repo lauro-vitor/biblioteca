@@ -1,11 +1,11 @@
 ﻿using Biblioteca.Repositorio.EntityFramework;
-using Microsoft.EntityFrameworkCore;
 
 namespace Biblioteca.Repositorio
 {
 	public class RepositorioBase<T> where T : class
 	{
 		private readonly BibliotecaContext _context;
+
 		public RepositorioBase(BibliotecaContext context)
 		{
 			_context = context;
@@ -46,14 +46,6 @@ namespace Biblioteca.Repositorio
 
 			return resultado;
 		}
-
-		public async Task<List<T>>ObterTodos()
-		{
-			return await _context.Set<T>()
-				.AsNoTracking()
-				.ToListAsync();
-		}
-
 
 	}
 }
