@@ -11,6 +11,7 @@ namespace Biblioteca.Repositorio.EntityFramework
         public DbSet<Turno> Turno => Set<Turno>();
         public DbSet<Editora> Editora => Set<Editora>();
         public DbSet<Autor> Autor => Set<Autor>();
+        public DbSet<Genero> Genero => Set<Genero>();
 
         public BibliotecaContext(DbContextOptions<BibliotecaContext> options): base(options)
         {   
