@@ -41,7 +41,7 @@ namespace Biblioteca.Dominio.Entidades
 			}
 			set
 			{
-				if (string.IsNullOrEmpty(value))
+				if (string.IsNullOrWhiteSpace(value))
 				{
 					throw new BibliotecaException("Nome: Obrigatorio");
 				}
