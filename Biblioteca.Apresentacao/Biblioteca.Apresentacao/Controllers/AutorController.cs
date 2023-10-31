@@ -15,9 +15,9 @@ namespace Biblioteca.Apresentacao.Controllers
 		}
 
 		[HttpGet]
-		public IActionResult Get()
+		public async Task<IActionResult> Get()
 		{
-			return Ok(_autorRepositorio.Obter());
+			return Ok(await _autorRepositorio.Obter());
 		}
 
 		[HttpGet("{id}")]

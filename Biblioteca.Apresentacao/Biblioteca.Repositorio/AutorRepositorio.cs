@@ -51,7 +51,7 @@ namespace Biblioteca.Repositorio
         {
             var autor = new Autor()
             {
-                IdAutor = autorViewModel.IdAutor,
+                IdAutor = Guid.NewGuid(),
                 Nome = autorViewModel.Nome
             };
 

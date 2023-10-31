@@ -51,7 +51,7 @@ namespace Biblioteca.Repositorio
         {
             var editora = new Editora()
             {
-                IdEditora = editoraViewModel.IdEditora,
+                IdEditora = Guid.NewGuid(),
                 Nome = editoraViewModel.Nome
             };
 
