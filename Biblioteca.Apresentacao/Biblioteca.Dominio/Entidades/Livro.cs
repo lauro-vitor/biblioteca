@@ -7,7 +7,19 @@ namespace Biblioteca.Dominio.Entidades
 	{
 		private Guid _idLivro;
 
-		[Key]
+        private Guid _idEditora;
+
+        private string? _titulo;
+
+        private DateOnly _dataPublicacao;
+
+        private int? _edicao;
+
+        private int? _volume;
+
+		public Editora Editora { get; set; } = new Editora();
+
+        [Key]
 		public Guid? IdLivro 
 		{
 			get 
@@ -32,7 +44,7 @@ namespace Biblioteca.Dominio.Entidades
 			}
 		}
 
-		private Guid _idEditora;
+		
 		public Guid? IdEditora
 		{
 			get { return _idEditora; } 
@@ -52,7 +64,7 @@ namespace Biblioteca.Dominio.Entidades
 			}
 		}
 
-		private string? _titulo;
+	
 		public string? Titulo
 		{
 			get
@@ -75,7 +87,7 @@ namespace Biblioteca.Dominio.Entidades
 			}
 		}
 
-		private DateOnly _dataPublicacao;
+		
 		public DateOnly? DataPublicacao 
 		{
 			get
@@ -103,7 +115,7 @@ namespace Biblioteca.Dominio.Entidades
 			}
 		}
 
-		private int? _edicao;
+		
 		public int? Edicao 
 		{
 			get
@@ -121,7 +133,7 @@ namespace Biblioteca.Dominio.Entidades
 			}
 		}
 
-		private int? _volume;
+		
 		public int? Volume 
 		{
 			get

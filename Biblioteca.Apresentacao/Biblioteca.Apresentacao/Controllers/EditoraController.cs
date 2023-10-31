@@ -1,84 +1,53 @@
-﻿using Biblioteca.Dominio.Entidades;
-using Biblioteca.Dominio.Repositorio;
-using Biblioteca.Dominio.ViewModel;
+﻿using Biblioteca.Dominio.ViewModel;
+using Biblioteca.Repositorio;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Biblioteca.Apresentacao.Controllers
 {
-	[Route("editora")]
-	public class EditoraController : ApiBaseController
-	{
-		private readonly IEditoraRepositorio _editoraRepositorio;
-		public EditoraController(IEditoraRepositorio editoraRepositorio) 
-		{ 
-			_editoraRepositorio = editoraRepositorio;
-		}
+    [Route("editora")]
+    public class EditoraController : ApiBaseController
+    {
+        private readonly EditoraRepositorio _editoraRepositorio;
 
-		[HttpGet]
-		public async Task<IActionResult> Get()
-		{
-			var editoras = await _editoraRepositorio.ObterTodos();
+        public EditoraController(EditoraRepositorio editoraRepositorio)
+        {
+            _editoraRepositorio = editoraRepositorio;
+        }
 
-			return Ok(editoras);
-		}
+        [HttpGet]
+        public async Task<IActionResult> Get()
+        {
+            return Ok(await _editoraRepositorio.Obter());
+        }
 
-		[HttpGet("{id}")]
-		public async Task<IActionResult> Get([FromRoute] Guid id)
-		{
-			var editora = await _editoraRepositorio.ObterPorId(id);
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get([FromRoute] Guid id)
+        {
+            return Ok(await _editoraRepositorio.ObterPorId(id));
+        }
 
-			if(editora == null)
-			{
-				return NotFoundResult();
-			}
+        [HttpPost]
+        public async Task<IActionResult> Inserir([FromBody] EditoraViewModel editoraViewModel)
+        {
+            var resultado = await _editoraRepositorio.Inserir(editoraViewModel);
 
-			return Ok(editora);
-		}
+            return Created("/editora/" + resultado.IdEditora, resultado);
+        }
 
-		[HttpPost]
-		public async Task<IActionResult> Inserir([FromBody] EditoraViewModel editoraViewModel)
-		{
-			var editora = new Editora()
-			{
-				IdEditora = editoraViewModel.IdEditora,
-				Nome =  editoraViewModel.Nome
-			};
+        [HttpPut]
+        public async Task<IActionResult> Editar([FromBody] EditoraViewModel editoraViewModel)
+        {
+            var resultado = await _editoraRepositorio.Editar(editoraViewModel);
 
-			await _editoraRepositorio.Inserir(editora);
+            return Ok(resultado);
+        }
 
-			return Created("/editora/"+editora.IdEditora, editora);
-		}
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Excluir([FromRoute] Guid id)
+        {
+            await _editoraRepositorio.Excluir(id);
 
-		[HttpPut]
-		public async Task<IActionResult> Editar([FromBody] EditoraViewModel editoraViewModel)
-		{
-			if(editoraViewModel.IdEditora == null || editoraViewModel.IdEditora == Guid.Empty)
-			{
-				return BadRequestResultIdInvalid();
-			}
-
-			var editora = new Editora()
-			{
-				IdEditora = editoraViewModel.IdEditora,
-				Nome = editoraViewModel.Nome
-			};
-
-			await _editoraRepositorio.Editar(editora);
-
-			return Ok(editora);
-		}
-
-		[HttpDelete("{id}")]
-		public async Task<IActionResult> Excluir([FromRoute] Guid? id)
-		{
-			if(id == null || id == Guid.Empty)
-			{
-				return BadRequestResultIdInvalid();
-			}
-
-			await _editoraRepositorio.Excluir(id.Value);
-
-			return NoContent();
-		}
-	}
+            return NoContent();
+        }
+    }
 }

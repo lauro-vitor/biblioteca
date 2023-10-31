@@ -6,8 +6,9 @@ namespace Biblioteca.Dominio.Entidades
 	public class Autor
 	{
 		private Guid _idAutor;
+        private string? _nome;
 
-		[Key]
+        [Key]
 		public Guid? IdAutor
 		{
 			get 
@@ -32,7 +33,6 @@ namespace Biblioteca.Dominio.Entidades
 			}
 		}
 
-		private string ?_nome;
 		public string? Nome
 		{
 			get

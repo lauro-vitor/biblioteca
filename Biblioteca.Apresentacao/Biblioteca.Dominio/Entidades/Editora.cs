@@ -7,7 +7,9 @@ namespace Biblioteca.Dominio.Entidades
 	{
 		private Guid _idEditora;
 
-		[Key]
+        private string? _nome;
+
+        [Key]
 		public Guid? IdEditora
 		{
 			get
@@ -30,8 +32,6 @@ namespace Biblioteca.Dominio.Entidades
 				_idEditora = value.Value;
 			}
 		}
-
-		private string? _nome;
 
 		public string? Nome
 		{
