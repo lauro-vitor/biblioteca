@@ -21,7 +21,7 @@ namespace Biblioteca.Repositorio.EntityFramework
         protected override void OnModelCreating(ModelBuilder modelbuilder)
         {
             new TurnoEntityTypeConfiguration().Configure(modelbuilder.Entity<Turno>());
-            new TurmaConfigurationEntityType().Configure(modelbuilder.Entity<Turma>());
+            new TurmaEntityTypeConfiguration().Configure(modelbuilder.Entity<Turma>());
             new LivroEntityTypeConfiguration().Configure(modelbuilder.Entity<Livro>());
         }
     }

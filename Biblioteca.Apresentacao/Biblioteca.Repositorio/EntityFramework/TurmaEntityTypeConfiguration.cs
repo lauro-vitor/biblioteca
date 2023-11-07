@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Biblioteca.Repositorio.EntityFramework
 {
-	internal class TurmaConfigurationEntityType : IEntityTypeConfiguration<Turma>
+	internal class TurmaEntityTypeConfiguration : IEntityTypeConfiguration<Turma>
 	{
 		public void Configure(EntityTypeBuilder<Turma> builder)
 		{
