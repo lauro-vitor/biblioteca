@@ -13,11 +13,13 @@ namespace Biblioteca.Dominio.Entidades
 
         private DateOnly _dataPublicacao;
 
+        private int _quantidadeEstoque;
+
         private int? _edicao;
 
         private int? _volume;
 
-		public Editora Editora { get; set; } = new Editora();
+		public virtual Editora Editora { get; set; } = new Editora();
 
         [Key]
 		public Guid? IdLivro 
@@ -115,8 +117,22 @@ namespace Biblioteca.Dominio.Entidades
 			}
 		}
 
-		
-		public int? Edicao 
+        public int? QuantidadeEstoque
+        {
+			get
+			{
+				return _quantidadeEstoque;
+			}
+			set
+			{
+				if (value == null || value < 0)
+					throw new BibliotecaException("Quantidade de Livros inválida");
+
+				_quantidadeEstoque = value.Value;
+			}
+        }
+
+        public int? Edicao 
 		{
 			get
 			{
