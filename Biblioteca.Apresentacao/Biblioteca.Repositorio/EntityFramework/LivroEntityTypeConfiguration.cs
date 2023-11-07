@@ -8,10 +8,11 @@ namespace Biblioteca.Repositorio.EntityFramework
     {
         public void Configure(EntityTypeBuilder<Livro> builder)
         {
-            builder
-                .HasOne(l => l.Editora)
-                .WithMany(e => e.Livros)
-                .HasForeignKey(l => l.IdEditora);
+            builder.HasKey(livro => livro.IdLivro);
+
+            builder.HasOne(livro => livro.Editora)
+                .WithMany(editora => editora.Livros)
+                .HasForeignKey(livro => livro.IdEditora);
         }
     }
 }

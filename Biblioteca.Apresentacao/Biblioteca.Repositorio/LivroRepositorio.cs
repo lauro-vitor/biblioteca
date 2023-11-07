@@ -15,65 +15,63 @@ namespace Biblioteca.Repositorio
             _context = context;
         }
 
-        public async Task<IEnumerable<Livro>> Obter()
+        public async Task<IEnumerable<LivroViewModel>> Obter()
         {
-            var query = _context.Livro
-                .AsNoTracking()
-                .Include(l => l.Editora);
+            var query = ObterQueryLivroViewModel();
 
             return await query.ToListAsync();
         }
 
-        public async Task<Livro?> ObterPorId(Guid id)
+        public async Task<LivroViewModel?> ObterPorId(Guid id)
         {
-            return await _context.Livro
-                .AsNoTracking()
-                .FirstOrDefaultAsync(l => l.IdLivro == id);
+            var query = ObterQueryLivroViewModel();
+
+            return await query.FirstOrDefaultAsync(l => l.IdLivro == id);
         }
 
-        public async Task<Livro> Inserir(LivroViewModel livroViewModel)
+        public async Task<Guid> Inserir(LivroViewModel livroViewModel)
         {
             if (livroViewModel == null)
                 throw new BibliotecaException("Livro inválido");
 
-            var editora = await _context.Editora.FirstOrDefaultAsync(e => e.IdEditora == livroViewModel.IdEditora);
-
-            if (editora == null)
-                throw new BibliotecaException("Editora não encontrada");
+            if (livroViewModel.Editora == null)
+                throw new BibliotecaException("Editora Inválida");
 
             var livroParaInserir = new Livro()
             {
                 IdLivro = Guid.NewGuid(),
-                IdEditora = livroViewModel.IdEditora,
+                IdEditora = livroViewModel.Editora.IdEditora,
                 DataPublicacao = livroViewModel.DataPublicacao,
                 Titulo = livroViewModel.Titulo,
                 QuantidadeEstoque = livroViewModel.QuantidadeEstoque,
                 Edicao = livroViewModel.Edicao,
                 Volume = livroViewModel.Volume,
-                Editora = editora,
             };
 
-            _context.Livro.Add(livroParaInserir);
+            await _context.Livro.AddAsync(livroParaInserir);
+
+            await VincularLivroAutor(livroParaInserir, livroViewModel.Autores);
 
             await _context.SaveChangesAsync();
 
-            return livroParaInserir;
+            return livroParaInserir.IdLivro.Value;
         }
 
-        public async Task<Livro> Editar(LivroViewModel livroViewModel)
+        public async Task Editar(LivroViewModel livroViewModel)
         {
             if (livroViewModel == null)
                 throw new BibliotecaException("Livro inválido");
 
-            var livroParaEditar = await _context.Livro.FirstOrDefaultAsync(l => l.IdLivro == livroViewModel.IdLivro);
+            if (livroViewModel.Editora == null)
+                throw new BibliotecaException("Editora Inválida");
 
-            var editora = await _context.Editora.FirstOrDefaultAsync(e => e.IdEditora == livroViewModel.IdEditora);
+            var livroParaEditar = await _context.Livro
+                .Include(l => l.Editora)
+                .Include(l => l.LivroAutores)
+                .FirstOrDefaultAsync(l => l.IdLivro == livroViewModel.IdLivro);
 
             if (livroParaEditar == null)
                 throw new BibliotecaException("Livro não encontrado para editar");
-
-            if (editora == null)
-                throw new BibliotecaException("Editora não encotrada");
 
             livroParaEditar.IdLivro = livroViewModel.IdLivro;
             livroParaEditar.DataPublicacao = livroViewModel.DataPublicacao;
@@ -81,14 +79,15 @@ namespace Biblioteca.Repositorio
             livroParaEditar.QuantidadeEstoque = livroViewModel.QuantidadeEstoque;
             livroParaEditar.Edicao = livroViewModel.Edicao;
             livroParaEditar.Volume = livroViewModel.Volume;
-            livroParaEditar.IdEditora = livroViewModel.IdEditora;
-            livroParaEditar.Editora = editora;
+            livroParaEditar.IdEditora = livroViewModel.Editora.IdEditora;
+
+            DesvincularLivroAutor(livroParaEditar);
+
+            await VincularLivroAutor(livroParaEditar, livroViewModel.Autores);
 
             _context.Livro.Update(livroParaEditar);
 
             await _context.SaveChangesAsync();
-
-            return livroParaEditar;
         }
 
         public async Task Excluir(Guid id)
@@ -101,6 +100,66 @@ namespace Biblioteca.Repositorio
             _context.Livro.Remove(livroParaExcluir);
 
             await _context.SaveChangesAsync();
+        }
+
+        private async Task VincularLivroAutor(Livro livro, IEnumerable<AutorViewModel>? autoresViewModel)
+        {
+            if (autoresViewModel == null || !autoresViewModel.Any())
+                return;
+
+            var idsAutores = autoresViewModel.Select(a => a.IdAutor).ToList();
+
+            var autores = _context.Autor.Where(a => idsAutores.Contains(a.IdAutor));
+
+            foreach (var autor in autores)
+            {
+                var livroAutor = new LivroAutor()
+                {
+                    IdLivroAutor = Guid.NewGuid(),
+                    Livro = livro,
+                    Autor = autor,
+                };
+
+                await _context.LivroAutor.AddAsync(livroAutor);
+            }
+        }
+
+        private void DesvincularLivroAutor(Livro livro)
+        {
+            if (livro.LivroAutores == null || !livro.LivroAutores.Any())
+                return;
+
+            foreach (var livroAutorItem in livro.LivroAutores)
+            {
+                _context.LivroAutor.Remove(livroAutorItem);
+            }
+        }
+
+        private IQueryable<LivroViewModel> ObterQueryLivroViewModel()
+        {
+            var query = _context.Livro
+                    .AsNoTracking()
+                    .Select(l => new LivroViewModel
+                    {
+                        IdLivro = l.IdLivro,
+                        Titulo = l.Titulo,
+                        DataPublicacao = l.DataPublicacao,
+                        QuantidadeEstoque = l.QuantidadeEstoque,
+                        Edicao = l.Edicao,
+                        Volume = l.Volume,
+                        Editora = new EditoraViewModel
+                        {
+                            IdEditora = l.IdEditora,
+                            Nome = l.Editora.Nome ?? "",
+                        },
+                        Autores = l.LivroAutores.Select(la => new AutorViewModel
+                        {
+                            IdAutor = la.IdAutor,
+                            Nome = la.Autor.Nome,
+                        })
+                    });
+
+            return query;
         }
     }
 }

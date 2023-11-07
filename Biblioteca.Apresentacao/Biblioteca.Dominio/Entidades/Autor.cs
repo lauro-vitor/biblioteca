@@ -6,9 +6,9 @@ namespace Biblioteca.Dominio.Entidades
 	public class Autor
 	{
 		private Guid _idAutor;
-        private string? _nome;
+		private string? _nome;
+        public virtual ICollection<LivroAutor>? LivroAutores { get; set; }
 
-        [Key]
 		public Guid? IdAutor
 		{
 			get 

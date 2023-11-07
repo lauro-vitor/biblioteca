@@ -1,10 +1,40 @@
 ﻿using Biblioteca.Dominio.Objetos;
+using System.ComponentModel.DataAnnotations;
 
 namespace Biblioteca.Dominio.Entidades
 {
 	public class LivroAutor
 	{
-		private Guid _idLivro { get; set; }
+
+		private Guid _idLivro;
+        private Guid _idAutor;
+        private Guid _idLivroAutor;
+		public virtual Livro? Livro { get; set; }
+		public virtual Autor? Autor { get; set; }
+
+		[Key]
+		public Guid? IdLivroAutor
+		{
+			get
+			{
+				return _idLivroAutor;
+			}
+			set
+			{
+                if (value == null)
+                {
+                    throw new BibliotecaException("IdLivroAutor: Obrigatório");
+                }
+
+                if (value == Guid.Empty)
+                {
+                    throw new BibliotecaException("IdLivroAutor: Inválido");
+                }
+
+				_idLivroAutor = value.Value;
+            }
+		}
+
 		public Guid? IdLivro
 		{
 			get
@@ -15,12 +45,12 @@ namespace Biblioteca.Dominio.Entidades
 			{
 				if (value == null)
 				{
-					throw new BibliotecaException("IdLivro: Obrigatorio");
+					throw new BibliotecaException("IdLivro: Obrigatório");
 				}
 
 				if (value == Guid.Empty)
 				{
-					throw new BibliotecaException("IdLivro: Invalido");
+					throw new BibliotecaException("IdLivro: Inválido");
 				}
 
 
@@ -28,7 +58,6 @@ namespace Biblioteca.Dominio.Entidades
 			}
 		}
 
-		private Guid _idAutor;
 		public Guid? IdAutor
 		{
 			get
@@ -39,12 +68,12 @@ namespace Biblioteca.Dominio.Entidades
 			{
 				if (value == null)
 				{
-					throw new BibliotecaException("IdAutor: Obrigatorio");
+					throw new BibliotecaException("IdAutor: Obrigatório");
 				}
 
 				if (value == Guid.Empty)
 				{
-					throw new BibliotecaException("IdAutor: Invalido");
+					throw new BibliotecaException("IdAutor: Inválido");
 				}
 
 				_idAutor = value.Value;

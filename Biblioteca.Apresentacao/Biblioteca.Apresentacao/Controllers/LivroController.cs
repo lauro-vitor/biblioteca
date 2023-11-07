@@ -21,7 +21,7 @@ namespace Biblioteca.Apresentacao.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get([FromQuery] Guid id)
+        public async Task<IActionResult> Get([FromRoute] Guid id)
         {
             return Ok(await _livroRepositorio.ObterPorId(id));
         }
@@ -29,19 +29,23 @@ namespace Biblioteca.Apresentacao.Controllers
         [HttpPost]
         public async Task<IActionResult>Post([FromBody]LivroViewModel livroViewModel)
         {
-            var result = await _livroRepositorio.Inserir(livroViewModel);
+            var idLivro = await _livroRepositorio.Inserir(livroViewModel);
 
-            return Created($"/livro/{result.IdLivro}", result);
+            var livro = await _livroRepositorio.ObterPorId(idLivro);
+
+            return Created($"/livro/{idLivro}", livro);
         }
 
         [HttpPut]
         public async Task<IActionResult> Put([FromBody]LivroViewModel livroViewModel)
         {
-            return Ok(await _livroRepositorio.Editar(livroViewModel));
+            await _livroRepositorio.Editar(livroViewModel);
+
+            return Ok();
         }
 
         [HttpDelete]
-        public async Task<IActionResult> Delete([FromQuery] Guid id)
+        public async Task<IActionResult> Delete([FromRoute] Guid id)
         {
             await _livroRepositorio.Excluir(id);
 

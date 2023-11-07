@@ -62,19 +62,27 @@ namespace Biblioteca.Repositorio
             return editora;
         }
 
-        public async Task<IEnumerable<Editora>> Obter()
+        public async Task<IEnumerable<EditoraViewModel>> Obter()
         {
             return await _context.Editora
-                .Include(l => l.Livros)
                 .AsNoTracking()
+                .Select(e => new EditoraViewModel
+                {
+                    IdEditora = e.IdEditora,
+                    Nome = e.Nome
+                })
                 .ToListAsync();
         }
 
-        public async Task<Editora?> ObterPorId(Guid id)
+        public async Task<EditoraViewModel?> ObterPorId(Guid id)
         {
             return await _context.Editora
-                .Include(l => l.Livros)
                 .AsNoTracking()
+                .Select(e => new EditoraViewModel() 
+                { 
+                    IdEditora = e.IdEditora,
+                    Nome =  e.Nome
+                })
                 .FirstOrDefaultAsync(e => e.IdEditora == id);
         }
     }

@@ -40,6 +40,10 @@ namespace Biblioteca.Apresentacao.Filter
 					{
 						"stackTrace",
 						new List<string> { exception.StackTrace ?? "" }
+					},
+					{
+						"innerException",
+						new List<string> { exception.InnerException?.Message ?? "" }
 					}
 				}
 			};

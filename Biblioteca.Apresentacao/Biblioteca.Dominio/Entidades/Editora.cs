@@ -9,9 +9,8 @@ namespace Biblioteca.Dominio.Entidades
 
         private string? _nome;
 
-		public virtual IEnumerable<Livro>? Livros { get; set; } = null;
+		public virtual ICollection<Livro>? Livros { get; set; } = null;
 
-        [Key]
 		public Guid? IdEditora
 		{
 			get

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Biblioteca.Dominio.Entidades
 {
-	public class Livro
+    public class Livro
 	{
 		private Guid _idLivro;
 
@@ -19,7 +19,9 @@ namespace Biblioteca.Dominio.Entidades
 
         private int? _volume;
 
-		public virtual Editora Editora { get; set; } = new Editora();
+		public virtual Editora? Editora { get; set; }
+
+		public virtual ICollection<LivroAutor>? LivroAutores { get; set; }
 
         [Key]
 		public Guid? IdLivro 
