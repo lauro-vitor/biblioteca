@@ -15,6 +15,7 @@ namespace Biblioteca.Configuracao
             services.AddTransient<EditoraRepositorio>();
             services.AddTransient<AutorRepositorio>();
             services.AddTransient<GeneroRepositorio>();
+            services.AddTransient<LivroRepositorio>();
         }
     }
 }

@@ -12,6 +12,7 @@ namespace Biblioteca.Repositorio.EntityFramework
         public DbSet<Editora> Editora => Set<Editora>();
         public DbSet<Autor> Autor => Set<Autor>();
         public DbSet<Genero> Genero => Set<Genero>();
+        public DbSet<Livro> Livro => Set<Livro>();
 
         public BibliotecaContext(DbContextOptions<BibliotecaContext> options): base(options)
         {   
@@ -21,6 +22,7 @@ namespace Biblioteca.Repositorio.EntityFramework
         {
             new TurnoEntityTypeConfiguration().Configure(modelbuilder.Entity<Turno>());
             new TurmaConfigurationEntityType().Configure(modelbuilder.Entity<Turma>());
+            new LivroEntityTypeConfiguration().Configure(modelbuilder.Entity<Livro>());
         }
     }
 }
