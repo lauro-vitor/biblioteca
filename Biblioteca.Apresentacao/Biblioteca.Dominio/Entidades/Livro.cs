@@ -126,7 +126,7 @@ namespace Biblioteca.Dominio.Entidades
 			set
 			{
 				if (value == null || value < 0)
-					throw new BibliotecaException("Quantidade de Livros inválida");
+					throw new BibliotecaException("QuantidadeEstoque: Quantidade de Livros inválida");
 
 				_quantidadeEstoque = value.Value;
 			}

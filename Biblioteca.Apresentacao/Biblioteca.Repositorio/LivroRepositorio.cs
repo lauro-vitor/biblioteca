@@ -33,6 +33,14 @@ namespace Biblioteca.Repositorio
 
         public async Task<Livro> Inserir(LivroViewModel livroViewModel)
         {
+            if (livroViewModel == null)
+                throw new BibliotecaException("Livro inválido");
+
+            var editora = await _context.Editora.FirstOrDefaultAsync(e => e.IdEditora == livroViewModel.IdEditora);
+
+            if (editora == null)
+                throw new BibliotecaException("Editora não encontrada");
+
             var livroParaInserir = new Livro()
             {
                 IdLivro = Guid.NewGuid(),
@@ -42,6 +50,7 @@ namespace Biblioteca.Repositorio
                 QuantidadeEstoque = livroViewModel.QuantidadeEstoque,
                 Edicao = livroViewModel.Edicao,
                 Volume = livroViewModel.Volume,
+                Editora = editora,
             };
 
             _context.Livro.Add(livroParaInserir);
@@ -53,19 +62,27 @@ namespace Biblioteca.Repositorio
 
         public async Task<Livro> Editar(LivroViewModel livroViewModel)
         {
+            if (livroViewModel == null)
+                throw new BibliotecaException("Livro inválido");
+
             var livroParaEditar = await _context.Livro.FirstOrDefaultAsync(l => l.IdLivro == livroViewModel.IdLivro);
+
+            var editora = await _context.Editora.FirstOrDefaultAsync(e => e.IdEditora == livroViewModel.IdEditora);
 
             if (livroParaEditar == null)
                 throw new BibliotecaException("Livro não encontrado para editar");
 
+            if (editora == null)
+                throw new BibliotecaException("Editora não encotrada");
+
             livroParaEditar.IdLivro = livroViewModel.IdLivro;
-            livroParaEditar.IdEditora = livroViewModel.IdEditora;
             livroParaEditar.DataPublicacao = livroViewModel.DataPublicacao;
             livroParaEditar.Titulo = livroViewModel.Titulo;
             livroParaEditar.QuantidadeEstoque = livroViewModel.QuantidadeEstoque;
             livroParaEditar.Edicao = livroViewModel.Edicao;
             livroParaEditar.Volume = livroViewModel.Volume;
-
+            livroParaEditar.IdEditora = livroViewModel.IdEditora;
+            livroParaEditar.Editora = editora;
 
             _context.Livro.Update(livroParaEditar);
 

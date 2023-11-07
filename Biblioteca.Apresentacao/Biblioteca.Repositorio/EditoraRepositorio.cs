@@ -65,6 +65,7 @@ namespace Biblioteca.Repositorio
         public async Task<IEnumerable<Editora>> Obter()
         {
             return await _context.Editora
+                .Include(l => l.Livros)
                 .AsNoTracking()
                 .ToListAsync();
         }
@@ -72,6 +73,7 @@ namespace Biblioteca.Repositorio
         public async Task<Editora?> ObterPorId(Guid id)
         {
             return await _context.Editora
+                .Include(l => l.Livros)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(e => e.IdEditora == id);
         }
