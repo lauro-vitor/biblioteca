@@ -76,17 +76,16 @@ namespace Biblioteca.Repositorio
                 .ToListAsync();
         }
 
-        public IEnumerable<Autor>? ObterAutores(IEnumerable<AutorViewModel>? autoresViewModel)
+        public async Task<ICollection<Autor>?> Obter(ICollection<AutorViewModel>? autoresViewModel)
         {
             if (autoresViewModel == null || !autoresViewModel.Any())
                 return null;
 
             var idsAutores = autoresViewModel
                 .Select(a => a.IdAutor)
-                .Distinct()
-                .ToList();
+                .Distinct();
 
-            var autores = _context.Autor.Where(a => idsAutores.Contains(a.IdAutor));
+            var autores = await _context.Autor.Where(a => idsAutores.Contains(a.IdAutor)).ToListAsync();
 
             return autores;
         }

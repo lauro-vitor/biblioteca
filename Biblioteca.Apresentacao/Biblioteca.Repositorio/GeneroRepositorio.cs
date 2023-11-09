@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Biblioteca.Repositorio
 {
-    public class GeneroRepositorio
+    public class GeneroRepositorio : IDisposable
     {
         private readonly BibliotecaContext _context;
 
@@ -20,6 +20,20 @@ namespace Biblioteca.Repositorio
             return await _context.Genero
                 .AsNoTracking()
                 .ToListAsync();
+        }
+
+        public async Task<ICollection<Genero>?> Obter(ICollection<GeneroViewModel>? generosViewModel)
+        {
+            if (generosViewModel == null || !generosViewModel.Any())
+                return null;
+
+            var idsGenero = generosViewModel.Select(g => g.IdGenero).Distinct();
+
+            var generos = await _context.Genero
+                .Where(g => idsGenero.Contains(g.IdGenero))
+                .ToListAsync();
+
+            return generos;
         }
 
         public async Task<Genero?> ObterPorId(Guid id)
@@ -47,7 +61,7 @@ namespace Biblioteca.Repositorio
 
         public async Task<Genero> Editar(GeneroViewModel generoViewModel)
         {
-         
+
             var generoParaEditar = await _context.Genero.FirstAsync(g => g.IdGenero == generoViewModel.IdGenero);
 
             if (generoParaEditar == null)
@@ -70,6 +84,11 @@ namespace Biblioteca.Repositorio
             _context.Genero.Remove(generoParaExcluir);
 
             await _context.SaveChangesAsync();
+        }
+
+        public void Dispose()
+        {
+            _context?.Dispose();
         }
     }
 }
