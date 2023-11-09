@@ -1,172 +1,245 @@
 ﻿using Biblioteca.Dominio.Objetos;
+using Biblioteca.Dominio.ViewModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace Biblioteca.Dominio.Entidades
 {
     public class Livro
-	{
-		private Guid _idLivro;
+    {
+        private Guid _idLivro = Guid.Empty;
 
-        private Guid _idEditora;
+        private Guid _idEditora = Guid.Empty;
 
-        private string? _titulo;
+        private string _titulo = string.Empty;
 
-        private DateOnly _dataPublicacao;
+        private DateOnly _dataPublicacao = new DateOnly();
 
-        private int _quantidadeEstoque;
+        private int _quantidadeEstoque = 0;
 
         private int? _edicao;
 
         private int? _volume;
 
-		public virtual Editora? Editora { get; set; }
+        public virtual Editora? Editora { get; set; } = null;
 
-		public virtual ICollection<LivroAutor>? LivroAutores { get; set; }
+        public virtual ICollection<LivroAutor>? LivroAutores { get; set; } = null;
 
-        [Key]
-		public Guid? IdLivro 
-		{
-			get 
-			{
-				return _idLivro; 
-			}
-
-			set
-			{
-				if(value == null)
-				{
-					_idLivro = Guid.NewGuid();
-					return;
-				}
-
-				if(value == Guid.Empty)
-				{
-					throw new BibliotecaException("IdLivro: Invalido");
-				}
-
-				_idLivro = value.Value;
-			}
-		}
-
-		
-		public Guid? IdEditora
-		{
-			get { return _idEditora; } 
-			set 
-			{
-				if(value == null)
-				{
-					throw new BibliotecaException("IdEditora: Obrigatorio");
-				}
-
-				if(value == Guid.Empty)
-				{
-					throw new BibliotecaException("IdEditora: Invalido");
-				}
-
-				_idEditora = value.Value;
-			}
-		}
-
-	
-		public string? Titulo
-		{
-			get
-			{
-				return _titulo;
-			}
-			set
-			{
-				if (string.IsNullOrWhiteSpace(value))
-				{
-					throw new BibliotecaException("Titulo: Obrigatorio");
-				}
-
-				if(value.Trim().Length <= 3)
-				{
-					throw new BibliotecaException("Titulo: deve possuir mais de 3 caracteres");
-				}
-
-				_titulo = value.Trim();
-			}
-		}
-
-		
-		public DateOnly? DataPublicacao 
-		{
-			get
-			{
-				return _dataPublicacao;
-			}
-			set
-			{
-				if(value == null)
-				{
-					throw new BibliotecaException("DataPublicacao: Obrigatorio");
-				}
-
-				if(value == new DateOnly())
-				{
-					throw new BibliotecaException("DataPublicacao: Invalido");
-				}
-
-				if(value >= DateOnly.FromDateTime(DateTime.Now))
-				{
-					throw new BibliotecaException("DataPublicacao: Deve ser menor que a data atual");
-				}
-
-				_dataPublicacao = value.Value;
-			}
-		}
-
-        public int? QuantidadeEstoque
+        public Livro()
         {
-			get
-			{
-				return _quantidadeEstoque;
-			}
-			set
-			{
-				if (value == null || value < 0)
-					throw new BibliotecaException("QuantidadeEstoque: Quantidade de Livros inválida");
 
-				_quantidadeEstoque = value.Value;
-			}
         }
 
-        public int? Edicao 
-		{
-			get
-			{
-				return _edicao;
-			}
-			set
-			{
-				if(value != null && value <= 0)
-				{
-					throw new BibliotecaException("Edicao: edicao deve ser um numero positivo");
-				}
+       
 
-				_edicao = value;
-			}
-		}
+        [Key]
+        public Guid IdLivro
+        {
+            get
+            {
+                return _idLivro;
+            }
 
-		
-		public int? Volume 
-		{
-			get
-			{
-				return _volume;
-			}
-			set
-			{
-				if (value != null && value <= 0)
-				{
-					throw new BibliotecaException("Edicao: edicao deve ser um numero positivo");
-				}
+            set
+            {
+                if (value == Guid.Empty)
+                {
+                    throw new BibliotecaException("IdLivro: Invalido");
+                }
 
-				_volume = value;
-			}
-		}
-	}
+                _idLivro = value;
+            }
+        }
+
+
+        public Guid IdEditora
+        {
+            get
+            {
+                return _idEditora;
+            }
+
+            set
+            {
+                if (value == Guid.Empty)
+                {
+                    throw new BibliotecaException("IdEditora: Invalido");
+                }
+
+                _idEditora = value;
+            }
+        }
+
+
+        public string Titulo
+        {
+            get
+            {
+                return _titulo;
+            }
+            set
+            {
+                if (string.IsNullOrWhiteSpace(value))
+                {
+                    throw new BibliotecaException("Titulo: Obrigatorio");
+                }
+
+                if (value.Trim().Length <= 3)
+                {
+                    throw new BibliotecaException("Titulo: deve possuir mais de 3 caracteres");
+                }
+
+                _titulo = value.Trim();
+            }
+        }
+
+
+        public DateOnly DataPublicacao
+        {
+            get
+            {
+                return _dataPublicacao;
+            }
+            set
+            {
+                if (value == new DateOnly())
+                {
+                    throw new BibliotecaException("DataPublicacao: Invalido");
+                }
+
+                if (value >= DateOnly.FromDateTime(DateTime.Now))
+                {
+                    throw new BibliotecaException("DataPublicacao: Deve ser menor que a data atual");
+                }
+
+                _dataPublicacao = value;
+            }
+        }
+
+        public int QuantidadeEstoque
+        {
+            get
+            {
+                return _quantidadeEstoque;
+            }
+            set
+            {
+                if (value < 0)
+                    throw new BibliotecaException("QuantidadeEstoque: Quantidade de Livros inválida");
+
+                _quantidadeEstoque = value;
+            }
+        }
+
+        public int? Edicao
+        {
+            get
+            {
+                return _edicao;
+            }
+            set
+            {
+                if (value != null && value <= 0)
+                {
+                    throw new BibliotecaException("Edicao: edicao deve ser um numero positivo");
+                }
+
+                _edicao = value;
+            }
+        }
+
+
+        public int? Volume
+        {
+            get
+            {
+                return _volume;
+            }
+            set
+            {
+                if (value != null && value <= 0)
+                {
+                    throw new BibliotecaException("Edicao: edicao deve ser um numero positivo");
+                }
+
+                _volume = value;
+            }
+        }
+
+        public void AtribuirLivro(LivroViewModel livroViewModel, Editora? editora, IEnumerable<Autor>? autores)
+        {
+            this.IdLivro = livroViewModel.IdLivro ?? Guid.NewGuid();
+            this.Titulo = livroViewModel.Titulo?.Trim() ?? string.Empty;
+            this.DataPublicacao = livroViewModel.DataPublicacao ?? new DateOnly();
+            this.QuantidadeEstoque = livroViewModel.QuantidadeEstoque ?? -1;
+            this.Edicao = livroViewModel.Edicao;
+            this.Volume = livroViewModel.Volume;
+
+            if (editora != null)
+            {
+                this.IdEditora = editora.IdEditora ?? Guid.Empty;
+                this.Editora = editora;
+            }
+
+            if (autores != null && autores.Any())
+            {
+                this.LivroAutores = new List<LivroAutor>();
+
+                foreach (var autor in autores)
+                {
+                    var livroAutor = new LivroAutor
+                    {
+                        IdLivroAutor = Guid.NewGuid(),
+                        IdLivro = this.IdLivro,
+                        IdAutor = autor.IdAutor,
+                        Livro = this,
+                        Autor = autor,
+                    };
+
+                    this.LivroAutores.Add(livroAutor);
+                }
+            }
+        }
+
+        public LivroViewModel ConverterParaLivroViewModel()
+        {
+            var livroViewModel = new LivroViewModel()
+            {
+                IdLivro = this.IdLivro,
+                Titulo = this.Titulo,
+                DataPublicacao = this.DataPublicacao,
+                QuantidadeEstoque = this.QuantidadeEstoque,
+                Edicao = this.Edicao,
+                Volume = this.Volume,
+                Editora = null,
+                Autores = null
+            };
+
+            if (this.Editora != null)
+            {
+                livroViewModel.Editora = new EditoraViewModel()
+                {
+                    IdEditora = this.Editora?.IdEditora,
+                    Nome = this.Editora?.Nome
+                };
+            };
+
+            if (this.LivroAutores != null && this.LivroAutores.Any())
+            {
+                livroViewModel.Autores = new List<AutorViewModel>();
+
+                foreach (var livroAutor in this.LivroAutores)
+                {
+                    var autorViewModel = new AutorViewModel()
+                    {
+                        IdAutor = livroAutor?.Autor?.IdAutor,
+                        Nome = livroAutor?.Autor?.Nome
+                    };
+
+                    livroViewModel.Autores.Add(autorViewModel);
+                }
+            }
+
+            return livroViewModel;
+        }
+    }
 }

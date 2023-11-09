@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Biblioteca.Repositorio
 {
-    public class EditoraRepositorio
+    public class EditoraRepositorio: IDisposable
     {
         private readonly BibliotecaContext _context;
 
@@ -15,6 +15,7 @@ namespace Biblioteca.Repositorio
             _context = context;
         }
 
+      
         public async Task<Editora> Editar(EditoraViewModel editoraViewModel)
         {
             var editora = new Editora()
@@ -74,7 +75,7 @@ namespace Biblioteca.Repositorio
                 .ToListAsync();
         }
 
-        public async Task<EditoraViewModel?> ObterPorId(Guid id)
+        public async Task<EditoraViewModel?> ObterEditoraViewModelPorId(Guid id)
         {
             return await _context.Editora
                 .AsNoTracking()
@@ -85,5 +86,16 @@ namespace Biblioteca.Repositorio
                 })
                 .FirstOrDefaultAsync(e => e.IdEditora == id);
         }
+
+        public async Task<Editora?> ObterEditoraPorId(Guid? id)
+        {
+            return await _context.Editora.FirstOrDefaultAsync(e => e.IdEditora == id);
+        }
+
+        public void Dispose()
+        {
+            _context?.Dispose();
+        }
+
     }
 }

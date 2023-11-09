@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Biblioteca.Repositorio
 {
-    public class AutorRepositorio
-	{
-		private readonly BibliotecaContext _context;
+    public class AutorRepositorio : IDisposable
+    {
+        private readonly BibliotecaContext _context;
 
         public AutorRepositorio(BibliotecaContext context)
         {
@@ -23,9 +23,9 @@ namespace Biblioteca.Repositorio
                 Nome = autorViewModel.Nome
             };
 
-            var autorParaEditar =  await _context.Autor.FirstOrDefaultAsync(a => a.IdAutor == autor.IdAutor);   
+            var autorParaEditar = await _context.Autor.FirstOrDefaultAsync(a => a.IdAutor == autor.IdAutor);
 
-            if( autorParaEditar == null )
+            if (autorParaEditar == null)
                 throw new BibliotecaException("Autor não encontrado para edição");
 
             autorParaEditar.Nome = autor.Nome;
@@ -76,20 +76,24 @@ namespace Biblioteca.Repositorio
                 .ToListAsync();
         }
 
-  //      public Pagination<Autor> ObterTodos(string? nome = null, int? pageIndex = null, int? pageSize = null)
-		//{
-		//	var query = _context.Autor.AsNoTracking();
+        public IEnumerable<Autor>? ObterAutores(IEnumerable<AutorViewModel>? autoresViewModel)
+        {
+            if (autoresViewModel == null || !autoresViewModel.Any())
+                return null;
 
-		//	if (!string.IsNullOrEmpty(nome))
-		//	{
-		//		query = query.Where(q => q.Nome != null && q.Nome.ToLower().Contains(nome.ToLower().Trim()));
-		//	}
+            var idsAutores = autoresViewModel
+                .Select(a => a.IdAutor)
+                .Distinct()
+                .ToList();
 
-		//	query = query.OrderBy(q => q.Nome);
+            var autores = _context.Autor.Where(a => idsAutores.Contains(a.IdAutor));
 
-		//	var resultado = new Pagination<Autor>(query, pageIndex, pageSize);
+            return autores;
+        }
 
-		//	return resultado;
-		//}
-	}
+        public void Dispose()
+        {
+            _context?.Dispose();
+        }
+    }
 }

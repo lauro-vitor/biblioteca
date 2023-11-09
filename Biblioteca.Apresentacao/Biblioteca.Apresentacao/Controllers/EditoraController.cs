@@ -23,7 +23,7 @@ namespace Biblioteca.Apresentacao.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get([FromRoute] Guid id)
         {
-            return Ok(await _editoraRepositorio.ObterPorId(id));
+            return Ok(await _editoraRepositorio.ObterEditoraViewModelPorId(id));
         }
 
         [HttpPost]

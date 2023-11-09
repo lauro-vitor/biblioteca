@@ -6,13 +6,20 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Biblioteca.Repositorio
 {
-    public class LivroRepositorio
+    public class LivroRepositorio : IDisposable
     {
         private readonly BibliotecaContext _context;
+
+        private readonly AutorRepositorio _autorRepositorio;
+        private readonly EditoraRepositorio _editoraRepositorio;
+        private readonly LivroAutorRepositorio _livroAutorRepositorio;
 
         public LivroRepositorio(BibliotecaContext context)
         {
             _context = context;
+            _autorRepositorio = new AutorRepositorio(context);
+            _editoraRepositorio = new EditoraRepositorio(context);
+            _livroAutorRepositorio = new LivroAutorRepositorio(context);
         }
 
         public async Task<IEnumerable<LivroViewModel>> Obter()
@@ -29,7 +36,7 @@ namespace Biblioteca.Repositorio
             return await query.FirstOrDefaultAsync(l => l.IdLivro == id);
         }
 
-        public async Task<Guid> Inserir(LivroViewModel livroViewModel)
+        public async Task<LivroViewModel> Inserir(LivroViewModel livroViewModel)
         {
             if (livroViewModel == null)
                 throw new BibliotecaException("Livro inválido");
@@ -37,24 +44,20 @@ namespace Biblioteca.Repositorio
             if (livroViewModel.Editora == null)
                 throw new BibliotecaException("Editora Inválida");
 
-            var livroParaInserir = new Livro()
-            {
-                IdLivro = Guid.NewGuid(),
-                IdEditora = livroViewModel.Editora.IdEditora,
-                DataPublicacao = livroViewModel.DataPublicacao,
-                Titulo = livroViewModel.Titulo,
-                QuantidadeEstoque = livroViewModel.QuantidadeEstoque,
-                Edicao = livroViewModel.Edicao,
-                Volume = livroViewModel.Volume,
-            };
+            var editora = await _editoraRepositorio.ObterEditoraPorId(livroViewModel.Editora.IdEditora);
 
-            await _context.Livro.AddAsync(livroParaInserir);
+            var autores = _autorRepositorio.ObterAutores(livroViewModel.Autores);
 
-            await VincularLivroAutor(livroParaInserir, livroViewModel.Autores);
+            var livro = new Livro();
+            livro.AtribuirLivro(livroViewModel, editora, autores);
+
+            await _context.Livro.AddAsync(livro);
+
+            await _livroAutorRepositorio.Inserir(livro);
 
             await _context.SaveChangesAsync();
 
-            return livroParaInserir.IdLivro.Value;
+            return livro.ConverterParaLivroViewModel();
         }
 
         public async Task Editar(LivroViewModel livroViewModel)
@@ -65,27 +68,25 @@ namespace Biblioteca.Repositorio
             if (livroViewModel.Editora == null)
                 throw new BibliotecaException("Editora Inválida");
 
-            var livroParaEditar = await _context.Livro
+            var livro = await _context.Livro
                 .Include(l => l.Editora)
                 .Include(l => l.LivroAutores)
                 .FirstOrDefaultAsync(l => l.IdLivro == livroViewModel.IdLivro);
 
-            if (livroParaEditar == null)
+            if (livro == null)
                 throw new BibliotecaException("Livro não encontrado para editar");
 
-            livroParaEditar.IdLivro = livroViewModel.IdLivro;
-            livroParaEditar.DataPublicacao = livroViewModel.DataPublicacao;
-            livroParaEditar.Titulo = livroViewModel.Titulo;
-            livroParaEditar.QuantidadeEstoque = livroViewModel.QuantidadeEstoque;
-            livroParaEditar.Edicao = livroViewModel.Edicao;
-            livroParaEditar.Volume = livroViewModel.Volume;
-            livroParaEditar.IdEditora = livroViewModel.Editora.IdEditora;
+            _livroAutorRepositorio.Excluir(livro);
 
-            DesvincularLivroAutor(livroParaEditar);
+            var editora = await _editoraRepositorio.ObterEditoraPorId(livroViewModel.Editora.IdEditora);
 
-            await VincularLivroAutor(livroParaEditar, livroViewModel.Autores);
+            var autores = _autorRepositorio.ObterAutores(livroViewModel.Autores);
 
-            _context.Livro.Update(livroParaEditar);
+            livro.AtribuirLivro(livroViewModel, editora, autores);
+
+            await _livroAutorRepositorio.Inserir(livro);
+
+            _context.Livro.Update(livro);
 
             await _context.SaveChangesAsync();
         }
@@ -102,64 +103,41 @@ namespace Biblioteca.Repositorio
             await _context.SaveChangesAsync();
         }
 
-        private async Task VincularLivroAutor(Livro livro, IEnumerable<AutorViewModel>? autoresViewModel)
-        {
-            if (autoresViewModel == null || !autoresViewModel.Any())
-                return;
 
-            var idsAutores = autoresViewModel.Select(a => a.IdAutor).ToList();
+        //private async Task ValidarSalvar(LivroViewModel livroViewModel)
+        //{
+        //    if (livroViewModel == null)
+        //        throw new BibliotecaException("Livro inválido");
 
-            var autores = _context.Autor.Where(a => idsAutores.Contains(a.IdAutor));
+        //    if (livroViewModel.Editora == null)
+        //        throw new BibliotecaException("Editora Inválida");
 
-            foreach (var autor in autores)
-            {
-                var livroAutor = new LivroAutor()
-                {
-                    IdLivroAutor = Guid.NewGuid(),
-                    Livro = livro,
-                    Autor = autor,
-                };
+        //    var existeLivro = await _context.Livro.AnyAsync(l => l.IdLivro != livroViewModel.IdLivro
+        //                                                      && l.Titulo.ToLower().Trim().Equals(livroViewModel.Titulo.ToLower().Trim()));
 
-                await _context.LivroAutor.AddAsync(livroAutor);
-            }
-        }
+        //    if (existeLivro)
+        //        throw new BibliotecaException("Exise um livro cadastrado com este nome");
 
-        private void DesvincularLivroAutor(Livro livro)
-        {
-            if (livro.LivroAutores == null || !livro.LivroAutores.Any())
-                return;
-
-            foreach (var livroAutorItem in livro.LivroAutores)
-            {
-                _context.LivroAutor.Remove(livroAutorItem);
-            }
-        }
+        //}
 
         private IQueryable<LivroViewModel> ObterQueryLivroViewModel()
         {
+            #nullable disable
             var query = _context.Livro
+                    .Include(l => l.Editora)
+                    .Include(l => l.LivroAutores).ThenInclude(l => l.Autor)
                     .AsNoTracking()
-                    .Select(l => new LivroViewModel
-                    {
-                        IdLivro = l.IdLivro,
-                        Titulo = l.Titulo,
-                        DataPublicacao = l.DataPublicacao,
-                        QuantidadeEstoque = l.QuantidadeEstoque,
-                        Edicao = l.Edicao,
-                        Volume = l.Volume,
-                        Editora = new EditoraViewModel
-                        {
-                            IdEditora = l.IdEditora,
-                            Nome = l.Editora.Nome ?? "",
-                        },
-                        Autores = l.LivroAutores.Select(la => new AutorViewModel
-                        {
-                            IdAutor = la.IdAutor,
-                            Nome = la.Autor.Nome,
-                        })
-                    });
+                    .Select(l => l.ConverterParaLivroViewModel());
 
             return query;
+        }
+
+        public void Dispose()
+        {
+            _context?.Dispose();
+            _autorRepositorio.Dispose();
+            _editoraRepositorio?.Dispose();
+            _livroAutorRepositorio?.Dispose();
         }
     }
 }

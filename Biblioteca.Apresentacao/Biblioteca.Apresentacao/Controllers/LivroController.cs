@@ -29,11 +29,9 @@ namespace Biblioteca.Apresentacao.Controllers
         [HttpPost]
         public async Task<IActionResult>Post([FromBody]LivroViewModel livroViewModel)
         {
-            var idLivro = await _livroRepositorio.Inserir(livroViewModel);
+            var livro = await _livroRepositorio.Inserir(livroViewModel);
 
-            var livro = await _livroRepositorio.ObterPorId(idLivro);
-
-            return Created($"/livro/{idLivro}", livro);
+            return Created($"/livro/{livro.IdLivro}", livro);
         }
 
         [HttpPut]

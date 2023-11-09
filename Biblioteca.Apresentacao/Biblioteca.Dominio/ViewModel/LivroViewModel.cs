@@ -16,6 +16,6 @@
 
         public EditoraViewModel? Editora { get; set; }
 
-        public IEnumerable<AutorViewModel>? Autores { get; set; }
+        public ICollection<AutorViewModel>? Autores { get; set; }
     }
 }
