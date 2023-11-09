@@ -24,7 +24,7 @@ namespace Biblioteca.Dominio.Entidades
 
         public virtual ICollection<LivroAutor>? LivroAutores { get; set; } = null;
 
-        public virtual ICollection<LivroGenero>? LivroGenero { get; set; } = null;
+        public virtual ICollection<LivroGenero>? LivroGeneros { get; set; } = null;
 
         public Livro() { }
 
@@ -162,7 +162,7 @@ namespace Biblioteca.Dominio.Entidades
             }
         }
 
-        public void AtribuirLivro(LivroViewModel livroViewModel, Editora? editora, IEnumerable<Autor>? autores)
+        public void AtribuirLivro(LivroViewModel livroViewModel, Editora? editora,  ICollection<Autor>? autores, ICollection<Genero>? generos)
         {
             this.IdLivro = livroViewModel.IdLivro ?? Guid.NewGuid();
             this.Titulo = livroViewModel.Titulo?.Trim() ?? string.Empty;
@@ -192,6 +192,23 @@ namespace Biblioteca.Dominio.Entidades
                     };
 
                     this.LivroAutores.Add(livroAutor);
+                }
+            }
+
+            if(generos != null && generos.Any())
+            {
+                this.LivroGeneros = new List<LivroGenero>();
+
+                foreach(var genero in generos)
+                {
+                    var livroGenero = new LivroGenero()
+                    {
+                        IdLivro = this.IdLivro,
+                        IdGenero = genero.IdGenero,
+                        Livro = this,
+                        Genero = genero
+                    };
+                    this.LivroGeneros.Add(livroGenero);
                 }
             }
         }

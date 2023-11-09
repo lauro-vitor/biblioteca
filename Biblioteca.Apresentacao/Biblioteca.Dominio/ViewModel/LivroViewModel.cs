@@ -17,5 +17,7 @@
         public EditoraViewModel? Editora { get; set; }
 
         public ICollection<AutorViewModel>? Autores { get; set; }
+
+        public ICollection<GeneroViewModel>? Generos { get; set; }
     }
 }
