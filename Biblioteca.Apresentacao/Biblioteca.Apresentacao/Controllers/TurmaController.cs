@@ -42,7 +42,7 @@ namespace Biblioteca.Apresentacao.Controllers
 			return Ok(turmas);
 		}
 
-		[HttpGet("obterPorId/{id}")]
+		[HttpGet("obterPorId/{id:Guid}")]
 		public async Task<IActionResult> ObterPorId(Guid id)
 		{
 			var turma = await _turmaRepositorio.ObterPorId(id);
@@ -100,7 +100,7 @@ namespace Biblioteca.Apresentacao.Controllers
 		}
 
 		[HttpDelete]
-		[Route("excluir/{id}")]
+		[Route("excluir/{id:Guid}")]
 		public async Task<IActionResult> Excluir([FromRoute] Guid id)
 		{
 			if (id == Guid.Empty)
@@ -123,25 +123,29 @@ namespace Biblioteca.Apresentacao.Controllers
 		#region VIEWS
 
 		[Route("views/index")]
+		[HttpGet]
 		public ViewResult IndexVW()
 		{
 			return View("~/Views/Turma/Index.cshtml");
 		}
 
 		[Route("views/inserir")]
-		public ViewResult InserirVW()
+        [HttpGet]
+        public ViewResult InserirVW()
 		{
 			return View("~/Views/Turma/Inserir.cshtml");
 		}
 
 		[Route("views/editar/{id}")]
-		public ViewResult EditarVW(Guid id)
+        [HttpGet]
+        public ViewResult EditarVW(Guid id)
 		{
 			return View();
 		}
 
 		[Route("views/excluir/{id}")]
-		public ViewResult ExcluirVW(Guid id)
+        [HttpGet]
+        public ViewResult ExcluirVW(Guid id)
 		{
 			return View();
 		}

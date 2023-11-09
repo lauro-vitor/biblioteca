@@ -18,6 +18,17 @@ public class Program
          
         new Configuracao().Configurar(builder.Services);
 
+        builder.Services.AddSwaggerGen(c =>
+        {
+            var info = new Microsoft.OpenApi.Models.OpenApiInfo 
+            { 
+                Title = "Biblioteca API", 
+                Version = "v1"
+            };
+
+            c.SwaggerDoc("v1", info);
+        });
+
         builder.Services.AddMvc(options =>
         {
             options.Filters.Add(new ErrorHandlingFilter());
@@ -43,6 +54,22 @@ public class Program
         app.MapControllerRoute(
             name: "default",
             pattern: "{controller=Home}/{action=Index}/{id?}");
+
+        app.UseEndpoints(endpoints =>
+        {
+            endpoints.MapControllers();
+        });
+
+        //Ativa o Swagger
+        app.UseSwagger();
+
+        // Ativa o Swagger UI
+        app.UseSwaggerUI(opt =>
+        {
+            opt.RoutePrefix = "swagger";
+            opt.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+        });
+
 
         app.Run();
     }

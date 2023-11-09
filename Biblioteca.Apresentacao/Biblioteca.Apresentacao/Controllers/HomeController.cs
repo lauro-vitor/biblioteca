@@ -10,6 +10,7 @@ namespace Biblioteca.Apresentacao.Controllers
            
         }
 
+        [HttpGet]
         public ViewResult Index()
         {
             var view = View();

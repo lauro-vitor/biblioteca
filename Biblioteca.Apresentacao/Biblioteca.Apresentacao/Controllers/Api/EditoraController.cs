@@ -2,9 +2,9 @@
 using Biblioteca.Repositorio;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Biblioteca.Apresentacao.Controllers
+namespace Biblioteca.Apresentacao.Controllers.Api
 {
-    [Route("editora")]
+    [Route("api/editora")]
     public class EditoraController : ApiBaseController
     {
         private readonly EditoraRepositorio _editoraRepositorio;
@@ -20,7 +20,7 @@ namespace Biblioteca.Apresentacao.Controllers
             return Ok(await _editoraRepositorio.Obter());
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:Guid}")]
         public async Task<IActionResult> Get([FromRoute] Guid id)
         {
             return Ok(await _editoraRepositorio.ObterEditoraViewModelPorId(id));
@@ -42,7 +42,7 @@ namespace Biblioteca.Apresentacao.Controllers
             return Ok(resultado);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:Guid}")]
         public async Task<IActionResult> Excluir([FromRoute] Guid id)
         {
             await _editoraRepositorio.Excluir(id);

@@ -2,9 +2,9 @@
 using Biblioteca.Repositorio;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Biblioteca.Apresentacao.Controllers
+namespace Biblioteca.Apresentacao.Controllers.Api
 {
-    [Route("genero")]
+    [Route("api/genero")]
     public class GeneroController : Controller
     {
         private readonly GeneroRepositorio _generoRepositorio;
@@ -20,7 +20,7 @@ namespace Biblioteca.Apresentacao.Controllers
             return Ok(await _generoRepositorio.Obter());
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:Guid}")]
         public async Task<IActionResult> Get([FromRoute] Guid id)
         {
             return Ok(await _generoRepositorio.ObterPorId(id));

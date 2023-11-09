@@ -2,9 +2,9 @@
 using Biblioteca.Repositorio;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Biblioteca.Apresentacao.Controllers
+namespace Biblioteca.Apresentacao.Controllers.Api
 {
-    [Route("livro")]
+    [Route("api/livro")]
     public class LivroController : Controller
     {
         private readonly LivroRepositorio _livroRepositorio;
@@ -20,14 +20,14 @@ namespace Biblioteca.Apresentacao.Controllers
             return Ok(await _livroRepositorio.Obter());
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:Guid}")]
         public async Task<IActionResult> Get([FromRoute] Guid id)
         {
             return Ok(await _livroRepositorio.ObterPorId(id));
         }
 
         [HttpPost]
-        public async Task<IActionResult>Post([FromBody]LivroViewModel livroViewModel)
+        public async Task<IActionResult> Post([FromBody] LivroViewModel livroViewModel)
         {
             var livro = await _livroRepositorio.Inserir(livroViewModel);
 
@@ -35,7 +35,7 @@ namespace Biblioteca.Apresentacao.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Put([FromBody]LivroViewModel livroViewModel)
+        public async Task<IActionResult> Put([FromBody] LivroViewModel livroViewModel)
         {
             await _livroRepositorio.Editar(livroViewModel);
 
