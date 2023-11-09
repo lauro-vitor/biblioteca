@@ -20,7 +20,7 @@ namespace Biblioteca.Apresentacao.Controllers.Api
             return Ok(await _autorRepositorio.Obter());
         }
 
-        [HttpGet("{id:Guid}")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> Get([FromRoute] Guid id)
         {
             return Ok(await _autorRepositorio.ObterPorId(id));
@@ -42,7 +42,7 @@ namespace Biblioteca.Apresentacao.Controllers.Api
             return Ok(resultado);
         }
 
-        [HttpDelete("{id:Guid}")]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Excluir([FromRoute] Guid id)
         {
             await _autorRepositorio.Excluir(id);

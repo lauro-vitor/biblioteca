@@ -20,7 +20,7 @@ namespace Biblioteca.Apresentacao.Controllers.Api
             return Ok(await _generoRepositorio.Obter());
         }
 
-        [HttpGet("{id:Guid}")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> Get([FromRoute] Guid id)
         {
             return Ok(await _generoRepositorio.ObterPorId(id));
