@@ -5,10 +5,9 @@ namespace Biblioteca.Dominio.Entidades
 {
 	public class LivroAutor
 	{
-
-		private Guid _idLivro;
-        private Guid _idAutor;
         private Guid _idLivroAutor;
+        private Guid _idLivro;
+        private Guid _idAutor;
 		public virtual Livro? Livro { get; set; }
 		public virtual Autor? Autor { get; set; }
 
@@ -21,17 +20,20 @@ namespace Biblioteca.Dominio.Entidades
 			}
 			set
 			{
-                if (value == null)
-                {
-                    throw new BibliotecaException("IdLivroAutor: Obrigatório");
-                }
-
+               
                 if (value == Guid.Empty)
                 {
                     throw new BibliotecaException("IdLivroAutor: Inválido");
                 }
 
-				_idLivroAutor = value.Value;
+                if (value == null)
+                {
+					_idLivro = Guid.NewGuid();
+				}
+				else
+				{
+                    _idLivroAutor = value.Value;
+                }
             }
 		}
 

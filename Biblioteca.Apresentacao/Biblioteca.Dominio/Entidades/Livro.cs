@@ -24,12 +24,9 @@ namespace Biblioteca.Dominio.Entidades
 
         public virtual ICollection<LivroAutor>? LivroAutores { get; set; } = null;
 
-        public Livro()
-        {
+        public virtual ICollection<LivroGenero>? LivroGenero { get; set; } = null;
 
-        }
-
-       
+        public Livro() { }
 
         [Key]
         public Guid IdLivro
@@ -188,7 +185,6 @@ namespace Biblioteca.Dominio.Entidades
                 {
                     var livroAutor = new LivroAutor
                     {
-                        IdLivroAutor = Guid.NewGuid(),
                         IdLivro = this.IdLivro,
                         IdAutor = autor.IdAutor,
                         Livro = this,

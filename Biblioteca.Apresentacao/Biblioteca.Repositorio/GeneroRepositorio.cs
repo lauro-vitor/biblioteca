@@ -31,11 +31,12 @@ namespace Biblioteca.Repositorio
 
         public async Task<Genero> Inserir(GeneroViewModel generoViewModel)
         {
-            var generoParaInserir = new Genero()
-            {
-                IdGenero = Guid.NewGuid(),
-                Nome = generoViewModel.Nome,
-            };
+            if (generoViewModel == null)
+                throw new BibliotecaException("Genêro inválido");
+
+            generoViewModel.IdGenero = Guid.NewGuid();
+
+            var generoParaInserir = new Genero(generoViewModel);
 
             await _context.Genero.AddAsync(generoParaInserir);
 
@@ -46,18 +47,13 @@ namespace Biblioteca.Repositorio
 
         public async Task<Genero> Editar(GeneroViewModel generoViewModel)
         {
-            var genero = new Genero()
-            {
-                IdGenero = generoViewModel.IdGenero,
-                Nome = generoViewModel.Nome,
-            };
-
-            var generoParaEditar = await _context.Genero.FirstAsync(g => g.IdGenero == genero.IdGenero);
+         
+            var generoParaEditar = await _context.Genero.FirstAsync(g => g.IdGenero == generoViewModel.IdGenero);
 
             if (generoParaEditar == null)
                 throw new BibliotecaException("Gênero não encontrado para edição");
 
-            generoParaEditar.Nome = genero.Nome;
+            generoParaEditar.Nome = generoViewModel?.Nome ?? "";
 
             await _context.SaveChangesAsync();
 

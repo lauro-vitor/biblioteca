@@ -1,14 +1,27 @@
 ﻿using Biblioteca.Dominio.Objetos;
+using Biblioteca.Dominio.ViewModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace Biblioteca.Dominio.Entidades
 {
 	public class Genero
 	{
-		private Guid _idGenero;
+		private Guid _idGenero = Guid.Empty;
 
-		[Key]
-		public Guid? IdGenero
+        private string _nome = string.Empty;
+
+		public virtual ICollection<LivroGenero>? LivroGeneros { get; set; }
+
+        public Genero() { }
+
+        public Genero(GeneroViewModel generoViewModel)
+        {
+			IdGenero = generoViewModel.IdGenero ?? Guid.Empty;
+			Nome = generoViewModel.Nome ?? string.Empty;
+        }
+
+        [Key]
+		public Guid IdGenero
 		{
 			get
 			{
@@ -16,24 +29,16 @@ namespace Biblioteca.Dominio.Entidades
 			}
 			set
 			{
-				if (value == null)
-				{
-					_idGenero = Guid.NewGuid();
-					return;
-				}
-
 				if (value == Guid.Empty)
 				{
 					throw new BibliotecaException("IdGenero: Invalido");
 				}
-
-				
-				_idGenero = value.Value;
+				_idGenero = value;
 			}
 		}
 
-		private string? _nome;
-		public string? Nome 
+
+		public string Nome 
 		{
 			get
 			{
