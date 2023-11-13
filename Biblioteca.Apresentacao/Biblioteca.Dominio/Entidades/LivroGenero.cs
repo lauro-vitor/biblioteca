@@ -10,7 +10,7 @@ namespace Biblioteca.Dominio.Entidades
         public virtual Livro? Livro { get; set; }
         public virtual Genero? Genero { get; set; }
 
-        public Guid? IdLivroGenero
+        public Guid IdLivroGenero
         {
             get { return _idLivroGenero; }
 
@@ -21,14 +21,7 @@ namespace Biblioteca.Dominio.Entidades
                     new BibliotecaException("IdLivroGenero: Inválido");
                 }
 
-                if (value == null)
-                {
-                    _idLivroGenero = Guid.NewGuid();
-                }
-                else
-                {
-                    _idLivroGenero = value.Value;
-                }
+                _idLivroGenero = value;
             }
         }
 

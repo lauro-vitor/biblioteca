@@ -1,5 +1,4 @@
 ﻿using Biblioteca.Dominio.Objetos;
-using System.ComponentModel.DataAnnotations;
 
 namespace Biblioteca.Dominio.Entidades
 {
@@ -11,8 +10,7 @@ namespace Biblioteca.Dominio.Entidades
 		public virtual Livro? Livro { get; set; }
 		public virtual Autor? Autor { get; set; }
 
-		[Key]
-		public Guid? IdLivroAutor
+		public Guid IdLivroAutor
 		{
 			get
 			{
@@ -26,14 +24,7 @@ namespace Biblioteca.Dominio.Entidades
                     throw new BibliotecaException("IdLivroAutor: Inválido");
                 }
 
-                if (value == null)
-                {
-					_idLivro = Guid.NewGuid();
-				}
-				else
-				{
-                    _idLivroAutor = value.Value;
-                }
+				_idLivroAutor = value;
             }
 		}
 

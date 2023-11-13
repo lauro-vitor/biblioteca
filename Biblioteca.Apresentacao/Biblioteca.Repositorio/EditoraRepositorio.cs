@@ -87,9 +87,17 @@ namespace Biblioteca.Repositorio
                 .FirstOrDefaultAsync(e => e.IdEditora == id);
         }
 
-        public async Task<Editora?> ObterEditoraPorId(Guid? id)
+        public async Task<Editora> ObterEditoraPorId(Guid? id)
         {
-            return await _context.Editora.FirstOrDefaultAsync(e => e.IdEditora == id);
+            if (id == null || id == Guid.Empty)
+                throw new BibliotecaException("IdEditora: é obrigatório");
+
+            var editora = await _context.Editora.FirstOrDefaultAsync(e => e.IdEditora == id);
+
+            if (editora == null)
+                throw new BibliotecaException("IdEditora: Editora não encontrada");
+
+            return editora;
         }
 
         public void Dispose()

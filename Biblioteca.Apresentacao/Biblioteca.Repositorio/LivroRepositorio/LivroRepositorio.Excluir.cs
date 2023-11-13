@@ -12,8 +12,8 @@ namespace Biblioteca.Repositorio
             if (livro == null)
                 throw new BibliotecaException("Livro não encontrado para excluir");
 
-            ExcluirAutor(livro);
-            ExcluirGenero(livro);
+            await ExcluirAutor(livro.IdLivro);
+            await ExcluirGenero(livro.IdLivro);
             _context.Livro.Remove(livro);
 
             await _context.SaveChangesAsync();

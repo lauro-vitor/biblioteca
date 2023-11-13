@@ -1,8 +1,4 @@
-﻿using Biblioteca.Dominio.Entidades;
-using Biblioteca.Dominio.Objetos;
-using Biblioteca.Dominio.ViewModel;
-using Biblioteca.Repositorio.EntityFramework;
-using Microsoft.EntityFrameworkCore;
+﻿using Biblioteca.Repositorio.EntityFramework;
 
 namespace Biblioteca.Repositorio
 {

@@ -1,17 +1,19 @@
-﻿using Biblioteca.Dominio.Entidades;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace Biblioteca.Repositorio
 {
     public partial class LivroRepositorio
     {
-        private void ExcluirGenero(Livro livro)
+        private async Task ExcluirGenero(Guid? idLivro)
         {
-            if (livro == null || livro.LivroGeneros == null || !livro.LivroGeneros.Any())
+            var livroGeneros = await _context.LivroGenero.Where(l => l.IdLivro == idLivro).ToListAsync();
+
+            if (livroGeneros == null || !livroGeneros.Any())
                 return;
 
-            foreach (var livroGenero in livro.LivroGeneros)
+            foreach (var livroGenero in livroGeneros)
             {
-                _context.LivroGenero.Remove(livroGenero);
+                _context.LivroGenero.Remove(livroGenero); 
             }
         }
     }

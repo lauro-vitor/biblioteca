@@ -8,28 +8,22 @@ namespace Biblioteca.Repositorio
     {
         public async Task<LivroViewModel> Inserir(LivroViewModel livroViewModel)
         {
-            if (livroViewModel == null)
-                throw new BibliotecaException("Livro inválido");
-
-            if (livroViewModel.Editora == null)
-                throw new BibliotecaException("Editora Inválida");
-
-            var editora = await _editoraRepositorio.ObterEditoraPorId(livroViewModel.Editora.IdEditora);
-            var autores = await _autorRepositorio.Obter(livroViewModel.Autores);
-            var generos = await _generoRepositorio.Obter(livroViewModel.Generos);
+            await ValidarInserirEditar(livroViewModel);
 
             var livro = new Livro();
 
-            livro.AtribuirLivro(livroViewModel, editora, autores, generos);
+            var editora = await _editoraRepositorio.ObterEditoraPorId(livroViewModel?.Editora?.IdEditora);
+
+            livro.AtribuirLivro(livroViewModel, editora);
 
             await _context.Livro.AddAsync(livro);
 
-            await InserirAutor(livro);
-            await InserirGenero(livro);
+            var livroAutores = await InserirAutor(livro, livroViewModel?.Autores);
+            var livroGeneros = await InserirGenero(livro, livroViewModel?.Generos);
 
             await _context.SaveChangesAsync();
 
-            return livro.ConverterParaLivroViewModel();
+            return livro.ConverterParaLivroViewModel(livroAutores, livroGeneros);
         }
     }
 }

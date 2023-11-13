@@ -121,7 +121,7 @@ namespace Biblioteca.Dominio.Entidades
             set
             {
                 if (value < 0)
-                    throw new BibliotecaException("QuantidadeEstoque: Quantidade de Livros inválida");
+                    throw new BibliotecaException("QuantidadeEstoque: Quantidade de Livros no estoque inválida");
 
                 _quantidadeEstoque = value;
             }
@@ -137,7 +137,7 @@ namespace Biblioteca.Dominio.Entidades
             {
                 if (value != null && value <= 0)
                 {
-                    throw new BibliotecaException("Edicao: edicao deve ser um numero positivo");
+                    throw new BibliotecaException("Edicao: edição deve ser um numero positivo");
                 }
 
                 _edicao = value;
@@ -155,15 +155,18 @@ namespace Biblioteca.Dominio.Entidades
             {
                 if (value != null && value <= 0)
                 {
-                    throw new BibliotecaException("Edicao: edicao deve ser um numero positivo");
+                    throw new BibliotecaException("Volume: volume deve ser um numero positivo");
                 }
 
                 _volume = value;
             }
         }
 
-        public void AtribuirLivro(LivroViewModel livroViewModel, Editora? editora,  ICollection<Autor>? autores, ICollection<Genero>? generos)
+        public void AtribuirLivro(LivroViewModel? livroViewModel, Editora? editora)
         {
+            if (livroViewModel == null)
+                throw new BibliotecaException("Não foi possível atribuir as propriedades do livro");
+
             this.IdLivro = livroViewModel.IdLivro ?? Guid.NewGuid();
             this.Titulo = livroViewModel.Titulo?.Trim() ?? string.Empty;
             this.DataPublicacao = livroViewModel.DataPublicacao ?? new DateOnly();
@@ -176,44 +179,10 @@ namespace Biblioteca.Dominio.Entidades
                 this.IdEditora = editora.IdEditora ?? Guid.Empty;
                 this.Editora = editora;
             }
-
-            if (autores != null && autores.Any())
-            {
-                this.LivroAutores = new List<LivroAutor>();
-
-                foreach (var autor in autores)
-                {
-                    var livroAutor = new LivroAutor
-                    {
-                        IdLivro = this.IdLivro,
-                        IdAutor = autor.IdAutor,
-                        Livro = this,
-                        Autor = autor,
-                    };
-
-                    this.LivroAutores.Add(livroAutor);
-                }
-            }
-
-            if(generos != null && generos.Any())
-            {
-                this.LivroGeneros = new List<LivroGenero>();
-
-                foreach(var genero in generos)
-                {
-                    var livroGenero = new LivroGenero()
-                    {
-                        IdLivro = this.IdLivro,
-                        IdGenero = genero.IdGenero,
-                        Livro = this,
-                        Genero = genero
-                    };
-                    this.LivroGeneros.Add(livroGenero);
-                }
-            }
         }
 
-        public LivroViewModel ConverterParaLivroViewModel()
+
+        public LivroViewModel ConverterParaLivroViewModel(ICollection<LivroAutor>? livroAutores, ICollection<LivroGenero>? livroGeneros)
         {
             var livroViewModel = new LivroViewModel()
             {
@@ -236,11 +205,11 @@ namespace Biblioteca.Dominio.Entidades
                 };
             };
 
-            if (this.LivroAutores != null && this.LivroAutores.Any())
+            if (livroAutores != null && livroAutores.Any())
             {
                 livroViewModel.Autores = new List<AutorViewModel>();
 
-                foreach (var livroAutor in this.LivroAutores)
+                foreach (var livroAutor in livroAutores)
                 {
                     var autorViewModel = new AutorViewModel()
                     {
@@ -252,7 +221,24 @@ namespace Biblioteca.Dominio.Entidades
                 }
             }
 
+            if (livroGeneros != null && livroGeneros.Any())
+            {
+                livroViewModel.Generos = new List<GeneroViewModel>();
+
+                foreach (var livroGenero in livroGeneros)
+                {
+                    var generoViewModel = new GeneroViewModel()
+                    {
+                        IdGenero = livroGenero?.Genero?.IdGenero,
+                        Nome = livroGenero?.Genero?.Nome
+                    };
+
+                    livroViewModel.Generos.Add(generoViewModel);
+                }
+            }
+
             return livroViewModel;
         }
+
     }
 }

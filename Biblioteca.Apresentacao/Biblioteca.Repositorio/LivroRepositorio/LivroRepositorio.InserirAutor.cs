@@ -1,18 +1,39 @@
 ﻿using Biblioteca.Dominio.Entidades;
+using Biblioteca.Dominio.ViewModel;
 
 namespace Biblioteca.Repositorio
 {
     public partial class LivroRepositorio
     {
-        private async Task InserirAutor(Livro livro)
+        private async Task<ICollection<LivroAutor>?> InserirAutor(Livro livro, ICollection<AutorViewModel>? autoresViewModel)
         {
-            if (livro == null || livro.LivroAutores == null || !livro.LivroAutores.Any())
-                return;
+            if (livro == null || autoresViewModel == null || !autoresViewModel.Any())
+                return null;
 
-            foreach (var livroAutorItem in livro.LivroAutores)
+            var autores = await _autorRepositorio.Obter(autoresViewModel);
+
+            if(autores == null) 
+                return null;
+
+            var livroAutores = new List<LivroAutor>();
+
+            foreach (var autor in autores)
             {
-                await _context.LivroAutor.AddAsync(livroAutorItem);
+                var livroAutor = new LivroAutor
+                {
+                    IdLivroAutor = Guid.NewGuid(),
+                    IdLivro = livro.IdLivro,
+                    IdAutor = autor.IdAutor,
+                    Livro = livro,
+                    Autor = autor,
+                };
+
+               livroAutores.Add(livroAutor);
+
+               await _context.LivroAutor.AddAsync(livroAutor);
             }
+
+            return livroAutores;
         }
     }
 }

@@ -37,9 +37,9 @@ namespace Biblioteca.Apresentacao.Controllers.Api
         [HttpPut]
         public async Task<IActionResult> Put([FromBody] LivroViewModel livroViewModel)
         {
-            await _livroRepositorio.Editar(livroViewModel);
+            var livro = await _livroRepositorio.Editar(livroViewModel);
 
-            return Ok();
+            return Ok(livro);
         }
 
         [HttpDelete("{id}")]
