@@ -1,9 +1,8 @@
 ﻿using Biblioteca.Dominio.Objetos;
-using System.ComponentModel.DataAnnotations;
 
 namespace Biblioteca.Dominio.Entidades
 {
-	public class Autor
+    public class Autor
 	{
 		private Guid _idAutor;
 		private string? _nome;
@@ -26,7 +25,7 @@ namespace Biblioteca.Dominio.Entidades
 
 				if(value == Guid.Empty)
 				{
-					throw new BibliotecaException("IdAutor: Invalido");
+					throw new BibliotecaException("idAutor: Inválido");
 				}
 
 				_idAutor = value.Value;
@@ -43,7 +42,7 @@ namespace Biblioteca.Dominio.Entidades
 			{
 				if (string.IsNullOrWhiteSpace(value))
 				{
-					throw new BibliotecaException("Nome: Obrigatorio");
+					throw new BibliotecaException("nome: Obrigatório");
 				}
 
 				_nome = value.Trim();

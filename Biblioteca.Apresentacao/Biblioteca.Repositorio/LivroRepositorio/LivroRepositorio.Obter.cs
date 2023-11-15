@@ -46,6 +46,9 @@ namespace Biblioteca.Repositorio
 
         public Pagination<LivroViewModel> Obter(LivroParametroViewModel parametro)
         {
+            if (parametro == null)
+                throw new BibliotecaException("parâmetro de livro inválido");
+
             var query = ObterQueryLivroViewModel();
 
             if (!string.IsNullOrWhiteSpace(parametro.Titulo))
