@@ -1,9 +1,8 @@
 ﻿using Biblioteca.Dominio.Objetos;
-using System.ComponentModel.DataAnnotations;
 
 namespace Biblioteca.Dominio.Entidades
 {
-	public class Editora
+    public class Editora
 	{
 		private Guid _idEditora;
 
@@ -11,7 +10,7 @@ namespace Biblioteca.Dominio.Entidades
 
 		public virtual ICollection<Livro>? Livros { get; set; } = null;
 
-		public Guid? IdEditora
+		public Guid IdEditora
 		{
 			get
 			{
@@ -19,18 +18,13 @@ namespace Biblioteca.Dominio.Entidades
 			}
 			set
 			{
-				if(value == null)
-				{
-					_idEditora = Guid.NewGuid();
-					return;
-				}
 
 				if(value == Guid.Empty) 
 				{
 					throw new BibliotecaException("IdEditora: Invalido");
 				}
 
-				_idEditora = value.Value;
+				_idEditora = value;
 			}
 		}
 

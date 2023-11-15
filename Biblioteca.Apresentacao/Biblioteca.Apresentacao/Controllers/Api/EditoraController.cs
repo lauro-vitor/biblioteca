@@ -15,9 +15,9 @@ namespace Biblioteca.Apresentacao.Controllers.Api
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public IActionResult Get([FromQuery] EditoraParametroViewModel parametro)
         {
-            return Ok(await _editoraRepositorio.Obter());
+            return Ok(_editoraRepositorio.Obter(parametro));
         }
 
         [HttpGet("{id}")]

@@ -179,7 +179,7 @@ namespace Biblioteca.Dominio.Entidades
 
             if (editora != null)
             {
-                this.IdEditora = editora.IdEditora ?? Guid.Empty;
+                this.IdEditora = editora.IdEditora;
                 this.Editora = editora;
             }
         }
