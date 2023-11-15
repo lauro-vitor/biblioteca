@@ -1,4 +1,4 @@
-﻿using Biblioteca.Dominio.ViewModel;
+﻿using Biblioteca.Dominio.ViewModel.Autor;
 using Biblioteca.Repositorio;
 using Microsoft.AspNetCore.Mvc;
 

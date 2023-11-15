@@ -1,4 +1,6 @@
-﻿namespace Biblioteca.Dominio.ViewModel
+﻿using Biblioteca.Dominio.ViewModel.Autor;
+
+namespace Biblioteca.Dominio.ViewModel
 {
     public class LivroViewModel
     {

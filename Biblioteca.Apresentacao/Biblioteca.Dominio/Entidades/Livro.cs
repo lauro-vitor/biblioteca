@@ -1,5 +1,6 @@
 ﻿using Biblioteca.Dominio.Objetos;
 using Biblioteca.Dominio.ViewModel;
+using Biblioteca.Dominio.ViewModel.Autor;
 using System.ComponentModel.DataAnnotations;
 
 namespace Biblioteca.Dominio.Entidades

@@ -1,6 +1,6 @@
 ﻿using Biblioteca.Dominio.Entidades;
 using Biblioteca.Dominio.Objetos;
-using Biblioteca.Dominio.ViewModel;
+using Biblioteca.Dominio.ViewModel.Autor;
 using Biblioteca.Repositorio.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
