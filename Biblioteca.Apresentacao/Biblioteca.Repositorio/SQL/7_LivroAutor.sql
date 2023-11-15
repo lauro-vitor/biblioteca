@@ -1,0 +1,20 @@
+BEGIN TRANSACTION;
+
+    DROP TABLE IF EXISTS LivroAutor;
+    
+COMMIT TRANSACTION;
+
+BEGIN TRANSACTION;
+
+    CREATE TABLE LivroAutor(
+        IdLivroAutor VARCHAR(32) NOT NULL,
+        IdLivro VARCHAR(32) NOT NULL,
+        IdAutor VARCHAR(32) NOT NULL,
+        PRIMARY KEY(IdLivroAutor),
+        FOREIGN KEY(IdLivro) REFERENCES Livro(IdLivro),
+        FOREIGN KEY(IdAutor) REFERENCES Autor(IdAutor)
+    );
+
+COMMIT TRANSACTION;
+
+

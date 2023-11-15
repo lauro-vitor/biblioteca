@@ -9,6 +9,12 @@ namespace Biblioteca.Repositorio.EntityFramework
     {
         public DbSet<Turma> Turma => Set<Turma>();
         public DbSet<Turno> Turno => Set<Turno>();
+        public DbSet<Editora> Editora => Set<Editora>();
+        public DbSet<Autor> Autor => Set<Autor>();
+        public DbSet<Genero> Genero => Set<Genero>();
+        public DbSet<Livro> Livro => Set<Livro>();
+        public DbSet<LivroAutor> LivroAutor => Set<LivroAutor>();
+        public DbSet<LivroGenero> LivroGenero => Set<LivroGenero>();
 
         public BibliotecaContext(DbContextOptions<BibliotecaContext> options): base(options)
         {   
@@ -17,7 +23,13 @@ namespace Biblioteca.Repositorio.EntityFramework
         protected override void OnModelCreating(ModelBuilder modelbuilder)
         {
             new TurnoEntityTypeConfiguration().Configure(modelbuilder.Entity<Turno>());
-            new TurmaConfigurationEntityType().Configure(modelbuilder.Entity<Turma>());
+            new TurmaEntityTypeConfiguration().Configure(modelbuilder.Entity<Turma>());
+      
+            new LivroEntityTypeConfiguration().Configure(modelbuilder.Entity<Livro>());
+            new EditoraEntityTypeConfiguration().Configure(modelbuilder.Entity<Editora>());
+            new AutorEntityTypeConfiguration().Configure(modelbuilder.Entity<Autor>());
+            new LivroAutorEntityTypeConfiguration().Configure(modelbuilder.Entity<LivroAutor>());
+            new LivroGeneroEntityTypeConfiguration().Configure(modelbuilder.Entity<LivroGenero>());
         }
     }
 }
