@@ -15,9 +15,9 @@ namespace Biblioteca.Apresentacao.Controllers.Api
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public IActionResult Get([FromQuery] LivroParametroViewModel livroParametroViewModel)
         {
-            return Ok(await _livroRepositorio.Obter());
+            return Ok(_livroRepositorio.Obter(livroParametroViewModel));
         }
 
         [HttpGet("{id}")]
