@@ -1,5 +1,5 @@
 ﻿using Biblioteca.Dominio.Objetos;
-using Biblioteca.Dominio.ViewModel;
+using Biblioteca.Dominio.ViewModel.Editora;
 using Biblioteca.Dominio.ViewModel.Autor;
 using Biblioteca.Dominio.ViewModel.Genero;
 using Biblioteca.Dominio.ViewModel.Livro;
