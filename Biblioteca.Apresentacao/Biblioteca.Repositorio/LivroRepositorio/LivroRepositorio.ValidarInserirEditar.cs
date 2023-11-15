@@ -1,5 +1,5 @@
 ﻿using Biblioteca.Dominio.Objetos;
-using Biblioteca.Dominio.ViewModel;
+using Biblioteca.Dominio.ViewModel.Livro;
 using Microsoft.EntityFrameworkCore;
 
 namespace Biblioteca.Repositorio

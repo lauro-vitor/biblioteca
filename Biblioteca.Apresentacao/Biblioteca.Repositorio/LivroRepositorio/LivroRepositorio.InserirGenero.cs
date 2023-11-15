@@ -1,5 +1,5 @@
 ﻿using Biblioteca.Dominio.Entidades;
-using Biblioteca.Dominio.ViewModel;
+using Biblioteca.Dominio.ViewModel.Genero;
 
 namespace Biblioteca.Repositorio
 {

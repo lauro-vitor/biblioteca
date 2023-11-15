@@ -1,6 +1,5 @@
 ﻿using Biblioteca.Dominio.Entidades;
-using Biblioteca.Dominio.Objetos;
-using Biblioteca.Dominio.ViewModel;
+using Biblioteca.Dominio.ViewModel.Livro;
 
 namespace Biblioteca.Repositorio
 {

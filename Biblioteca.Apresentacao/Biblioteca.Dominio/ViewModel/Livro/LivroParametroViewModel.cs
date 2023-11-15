@@ -1,4 +1,4 @@
-﻿namespace Biblioteca.Dominio.ViewModel
+﻿namespace Biblioteca.Dominio.ViewModel.Livro
 {
     public class LivroParametroViewModel
     {
@@ -11,6 +11,6 @@
         public int? PageSize { get; set; }
 
         public string? SortProp { get; set; }
-        public string? SortDirection { get; set;}
+        public string? SortDirection { get; set; }
     }
 }
