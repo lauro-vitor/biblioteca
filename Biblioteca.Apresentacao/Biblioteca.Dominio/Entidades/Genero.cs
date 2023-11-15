@@ -1,10 +1,10 @@
 ﻿using Biblioteca.Dominio.Objetos;
-using Biblioteca.Dominio.ViewModel;
+using Biblioteca.Dominio.ViewModel.Genero;
 using System.ComponentModel.DataAnnotations;
 
 namespace Biblioteca.Dominio.Entidades
 {
-	public class Genero
+    public class Genero
 	{
 		private Guid _idGenero = Guid.Empty;
 

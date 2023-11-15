@@ -1,4 +1,4 @@
-﻿using Biblioteca.Dominio.ViewModel;
+﻿using Biblioteca.Dominio.ViewModel.Genero;
 using Biblioteca.Repositorio;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,9 +15,9 @@ namespace Biblioteca.Apresentacao.Controllers.Api
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public IActionResult Get([FromQuery] GeneroParametroViewModel parametro)
         {
-            return Ok(await _generoRepositorio.Obter());
+            return Ok( _generoRepositorio.Obter(parametro));
         }
 
         [HttpGet("{id}")]

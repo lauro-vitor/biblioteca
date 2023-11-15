@@ -1,4 +1,4 @@
-﻿namespace Biblioteca.Dominio.ViewModel
+﻿namespace Biblioteca.Dominio.ViewModel.Genero
 {
     public class GeneroViewModel
     {
