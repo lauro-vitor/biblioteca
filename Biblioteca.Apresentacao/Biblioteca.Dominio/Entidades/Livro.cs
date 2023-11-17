@@ -4,6 +4,7 @@ using Biblioteca.Dominio.ViewModel.Autor;
 using Biblioteca.Dominio.ViewModel.Genero;
 using Biblioteca.Dominio.ViewModel.Livro;
 using System.ComponentModel.DataAnnotations;
+using Biblioteca.Dominio.Servico;
 
 namespace Biblioteca.Dominio.Entidades
 {
@@ -41,15 +42,9 @@ namespace Biblioteca.Dominio.Entidades
 
             set
             {
-                if (value == Guid.Empty)
-                {
-                    throw new BibliotecaException("IdLivro: Invalido");
-                }
-
-                _idLivro = value;
+                _idLivro = ValidacaoServico.ValidarId("idLivro",value);
             }
         }
-
 
         public Guid IdEditora
         {
@@ -60,12 +55,7 @@ namespace Biblioteca.Dominio.Entidades
 
             set
             {
-                if (value == Guid.Empty)
-                {
-                    throw new BibliotecaException("IdEditora: Invalido");
-                }
-
-                _idEditora = value;
+                _idEditora = ValidacaoServico.ValidarId("idEditora", value);
             }
         }
 
@@ -78,17 +68,7 @@ namespace Biblioteca.Dominio.Entidades
             }
             set
             {
-                if (string.IsNullOrWhiteSpace(value))
-                {
-                    throw new BibliotecaException("Titulo: Obrigatorio");
-                }
-
-                if (value.Trim().Length <= 3)
-                {
-                    throw new BibliotecaException("Titulo: deve possuir mais de 3 caracteres");
-                }
-
-                _titulo = value.Trim();
+                _titulo = ValidacaoServico.ValidarNome("titulo", value);
             }
         }
 
@@ -101,17 +81,7 @@ namespace Biblioteca.Dominio.Entidades
             }
             set
             {
-                if (value == new DateOnly())
-                {
-                    throw new BibliotecaException("DataPublicacao: Invalido");
-                }
-
-                if (value >= DateOnly.FromDateTime(DateTime.Now))
-                {
-                    throw new BibliotecaException("DataPublicacao: Deve ser menor que a data atual");
-                }
-
-                _dataPublicacao = value;
+                _dataPublicacao = ValidacaoServico.ValidarData("dataPublicacao", value);
             }
         }
 
