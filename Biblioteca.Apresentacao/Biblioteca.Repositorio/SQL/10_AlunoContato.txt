@@ -1,0 +1,12 @@
+CREATE TABLE IF NOT EXISTS AlunoContato(
+  IdContato VARCHAR(32) NOT NULL,
+  IdAluno VARCHAR(32) NOT NULL,
+  IdParentesco VARCHAR(32) NOT NULL,
+  Nome VARCHAR(255) NOT NULL,
+  Telefone VARCHAR(100) NOT NULL,
+  Email VARCHAR(100) NULL,
+  Observacao VARCHAR(255) NOT NULL,
+  PRIMARY KEY (IdContato),
+  FOREIGN KEY(IdAluno) REFERENCES Aluno(IdAluno),
+  FOREIGN KEY(IdParentesco) REFERENCES Parentesco(IdParentesco)
+);
