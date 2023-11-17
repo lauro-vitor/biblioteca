@@ -13,9 +13,9 @@ namespace Biblioteca.Dominio.Servico
                 throw new BibliotecaException($"{propriedade}: Obrigatório");
             }
 
-            if (valorAux.Length <= 3)
+            if (valorAux.Length < 3)
             {
-                throw new BibliotecaException($"{propriedade}: deve possuir mais de 3 caracteres");
+                throw new BibliotecaException($"{propriedade}: deve possuir ao menos 3 caracteres");
             }
 
             return valorAux.Trim();
