@@ -1,0 +1,10 @@
+CREATE TABLE IF NOT EXISTS Aluno(
+    IdAulno VARCHAR(32) NOT NULL,
+    Nome VARCHAR(255) NOT NULL,
+    Matricula VARCHAR(255) NOT NULL,
+    DataNascimento TEXT NOT NULL,
+    Sexo INTEGER NOT NULL,
+    Desativado INTEGER NOT NULL,
+    PRIMARY KEY(IdAulno)
+);
+
