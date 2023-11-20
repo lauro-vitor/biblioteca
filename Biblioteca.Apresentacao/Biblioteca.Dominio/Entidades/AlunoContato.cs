@@ -72,19 +72,19 @@ namespace Biblioteca.Dominio.Entidades
             }
             set
             {
-                if (string.IsNullOrWhiteSpace(_telefone))
+                if (string.IsNullOrWhiteSpace(value))
                 {
                     throw new BibliotecaException("telefone: obrigatório");
-                }
-
-                if (value.Length >= 10)
-                {
-                    throw new BibliotecaException("telefone: deve possuir ao menos 10 caractéres");
                 }
 
                 if (!value.All(char.IsNumber))
                 {
                     throw new BibliotecaException("telefone: deve ser composto de números");
+                }
+
+                if (value.Length < 10)
+                {
+                    throw new BibliotecaException("telefone: deve possuir ao menos 10 caractéres");
                 }
 
                 _telefone = value;

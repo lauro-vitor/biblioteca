@@ -29,7 +29,6 @@
             if (source == null)
                 throw new BibliotecaException("Source: Fonte de dados não pode ser nula");
 
-
             TotalCount = source.Count();
 
             if (pageIndex != null && pageIndex > 0 && pageSize != null && pageSize > 0)

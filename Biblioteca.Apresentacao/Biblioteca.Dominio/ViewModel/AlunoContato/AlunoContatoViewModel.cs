@@ -2,6 +2,8 @@
 {
     public class AlunoContatoViewModel
     {
+        public Guid? IdAluno { get; set; }
+
         public Guid? IdContato { get; set; }
 
         public string? Nome { get; set; }

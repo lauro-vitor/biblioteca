@@ -6,7 +6,7 @@ using System.Net;
 namespace Biblioteca.Apresentacao.Controllers.Api
 {
     [Route("api/aluno")]
-    public class AlunoController : Controller
+    public class AlunoController : ApiBaseController
     {
         private readonly AlunoRepositorio _alunoRepositorio;
 
