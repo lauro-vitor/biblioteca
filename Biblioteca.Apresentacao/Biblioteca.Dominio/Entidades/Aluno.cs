@@ -67,7 +67,7 @@ namespace Biblioteca.Dominio.Entidades
             }
         }
 
-        public Sexo Sexo
+        public Sexo? Sexo
         {
             get
             {
@@ -75,7 +75,10 @@ namespace Biblioteca.Dominio.Entidades
             }
             set
             {
-                _sexo = value;
+                if (value == null)
+                    throw new BibliotecaException("sexo: Obrigatório");
+
+                _sexo = value.Value;
             }
         }
 

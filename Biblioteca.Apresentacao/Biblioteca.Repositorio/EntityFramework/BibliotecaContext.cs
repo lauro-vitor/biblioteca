@@ -15,7 +15,9 @@ namespace Biblioteca.Repositorio.EntityFramework
         public DbSet<Livro> Livro => Set<Livro>();
         public DbSet<LivroAutor> LivroAutor => Set<LivroAutor>();
         public DbSet<LivroGenero> LivroGenero => Set<LivroGenero>();
-        public DbSet<Parentesco> Parentesco => Set<Parentesco>();   
+        public DbSet<Parentesco> Parentesco => Set<Parentesco>();  
+        public DbSet<Aluno> Aluno => Set<Aluno>();
+        public DbSet<AlunoContato> AlunoContato => Set<AlunoContato>();
 
         public BibliotecaContext(DbContextOptions<BibliotecaContext> options): base(options)
         {   
