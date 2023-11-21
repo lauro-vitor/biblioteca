@@ -97,20 +97,6 @@ namespace Biblioteca.Repositorio
                 .FirstOrDefaultAsync(g => g.IdGenero == id);
         }
 
-        public async Task<ICollection<Genero>?> Obter(ICollection<GeneroViewModel>? generosViewModel)
-        {
-            if (generosViewModel == null || !generosViewModel.Any())
-                return null;
-
-            var idsGenero = generosViewModel.Select(g => g.IdGenero).Distinct();
-
-            var generos = await _context.Genero
-                .Where(g => idsGenero.Contains(g.IdGenero))
-                .ToListAsync();
-
-            return generos;
-        }
-
 #nullable disable
         public Pagination<GeneroViewModel> Obter(GeneroParametroViewModel parametro)
         {
@@ -122,6 +108,11 @@ namespace Biblioteca.Repositorio
                 })
                 .AsNoTracking();
 
+            return ObterFiltroPaginacao(query, parametro);
+        }
+
+        public static Pagination<GeneroViewModel> ObterFiltroPaginacao(IQueryable<GeneroViewModel> query, GeneroParametroViewModel parametro)
+        {
             if (!string.IsNullOrWhiteSpace(parametro.Nome))
             {
                 var nome = parametro.Nome.ToLower().Trim();

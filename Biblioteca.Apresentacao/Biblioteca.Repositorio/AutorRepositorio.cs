@@ -93,7 +93,7 @@ namespace Biblioteca.Repositorio
 
         public Pagination<AutorViewModel> Obter(AutorParametroViewModel parametro)
         {
-#nullable disable
+
             if (parametro == null)
                 throw new BibliotecaException("parâmetro de autor inválido");
 
@@ -104,6 +104,13 @@ namespace Biblioteca.Repositorio
                     IdAutor = a.IdAutor,
                     Nome = a.Nome
                 });
+
+            return ObterFiltroPaginacao(query, parametro);
+        }
+
+#nullable disable
+        public static Pagination<AutorViewModel> ObterFiltroPaginacao(IQueryable<AutorViewModel> query, AutorParametroViewModel parametro)
+        {
 
             if (!string.IsNullOrWhiteSpace(parametro.Nome))
             {
@@ -137,25 +144,6 @@ namespace Biblioteca.Repositorio
             return resultado;
         }
 
-        public async Task<ICollection<Autor>> Obter(ICollection<AutorViewModel> autoresViewModel)
-        {
-            if (autoresViewModel == null || !autoresViewModel.Any())
-                return null;
-
-            var idsAutores = autoresViewModel
-                .Select(a => a.IdAutor)
-                .Distinct();
-
-            var autores = await _context.Autor.Where(a => idsAutores.Contains(a.IdAutor)).ToListAsync();
-
-            return autores;
-        }
-
-        public void Dispose()
-        {
-            _context?.Dispose();
-        }
-
         private async Task ValidarInserirEditar(AutorViewModel autorViewModel)
         {
             if (autorViewModel == null)
@@ -171,6 +159,12 @@ namespace Biblioteca.Repositorio
 
             if (existeAutor)
                 throw new BibliotecaException("Já existe um autor com este nome");
+        }
+
+        
+        public void Dispose()
+        {
+            _context?.Dispose();
         }
     }
 }

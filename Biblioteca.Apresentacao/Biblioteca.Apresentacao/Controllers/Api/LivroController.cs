@@ -15,40 +15,53 @@ namespace Biblioteca.Apresentacao.Controllers.Api
         }
 
         [HttpGet]
-        public IActionResult Get([FromQuery] LivroParametroViewModel livroParametroViewModel)
+        public IActionResult Obter([FromQuery] LivroParametroViewModel livroParametroViewModel)
         {
+            var keyTitulo = "titulo=";
+
+            if (HttpContext.Request.QueryString.HasValue && (HttpContext.Request.QueryString.Value?.Contains(keyTitulo) ?? false))
+            {
+                var queryString = HttpContext.Request.QueryString.Value.Replace("?", "").Split("&");
+
+                var titulo = queryString.FirstOrDefault(q => q.StartsWith(keyTitulo));
+
+                if (titulo != null)
+                {
+                    livroParametroViewModel.Titulo = titulo.Replace(keyTitulo, "");
+                }
+            }
+
             return Ok(_livroRepositorio.Obter(livroParametroViewModel));
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get([FromRoute] Guid id)
+        public async Task<IActionResult> ObterPorId([FromRoute] Guid id)
         {
             return Ok(await _livroRepositorio.ObterPorId(id));
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] LivroViewModel livroViewModel)
+        public async Task<IActionResult> Inserir([FromBody] LivroInputViewModel livroInputViewModel)
         {
-            var livro = await _livroRepositorio.Inserir(livroViewModel);
+            var livro = await _livroRepositorio.Inserir(livroInputViewModel);
 
             return Created($"/livro/{livro.IdLivro}", livro);
         }
 
         [HttpPut]
-        public async Task<IActionResult> Put([FromBody] LivroViewModel livroViewModel)
+        public async Task<IActionResult> Editar([FromBody] LivroInputViewModel livroInputViewModel)
         {
-            var livro = await _livroRepositorio.Editar(livroViewModel);
+            var livro = await _livroRepositorio.Editar(livroInputViewModel);
 
             return Ok(livro);
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete([FromRoute] Guid id)
+        public async Task<IActionResult> Excluir([FromRoute] Guid id)
         {
             await _livroRepositorio.Excluir(id);
 
             return NoContent();
         }
-
     }
 }
