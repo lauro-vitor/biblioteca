@@ -1,4 +1,5 @@
-﻿using Biblioteca.Dominio.Servico;
+﻿using Biblioteca.Dominio.Objetos;
+using Biblioteca.Dominio.Servico;
 
 namespace Biblioteca.Dominio.Entidades
 {
@@ -18,7 +19,12 @@ namespace Biblioteca.Dominio.Entidades
             }
             set
             {
-                _idParentesco = ValidacaoServico.ValidarId("idParentesco", value);
+                if(value == Guid.Empty)
+                {
+                    throw new BibliotecaException("IdParentesco: obrigatório");
+                }
+
+                _idParentesco = value;
             }
         }
 

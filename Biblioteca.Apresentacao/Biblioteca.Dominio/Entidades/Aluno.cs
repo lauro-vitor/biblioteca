@@ -12,7 +12,10 @@ namespace Biblioteca.Dominio.Entidades
         private DateOnly _dataNascimento;
         private Sexo _sexo;
         private bool _desativado;
+
         public virtual ICollection<AlunoContato>? AlunoContatos { get; set; }
+
+        public virtual ICollection<Emprestimo>? Emprestimos { get; set; }
 
         public Guid IdAluno
         {
@@ -22,7 +25,12 @@ namespace Biblioteca.Dominio.Entidades
             }
             set
             {
-                _idAulno = ValidacaoServico.ValidarId("idAluno", value);
+                if (value == Guid.Empty)
+                {
+                    throw new BibliotecaException("IdAluno: Obrigatório");
+                }
+
+                _idAulno = value;
             }
         }
 

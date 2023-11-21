@@ -21,15 +21,6 @@ namespace Biblioteca.Dominio.Servico
             return valorAux.Trim();
         }
 
-        public static Guid ValidarId(string propriedade, Guid valor)
-        {
-            if (valor == Guid.Empty)
-            {
-                throw new BibliotecaException($"{propriedade}: Obrigatório");
-            }
-
-            return valor;
-        }
 
         public static DateOnly ValidarData(string propriedade, DateOnly data)
         {

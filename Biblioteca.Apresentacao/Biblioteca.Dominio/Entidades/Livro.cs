@@ -30,6 +30,8 @@ namespace Biblioteca.Dominio.Entidades
 
         public virtual ICollection<LivroGenero>? LivroGeneros { get; set; } = null;
 
+        public virtual ICollection<Emprestimo>? Emprestimos { get; set; } = null;
+
         public Livro() { }
 
         [Key]
@@ -42,7 +44,12 @@ namespace Biblioteca.Dominio.Entidades
 
             set
             {
-                _idLivro = ValidacaoServico.ValidarId("idLivro",value);
+                if (value == Guid.Empty)
+                {
+                    throw new BibliotecaException("IdLivro: obrigatório");
+                }
+
+                _idLivro = value;
             }
         }
 
@@ -55,7 +62,12 @@ namespace Biblioteca.Dominio.Entidades
 
             set
             {
-                _idEditora = ValidacaoServico.ValidarId("idEditora", value);
+                if (value == Guid.Empty)
+                {
+                    throw new BibliotecaException("IdEditora: obrigatório");
+                }
+
+                _idEditora = value;
             }
         }
 

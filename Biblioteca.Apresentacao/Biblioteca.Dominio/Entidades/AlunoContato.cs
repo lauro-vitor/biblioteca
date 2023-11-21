@@ -24,7 +24,12 @@ namespace Biblioteca.Dominio.Entidades
             }
             set
             {
-                _idContato = ValidacaoServico.ValidarId("idContato", value);
+                if (value == Guid.Empty)
+                {
+                    throw new BibliotecaException("IdContato: Obrigatório");
+                }
+
+                _idContato = value;
             }
         }
 
@@ -36,7 +41,12 @@ namespace Biblioteca.Dominio.Entidades
             }
             set
             {
-                _idAluno = ValidacaoServico.ValidarId("idAluno", value);
+                if (value == Guid.Empty)
+                {
+                    throw new BibliotecaException("IdAluno: Obrigatório");
+                }
+
+                _idAluno = value;
             }
         }
 
@@ -48,7 +58,12 @@ namespace Biblioteca.Dominio.Entidades
             }
             set
             {
-                _idParentesco = ValidacaoServico.ValidarId("idParentesco", value);
+                if (value == Guid.Empty)
+                {
+                    throw new BibliotecaException("IdParentesco: obrigatório");
+                }
+
+                _idParentesco = value;
             }
         }
 
