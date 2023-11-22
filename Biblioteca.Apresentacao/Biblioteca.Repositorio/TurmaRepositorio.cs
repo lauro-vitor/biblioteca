@@ -1,13 +1,12 @@
 ﻿using Biblioteca.Dominio.Entidades;
 using Biblioteca.Dominio.Objetos;
-using Biblioteca.Dominio.Repositorio;
 using Biblioteca.Repositorio.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace Biblioteca.Repositorio
 {
-	public class TurmaRepositorio : ITurmaRepositorio
+	public class TurmaRepositorio 
 	{
 		private readonly BibliotecaContext _context;
 		public TurmaRepositorio(BibliotecaContext context)

@@ -1,6 +1,6 @@
 ﻿using Biblioteca.Dominio.Entidades;
-using Biblioteca.Dominio.Repositorio;
 using Biblioteca.Dominio.ViewModel;
+using Biblioteca.Repositorio;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Biblioteca.Apresentacao.Controllers
@@ -8,8 +8,9 @@ namespace Biblioteca.Apresentacao.Controllers
 	[Route("turma")]
 	public class TurmaController : ApiBaseController
 	{
-		private readonly ITurmaRepositorio _turmaRepositorio;
-		public TurmaController(ITurmaRepositorio turmaRepositorio)
+		private readonly TurmaRepositorio _turmaRepositorio;
+
+		public TurmaController(TurmaRepositorio turmaRepositorio)
 		{
 			_turmaRepositorio = turmaRepositorio;
 		}

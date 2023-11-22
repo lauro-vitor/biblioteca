@@ -1,7 +1,8 @@
-using Biblioteca.Configuracao;
 using System.Diagnostics.CodeAnalysis;
 using Newtonsoft.Json;
 using Biblioteca.Apresentacao.Filter;
+using Biblioteca.Repositorio;
+using Biblioteca.Repositorio.EntityFramework;
 
 [ExcludeFromCodeCoverage]
 public class Program
@@ -15,8 +16,6 @@ public class Program
         builder.Services
             .AddControllersWithViews()
             .AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
-         
-        new Configuracao().Configurar(builder.Services);
 
         builder.Services.AddSwaggerGen(c =>
         {
@@ -33,6 +32,10 @@ public class Program
         {
             options.Filters.Add(new ErrorHandlingFilter());
         });
+
+
+        ConfigurarBancoDeDados(builder.Services);
+        InjetarRepositorio(builder.Services);
 
 		var app = builder.Build();
 
@@ -74,4 +77,31 @@ public class Program
         app.Run();
     }
 
+    private static void ConfigurarBancoDeDados(IServiceCollection services)
+    {
+        string caminhoBanco = "./biblioteca-dev.db";
+
+        if (!File.Exists(caminhoBanco))
+        {
+            File.Create(caminhoBanco);
+        }
+
+        //services.AddSqlite<BibliotecaContext>("Data Source=" + caminhoBanco);
+    }
+
+    private static void InjetarRepositorio(IServiceCollection services)
+    {
+        services.AddTransient<TurnoRepositorio>();
+        services.AddTransient<TurmaRepositorio>();
+        services.AddTransient<EditoraRepositorio>();
+        services.AddTransient<AutorRepositorio>();
+        services.AddTransient<GeneroRepositorio>();
+        services.AddTransient<LivroRepositorio>();
+        services.AddTransient<LivroAutorRepositorio>();
+        services.AddTransient<LivroGeneroRepositorio>();
+        services.AddTransient<ParentescoRepositorio>();
+        services.AddTransient<AlunoRepositorio>();
+        services.AddTransient<AlunoContatoRepositorio>();
+        services.AddTransient<EmprestimoRepositorio>();
+    }
 }

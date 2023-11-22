@@ -13,7 +13,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Biblioteca.Repositorio\Biblioteca.Repositorio.csproj" />
-    <ProjectReference Include="..\Biblioteca.Servico\Biblioteca.Servico.csproj" />
   </ItemGroup>
 
 </Project>

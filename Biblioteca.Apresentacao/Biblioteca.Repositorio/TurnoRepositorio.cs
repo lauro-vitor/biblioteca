@@ -1,5 +1,4 @@
 ﻿using Biblioteca.Dominio.Entidades;
-using Biblioteca.Dominio.Repositorio;
 using Biblioteca.Repositorio.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics.CodeAnalysis;
@@ -7,9 +6,10 @@ using System.Diagnostics.CodeAnalysis;
 namespace Biblioteca.Repositorio
 {
     [ExcludeFromCodeCoverage]
-    public class TurnoRepositorio : ITurnoRepositorio
+    public class TurnoRepositorio 
     {
         private readonly BibliotecaContext _context;
+
         public TurnoRepositorio(BibliotecaContext context)
         {
             _context = context;

@@ -1,21 +1,18 @@
 ﻿using Biblioteca.Dominio.ViewModel;
 using Biblioteca.Dominio.Entidades;
-using Biblioteca.Dominio.Repositorio;
-using Biblioteca.Dominio.Servico;
 using Microsoft.AspNetCore.Mvc;
+using Biblioteca.Repositorio;
 
 namespace Biblioteca.Apresentacao.Controllers
 {
 	[Route("turno")]
 	public class TurnoController : ApiBaseController
 	{
-		private readonly ITurnoServico _turnoServico;
-		private readonly ITurnoRepositorio _turnoRepositorio;
-		public TurnoController(ITurnoRepositorio turnoRepositorio,
-							   ITurnoServico turnoServico)
+		private readonly TurnoRepositorio _turnoRepositorio;
+
+		public TurnoController(TurnoRepositorio turnoRepositorio)
 		{
 			_turnoRepositorio = turnoRepositorio;
-			_turnoServico = turnoServico;
 		}
 
 		[Route("views/index")]
@@ -93,14 +90,14 @@ namespace Biblioteca.Apresentacao.Controllers
 		[HttpPost("inserir")]
 		public async Task<IActionResult> Inserir([FromBody] Turno turnoParaInserir)
 		{
-			var turnosCadastrados = await _turnoRepositorio.Obter();
+			//var turnosCadastrados = await _turnoRepositorio.Obter();
 
-			var resultadoValidacao = _turnoServico.ValidarInserirTurno(turnoParaInserir, turnosCadastrados);
+			////var resultadoValidacao = _turnoServico.ValidarInserirTurno(turnoParaInserir, turnosCadastrados);
 
-			if (resultadoValidacao != null)
-			{
-				return BadRequest(resultadoValidacao);
-			}
+			//if (resultadoValidacao != null)
+			//{
+			//	return BadRequest(resultadoValidacao);
+			//}
 
 			await _turnoRepositorio.Inserir(turnoParaInserir);
 
@@ -115,21 +112,21 @@ namespace Biblioteca.Apresentacao.Controllers
 				return BadRequestResultIdInvalid();
 			}
 
-			var turnosCadastrados = await _turnoRepositorio.Obter();
+			//var turnosCadastrados = await _turnoRepositorio.Obter();
 
-			var resultadoTurnoNaoExiste = _turnoServico.ValidarTurnoNaoExiste(id.Value, turnosCadastrados);
+			////var resultadoTurnoNaoExiste = _turnoServico.ValidarTurnoNaoExiste(id.Value, turnosCadastrados);
 
-			if (resultadoTurnoNaoExiste != null)
-			{
-				return NotFound(resultadoTurnoNaoExiste);
-			}
+			//if (resultadoTurnoNaoExiste != null)
+			//{
+			//	return NotFound(resultadoTurnoNaoExiste);
+			//}
 
-			var resultadoValidacao = _turnoServico.ValidarEditarTurno(turno, turnosCadastrados);
+			////var resultadoValidacao = _turnoServico.ValidarEditarTurno(turno, turnosCadastrados);
 
-			if (resultadoValidacao != null)
-			{
-				return BadRequest(resultadoValidacao);
-			}
+			//if (resultadoValidacao != null)
+			//{
+			//	return BadRequest(resultadoValidacao);
+			//}
 
 			await _turnoRepositorio.Editar(turno);
 
@@ -144,14 +141,14 @@ namespace Biblioteca.Apresentacao.Controllers
 				return BadRequestResultIdInvalid();
 			}
 
-			var turnosCadastrados = await _turnoRepositorio.Obter();
+			//var turnosCadastrados = await _turnoRepositorio.Obter();
 
-			var resultadoTurnoNaoExiste = _turnoServico.ValidarTurnoNaoExiste(id.Value, turnosCadastrados);
+			//var resultadoTurnoNaoExiste = _turnoServico.ValidarTurnoNaoExiste(id.Value, turnosCadastrados);
 
-			if (resultadoTurnoNaoExiste != null)
-			{
-				return NotFound(resultadoTurnoNaoExiste);
-			}
+			//if (resultadoTurnoNaoExiste != null)
+			//{
+			//	return NotFound(resultadoTurnoNaoExiste);
+			//}
 
 			await _turnoRepositorio.Excluir(id.Value);
 

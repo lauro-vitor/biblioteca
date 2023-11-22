@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Biblioteca.Configuracao\Biblioteca.Configuracao.csproj" />
     <ProjectReference Include="..\Biblioteca.Dominio\Biblioteca.Dominio.csproj" />
+    <ProjectReference Include="..\Biblioteca.Repositorio\Biblioteca.Repositorio.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.12" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.11" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
