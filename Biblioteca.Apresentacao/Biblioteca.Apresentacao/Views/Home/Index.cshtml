@@ -1,5 +1,51 @@
 ﻿
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<style>
+    .card-item {
+        cursor: pointer;
+    }
+
+        .card-item:hover {
+            opacity: 0.5;
+        }
+
+    .card-image {
+        width: 70px;
+        height: 70px;
+    }
+
+</style>
+<div class="row">
+    <div class="col-xs-12 col-sm-3">
+        <div class="card card-item">
+            <div class="card-body text-center">
+                <img src="~/icons/aluno.svg" class="card-image" />
+                <h5 class="card-title ">Alunos</h5>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xs-12 col-sm-3">
+
+        <div class="card card-item">
+            <div class="card-body text-center">
+                <img src="~/icons/livro-biblioteca.svg" class="card-image" />
+                <h5 class="card-title">Livros</h5>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xs-12 col-sm-3">
+
+        <div class="card card-item">
+            <div class="card-body text-center">
+                <img src="~/icons/livro-menu.svg" class="card-image" />
+                <h5 class="card-title">Empréstimos</h5>
+            </div>
+        </div>
+
+    </div>
+
 </div>
+
+
+
