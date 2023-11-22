@@ -1,0 +1,66 @@
+﻿<style>
+    .card-livro{
+        height:300px;
+        margin-bottom: 1.0em;
+    }
+
+    .livro-row {
+        margin-bottom: 10px;
+    }
+
+    .livro-row__edicao {
+        display: inline-block;
+        width: 50%
+    }
+</style>
+
+<div class="col-xs-12 col-sm-4">
+
+    <div class="card card-livro">
+
+        <div class="card-body">
+
+            <div class="livro-row">
+                <h5 class="text-center">
+                    <b> {{titulo}} </b>
+                </h5>
+            </div>
+
+            <div class="livro-row">
+                <b>Editora:</b> {{editora}}
+            </div>
+
+
+            <div class="livro-row">
+                <b>Publicação:</b> {{dataPublicacao}}
+            </div>
+
+            <div class="livro-row">
+                <b>Quantidade:</b> {{quantidade}}
+            </div>
+
+            <div class="livro-row">
+
+                <span class="livro-row__edicao">
+                    <b>Edição:</b> {{edicao}}
+                </span>
+
+                <span>
+                    <b>Volume:</b> {{volume}}
+                </span>
+
+            </div>
+
+            <div class="livro-row">
+                <b>Autores:</b>
+                {{autores}}
+            </div>
+
+            <div class="livro-row">
+                <b>Gêneros:</b>
+                {{generos}}
+            </div>
+
+        </div>
+    </div>
+</div>

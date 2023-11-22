@@ -132,7 +132,7 @@ namespace Biblioteca.Repositorio
                     {
                         IdLivro = l.IdLivro,
                         Titulo = l.Titulo,
-                        DataPublicacao = l.DataPublicacao,
+                        DataPublicacao = l.DataPublicacao.ToString("dd/MM/yyyy"),
                         QuantidadeEstoque = l.QuantidadeEstoque,
                         Edicao = l.Edicao,
                         Volume = l.Volume,

@@ -23,6 +23,7 @@ body {
     border-bottom: 1px solid black;
     padding-bottom: 10px;
     align-items: center;
+    margin-bottom: 2em;
 }
 
 .cor-vermelha {
@@ -33,21 +34,21 @@ body {
     margin-bottom: 15px;
 }
 
-.mb-30{
-   margin-bottom:30px;
+.mb-30 {
+    margin-bottom: 30px;
 }
 
 .mt-50 {
     margin-top: 50px;
 }
 
-.mr-15{
+.mr-15 {
     margin-right: 15px;
 }
 
 .flex-center {
-    display:flex;
-    justify-content:center;
+    display: flex;
+    justify-content: center;
 }
 
 a {

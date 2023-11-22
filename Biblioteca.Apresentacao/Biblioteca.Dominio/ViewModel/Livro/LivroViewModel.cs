@@ -10,7 +10,7 @@ namespace Biblioteca.Dominio.ViewModel.Livro
 
         public string? Titulo { get; set; }
 
-        public DateOnly? DataPublicacao { get; set; }
+        public string? DataPublicacao { get; set; }
 
         public int? QuantidadeEstoque { get; set; }
 

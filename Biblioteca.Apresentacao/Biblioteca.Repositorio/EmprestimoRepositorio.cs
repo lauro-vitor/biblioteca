@@ -199,7 +199,7 @@ namespace Biblioteca.Repositorio
                     {
                         IdLivro = e.Livro.IdLivro,
                         Titulo = e.Livro.Titulo,
-                        DataPublicacao = e.Livro.DataPublicacao,
+                        DataPublicacao = e.Livro.DataPublicacao.ToString("dd/MM/yyyy"),
                         QuantidadeEstoque = e.Livro.QuantidadeEstoque,
                         Edicao = e.Livro.Edicao,
                         Volume = e.Livro.Volume,
