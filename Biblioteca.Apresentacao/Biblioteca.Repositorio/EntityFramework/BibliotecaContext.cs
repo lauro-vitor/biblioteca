@@ -18,6 +18,7 @@ namespace Biblioteca.Repositorio.EntityFramework
         public DbSet<Parentesco> Parentesco => Set<Parentesco>();  
         public DbSet<Aluno> Aluno => Set<Aluno>();
         public DbSet<AlunoContato> AlunoContato => Set<AlunoContato>();
+        public DbSet<Emprestimo> Emprestimo { get; set; }
 
         public BibliotecaContext(DbContextOptions<BibliotecaContext> options): base(options)
         {   
@@ -37,6 +38,8 @@ namespace Biblioteca.Repositorio.EntityFramework
             new ParentescoEntityTypeConfiguration().Configure(modelbuilder.Entity<Parentesco>());
             new AlunoEntityTypeConfiguration().Configure(modelbuilder.Entity<Aluno>());
             new AlunoContatoEntityTypeConfiguration().Configure(modelbuilder.Entity<AlunoContato>());
+
+            new EmprestimoEntityTypeConfiguration().Configure(modelbuilder.Entity<Emprestimo>());
         }
     }
 }

@@ -19,10 +19,10 @@ namespace Biblioteca.Configuracao
             services.AddTransient<LivroRepositorio>();
             services.AddTransient<LivroAutorRepositorio>();
             services.AddTransient<LivroGeneroRepositorio>();
-
             services.AddTransient<ParentescoRepositorio>();
             services.AddTransient<AlunoRepositorio>();
             services.AddTransient<AlunoContatoRepositorio>();
+            services.AddTransient<EmprestimoRepositorio>();
         }
     }
 }
