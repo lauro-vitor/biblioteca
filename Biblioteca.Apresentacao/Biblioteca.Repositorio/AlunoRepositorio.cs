@@ -2,7 +2,6 @@
 using Biblioteca.Dominio.Enums;
 using Biblioteca.Dominio.Objetos;
 using Biblioteca.Dominio.ViewModel.AlunoVM;
-using Biblioteca.Dominio.ViewModel.AlunoContato;
 using Biblioteca.Repositorio.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;

@@ -86,7 +86,7 @@ public class Program
             File.Create(caminhoBanco);
         }
 
-        //services.AddSqlite<BibliotecaContext>("Data Source=" + caminhoBanco);
+        services.AddSqlite<BibliotecaContext>("Data Source=" + caminhoBanco);
     }
 
     private static void InjetarRepositorio(IServiceCollection services)
