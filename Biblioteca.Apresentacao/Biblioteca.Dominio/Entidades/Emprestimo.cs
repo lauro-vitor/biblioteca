@@ -58,6 +58,8 @@ namespace Biblioteca.Dominio.Entidades
                 {
                     throw new BibliotecaException("IdAluno: Obrigatório");
                 }
+
+                _idAluno = value;
             }
         }
 
