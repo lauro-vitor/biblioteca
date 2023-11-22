@@ -21,9 +21,9 @@ namespace Biblioteca.Repositorio
             _editoraRepositorio = new EditoraRepositorio(context);
         }
 
-        private async Task ValidarInserirEditar(LivroInputViewModel livroViewModel)
+        private async Task ValidarInserirEditar(LivroInputViewModel? livroViewModel)
         {
-            if (livroViewModel.Editora == null)
+            if (livroViewModel?.Editora == null)
                 throw new BibliotecaException("Editora é obrigatória");
 
             var titulo = livroViewModel.Titulo?.ToLower()?.Trim() ?? string.Empty;
@@ -36,7 +36,7 @@ namespace Biblioteca.Repositorio
 
         }
 
-        public async Task<LivroInputViewModel> Inserir(LivroInputViewModel livroInputViewModel)
+        public async Task<LivroInputViewModel?> Inserir(LivroInputViewModel? livroInputViewModel)
         {
             if (livroInputViewModel == null)
                 throw new BibliotecaException("Livro inválido");
@@ -47,26 +47,26 @@ namespace Biblioteca.Repositorio
 
             var livro = new Livro()
             {
-                IdLivro = livroInputViewModel.IdLivro ?? Guid.NewGuid(),
-                Titulo = livroInputViewModel.Titulo?.Trim() ?? string.Empty,
-                DataPublicacao = livroInputViewModel.DataPublicacao ?? new DateOnly(),
-                QuantidadeEstoque = livroInputViewModel.QuantidadeEstoque ?? -1,
-                Edicao = livroInputViewModel.Edicao,
-                Volume = livroInputViewModel.Volume,
+                IdLivro = livroInputViewModel?.IdLivro ?? Guid.NewGuid(),
+                Titulo = livroInputViewModel?.Titulo?.Trim() ?? string.Empty,
+                DataPublicacao = livroInputViewModel?.DataPublicacao ?? new DateOnly(),
+                QuantidadeEstoque = livroInputViewModel?.QuantidadeEstoque ?? -1,
+                Edicao = livroInputViewModel?.Edicao,
+                Volume = livroInputViewModel?.Volume,
                 IdEditora = editora.IdEditora,
                 Editora = editora
             };
+
+            livroInputViewModel.IdLivro = livro.IdLivro;
 
             await _context.Livro.AddAsync(livro);
 
             await _context.SaveChangesAsync();
 
-            livroInputViewModel.IdLivro = livro.IdLivro;
-
-            return livroInputViewModel;
+            return livroInputViewModel ?? null;
         }
 
-        public async Task<LivroInputViewModel> Editar(LivroInputViewModel livroInputViewModel)
+        public async Task<LivroInputViewModel?> Editar(LivroInputViewModel livroInputViewModel)
         {
             if (livroInputViewModel == null)
                 throw new BibliotecaException("Livro inválido");
@@ -74,10 +74,12 @@ namespace Biblioteca.Repositorio
             if (livroInputViewModel.IdLivro == null || livroInputViewModel.IdLivro == Guid.Empty)
                 throw new BibliotecaException("idLivro: inválido");
 
-            await ValidarInserirEditar(livroInputViewModel);
 
             var editora = await _editoraRepositorio.ObterEditoraPorId(livroInputViewModel?.Editora?.IdEditora);
 
+            await ValidarInserirEditar(livroInputViewModel);
+
+          
             var livro = await _context.Livro
               .Include(l => l.Editora)
               .FirstOrDefaultAsync(l => l.IdLivro == livroInputViewModel.IdLivro);
@@ -85,18 +87,18 @@ namespace Biblioteca.Repositorio
             if (livro == null)
                 throw new BibliotecaException("idLivro: Não encontrado");
 
-            livro.Titulo = livroInputViewModel.Titulo?.Trim() ?? string.Empty;
-            livro.DataPublicacao = livroInputViewModel.DataPublicacao ?? new DateOnly();
-            livro.QuantidadeEstoque = livroInputViewModel.QuantidadeEstoque ?? -1;
-            livro.Edicao = livroInputViewModel.Edicao;
-            livro.Volume = livroInputViewModel.Volume;
+            livro.Titulo = livroInputViewModel?.Titulo?.Trim() ?? string.Empty;
+            livro.DataPublicacao = livroInputViewModel?.DataPublicacao ?? new DateOnly();
+            livro.QuantidadeEstoque = livroInputViewModel?.QuantidadeEstoque ?? -1;
+            livro.Edicao = livroInputViewModel?.Edicao;
+            livro.Volume = livroInputViewModel?.Volume;
             livro.IdEditora = editora.IdEditora;
             livro.Editora = editora;
 
             await _context.SaveChangesAsync();
 
 
-            return livroInputViewModel;
+            return livroInputViewModel ?? null;
         }
 
         public async Task Excluir(Guid id)
