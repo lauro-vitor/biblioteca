@@ -51,6 +51,19 @@ body {
     justify-content: center;
 }
 
+.card-item {
+    cursor: pointer;
+}
+
+    .card-item:hover {
+        opacity: 0.5;
+    }
+
+.card-image {
+    width: 70px;
+    height: 70px;
+}
+
 a {
     text-decoration: none;
 }

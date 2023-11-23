@@ -1,13 +1,83 @@
 ﻿
+<style>
+
+    .card-livro {
+        height: 300px;
+        margin-bottom: 1.0em;
+    }
+
+    .livro-row {
+        margin-bottom: 10px;
+    }
+
+    .livro-row__edicao {
+        display: inline-block;
+        width: 50%
+    }
+</style>
 
 <div class="header">
     <h4>Livros</h4>
+    <div style="width:100%; text-align:end">
+        <button class="btn btn-primary" onclick="$('#modalFiltrarLivros').modal('show')"> Filtro</button>
+    </div>
     <hr />
 </div>
 
 
-<div componente="card-livro"></div>
+<app-card-livro></app-card-livro>
 
+<div id="modalFiltrarLivros" class="modal fade">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
 
-<script src="/js/livro/index.js"></script>
+            <div class="modal-header">
+                <h5 class="modal-title">Filtro</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 mb-3">
+                        <label class="form-label">Título</label>
+                        <input id="input-livro-titulo" class="form-control" />
+                    </div>
+
+                    <div class="col-xs-12 col-sm-6 mb-3">
+                        <label class="form-label">Editora</label>
+                        <input id="input-livro-editora" class="form-control" />
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 mb-3">
+                        <label class="form-label">Autor</label>
+                        <input id="input-livro-autor" class="form-control" />
+                    </div>
+
+                    <div class="col-xs-12 col-sm-6 mb-3">
+                        <label class="form-label">Gênero</label>
+                        <input id="input-livro-genero" class="form-control" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <button class="btn btn-secondary" onclick="limparFiltroLivros()">Limpar</button>
+                        <button class="btn btn-primary" onclick="filtrarLivros()">Filtrar</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section scripts{
+
+    <script src="/js/livro/listar.js"></script>
+}
+
 
