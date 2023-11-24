@@ -1,7 +1,7 @@
 ﻿
 window.onload = async function () {
     await carregarLivros();
-};
+}
 
 async function filtrarLivros() {
     await carregarLivros();

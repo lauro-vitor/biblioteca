@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Biblioteca</title>
+    <link rel="stylesheet" href="/css/site.css" />
+</head>
+
+<body>
+    <app-navbar></app-navbar>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-3">
+                <div class="card card-item">
+                    <div class="card-body text-center">
+                        <img src="/icons/aluno.svg" class="card-image" />
+                        <h5 class="card-title ">Alunos</h5>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-3">
+
+                <div class="card card-item" onclick="rotearLivros()">
+                    <div class="card-body text-center">
+                        <img src="/icons/livro-biblioteca.svg" class="card-image" />
+                        <h5 class="card-title">Livros</h5>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-3">
+
+                <div class="card card-item">
+                    <div class="card-body text-center">
+                        <img src="/icons/livro-menu.svg" class="card-image" />
+                        <h5 class="card-title">Empréstimos</h5>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+
+<script src="js/components/appNavBar.js"></script>
+
+<script>
+    function rotearLivros() {
+        window.location.href = "/html/livros/";
+    }
+</script>
