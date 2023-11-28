@@ -63,16 +63,16 @@ namespace Biblioteca.Dominio.Entidades
             }
         }
 
-        public DateOnly DataNascimento
+        public DateTime? DataNascimento
         {
             get
             {
-                return _dataNascimento;
+                return _dataNascimento.ToDateTime(TimeOnly.MinValue);
             }
             set
             {
                 _dataNascimento = ValidacaoServico.ValidarData("dataNascimento", value);
-            }
+			}
         }
 
         public Sexo? Sexo

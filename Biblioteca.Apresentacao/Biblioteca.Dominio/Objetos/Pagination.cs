@@ -10,7 +10,7 @@
         {
             get
             {
-                return (PageIndex > 1);
+                return (PageIndex > 0);
             }
         }
 
@@ -31,39 +31,24 @@
 
             TotalCount = source.Count();
 
-            if (pageIndex != null && pageIndex > 0 && pageSize != null && pageSize > 0)
+            if (pageIndex != null && pageIndex >= 0 && pageSize != null && pageSize > 0)
             {
                 PageIndex = pageIndex.Value;
                 PageSize = pageSize.Value;
                 TotalPages = (int)Math.Ceiling(TotalCount / (double)PageSize);
                 Data = source
-                    .Skip((PageIndex - 1) * PageSize)
+                    .Skip(PageIndex * PageSize)
                     .Take(PageSize)
                     .ToList();
             }
             else
             {
-                PageIndex = 1;
+                PageIndex = 0;
                 TotalPages = 1;
                 PageSize = TotalCount;
                 Data = source.ToList();
             }
 
         }
-        
-
-        // public int TotalItensViewed { get; private set; }
-        //private void SetTotalViewed()
-        //{
-        //    int value = PageIndex * PageSize;
-
-        //    if (value > TotalCount)
-        //    {
-        //        value = TotalCount;
-        //    }
-
-        //    TotalItensViewed = value;
-        //}
-
     }
 }

@@ -31,7 +31,7 @@ namespace Biblioteca.Repositorio
                 IdAluno = Guid.NewGuid(),
                 Nome = alunoViewModel.Nome ?? string.Empty,
                 Matricula = alunoViewModel.Matricula ?? string.Empty,
-                DataNascimento = alunoViewModel.DataNascimento ?? new DateOnly(),
+                DataNascimento = alunoViewModel.DataNascimento,
                 Sexo = sexo
             };
 
@@ -60,7 +60,7 @@ namespace Biblioteca.Repositorio
 
             aluno.Nome = alunoViewModel.Nome ?? string.Empty;
             aluno.Matricula = alunoViewModel.Matricula ?? string.Empty;
-            aluno.DataNascimento = alunoViewModel.DataNascimento ?? new DateOnly();
+            aluno.DataNascimento = alunoViewModel.DataNascimento;
             aluno.Sexo = sexo;
 
             await _context.SaveChangesAsync();
@@ -159,7 +159,7 @@ namespace Biblioteca.Repositorio
             {
                 try
                 {
-                    var dataNascimentoInicio = DateOnly.Parse(parametro.DataNascimentoInicio);
+                    var dataNascimentoInicio = DateTime.Parse(parametro.DataNascimentoInicio);
 
                     query = query.Where(a => a.DataNascimento >= dataNascimentoInicio);
                 }
@@ -173,7 +173,7 @@ namespace Biblioteca.Repositorio
             {
                 try
                 {
-                    var dataNascimentoFim = DateOnly.Parse(parametro.DataNascimentoFim);
+                    var dataNascimentoFim = DateTime.Parse(parametro.DataNascimentoFim);
 
                     query = query.Where(a => a.DataNascimento <= dataNascimentoFim);
                 }
