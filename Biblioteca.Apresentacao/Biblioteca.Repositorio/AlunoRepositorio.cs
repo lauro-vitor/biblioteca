@@ -190,24 +190,24 @@ namespace Biblioteca.Repositorio
 
             if (!string.IsNullOrWhiteSpace(parametro.SortProp))
             {
-                Expression<Func<AlunoViewModel, object>> sortFunc = null;
+                Expression<Func<AlunoViewModel, object>> sortFunc;
 
-                switch (parametro.SortProp)
+                var sortDic = new Dictionary<string, Expression<Func<AlunoViewModel, object>>>
                 {
-                    case "nome":
-                        sortFunc = a => a.Nome;
-                        break;
-                    case "matricula":
-                        sortFunc = a => a.Matricula;
-                        break;
-                    case "dataNascimento":
-                        sortFunc = a => a.DataNascimento;
-                        break;
+                    { "nome",  a => a.Nome },
+                    { "matricula", a => a.Matricula},
+                    { "dataNascimento", a => a.DataNascimento},
+                    { "desativado", a => a.Desativado }
+                };
 
-                    case "desativado":
-                        sortFunc = a => a.Desativado;
-                        break;
-                }
+                try
+                {
+					sortFunc = sortDic[parametro.SortProp];
+				}
+                catch
+                {
+                    sortFunc = null;
+				}
 
                 if (sortFunc != null)
                 {
