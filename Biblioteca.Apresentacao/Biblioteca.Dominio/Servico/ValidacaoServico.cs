@@ -21,20 +21,18 @@ namespace Biblioteca.Dominio.Servico
             return valorAux.Trim();
         }
 
-
-        public static DateOnly ValidarData(string propriedade, DateOnly data)
+        public static DateOnly ValidarData(string propriedade, DateTime? data)
         {
-            if (data == new DateOnly())
-            {
+            if (data == null)
+                throw new BibliotecaException($"{propriedade}: obrigatório");
+
+            if (data ==  new DateTime() || data == DateTime.MinValue || data == DateTime.MaxValue)
                 throw new BibliotecaException($"{propriedade}: Inválido");
-            }
 
-            if (data >= DateOnly.FromDateTime(DateTime.Now))
-            {
+            if (data >= DateTime.Now)
                 throw new BibliotecaException($"{propriedade}: Deve ser menor que a data atual");
-            }
 
-            return data;
+            return DateOnly.FromDateTime(data.Value);
         }
 
 

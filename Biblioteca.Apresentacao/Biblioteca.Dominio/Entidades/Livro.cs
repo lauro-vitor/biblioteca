@@ -85,16 +85,18 @@ namespace Biblioteca.Dominio.Entidades
         }
 
 
-        public DateOnly DataPublicacao
+        public DateTime? DataPublicacao
         {
             get
             {
-                return _dataPublicacao;
+                return _dataPublicacao.ToDateTime(TimeOnly.MinValue);
             }
             set
             {
-                _dataPublicacao = ValidacaoServico.ValidarData("dataPublicacao", value);
-            }
+                var dtPublicacaoAux = ValidacaoServico.ValidarData("dataPublicacao", value);
+
+                _dataPublicacao = dtPublicacaoAux;
+			}
         }
 
         public int QuantidadeEstoque

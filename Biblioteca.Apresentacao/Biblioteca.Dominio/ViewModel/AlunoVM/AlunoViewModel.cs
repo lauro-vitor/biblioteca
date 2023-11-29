@@ -8,7 +8,7 @@
 
         public string? Matricula { get; set; }
 
-        public DateOnly? DataNascimento { get; set; }
+        public DateTime? DataNascimento { get; set; }
 
         public string? Sexo { get; set; }
 

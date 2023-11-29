@@ -49,7 +49,7 @@ namespace Biblioteca.Repositorio
             {
                 IdLivro = livroInputViewModel?.IdLivro ?? Guid.NewGuid(),
                 Titulo = livroInputViewModel?.Titulo?.Trim() ?? string.Empty,
-                DataPublicacao = livroInputViewModel?.DataPublicacao ?? new DateOnly(),
+                DataPublicacao = livroInputViewModel.DataPublicacao,
                 QuantidadeEstoque = livroInputViewModel?.QuantidadeEstoque ?? -1,
                 Edicao = livroInputViewModel?.Edicao,
                 Volume = livroInputViewModel?.Volume,
@@ -88,7 +88,7 @@ namespace Biblioteca.Repositorio
                 throw new BibliotecaException("idLivro: Não encontrado");
 
             livro.Titulo = livroInputViewModel?.Titulo?.Trim() ?? string.Empty;
-            livro.DataPublicacao = livroInputViewModel?.DataPublicacao ?? new DateOnly();
+            livro.DataPublicacao = livroInputViewModel.DataPublicacao;
             livro.QuantidadeEstoque = livroInputViewModel?.QuantidadeEstoque ?? -1;
             livro.Edicao = livroInputViewModel?.Edicao;
             livro.Volume = livroInputViewModel?.Volume;
@@ -96,7 +96,6 @@ namespace Biblioteca.Repositorio
             livro.Editora = editora;
 
             await _context.SaveChangesAsync();
-
 
             return livroInputViewModel ?? null;
         }
@@ -132,7 +131,7 @@ namespace Biblioteca.Repositorio
                     {
                         IdLivro = l.IdLivro,
                         Titulo = l.Titulo,
-                        DataPublicacao = l.DataPublicacao.ToString("dd/MM/yyyy"),
+                        DataPublicacao = l.DataPublicacao.Value.ToString("dd/MM/yyyy"),
                         QuantidadeEstoque = l.QuantidadeEstoque,
                         Edicao = l.Edicao,
                         Volume = l.Volume,

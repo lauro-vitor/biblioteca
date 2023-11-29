@@ -11,6 +11,8 @@ namespace Biblioteca.Dominio.ViewModel.AlunoVM
 
         public string? DataNascimentoFim { get; set; }
 
+        public int? Sexo { get; set; }
+
         public bool? SomenteAtivos { get; set; }
 
         public int? PageIndex { get; set; }
