@@ -13,6 +13,6 @@ namespace Biblioteca.Dominio.ViewModel.Emprestimo
 
         public LivroViewModel? Livro { get; set; }
 
-        public AlunoViewModel? Aluno { get; set; }
+        public AlunoQueryViewModel? Aluno { get; set; }
     }
 }

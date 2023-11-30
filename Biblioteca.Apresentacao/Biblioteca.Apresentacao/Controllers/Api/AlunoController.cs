@@ -16,19 +16,19 @@ namespace Biblioteca.Apresentacao.Controllers.Api
         }
 
         [HttpPost]
-        [ProducesResponseType(typeof(AlunoViewModel), (int)HttpStatusCode.Created)]
-        public async Task<IActionResult> Inserir([FromBody] AlunoViewModel alunoViewModel)
+        [ProducesResponseType(typeof(AlunoQueryViewModel), (int)HttpStatusCode.Created)]
+        public async Task<IActionResult> Inserir([FromBody] AlunoUpSertViewModel aluno)
         {
-            var resultado = await _alunoRepositorio.Inserir(alunoViewModel);
+            var resultado = await _alunoRepositorio.Inserir(aluno);
 
             return Created($"api/aluno/{resultado.IdAluno}", resultado);
         }
 
         [HttpPut]
-        [ProducesResponseType(typeof(AlunoViewModel), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> Editar([FromBody] AlunoViewModel alunoViewModel)
+        [ProducesResponseType(typeof(AlunoQueryViewModel), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> Editar([FromBody] AlunoUpSertViewModel aluno)
         {
-            return Ok(await _alunoRepositorio.Editar(alunoViewModel));
+            return Ok(await _alunoRepositorio.Editar(aluno));
         }
 
         [HttpDelete("{id}")]
@@ -50,14 +50,14 @@ namespace Biblioteca.Apresentacao.Controllers.Api
         }
 
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(AlunoViewModel), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(AlunoQueryViewModel), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> ObterPorId([FromRoute] Guid id)
         {
             return Ok(await _alunoRepositorio.ObterPorId(id));
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(AlunoViewModel), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(AlunoQueryViewModel), (int)HttpStatusCode.OK)]
         public IActionResult Obter([FromQuery] AlunoParametroViewModel parametro)
         {
             return Ok(_alunoRepositorio.Obter(parametro));

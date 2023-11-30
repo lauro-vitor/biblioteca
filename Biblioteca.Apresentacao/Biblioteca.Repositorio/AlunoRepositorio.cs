@@ -17,21 +17,21 @@ namespace Biblioteca.Repositorio
             _context = context;
         }
 
-        public async Task<AlunoViewModel> Inserir(AlunoViewModel alunoViewModel)
+        public async Task<AlunoUpSertViewModel> Inserir(AlunoUpSertViewModel alunoUpSertViewModel)
         {
-            if (alunoViewModel == null)
+            if (alunoUpSertViewModel == null)
                 throw new BibliotecaException("Aluno inválido");
 
             Sexo sexo;
 
-            Enum.TryParse(alunoViewModel.Sexo, out sexo);
+            Enum.TryParse(alunoUpSertViewModel.Sexo, out sexo);
 
             var aluno = new Aluno()
             {
                 IdAluno = Guid.NewGuid(),
-                Nome = alunoViewModel.Nome ?? string.Empty,
-                Matricula = alunoViewModel.Matricula ?? string.Empty,
-                DataNascimento = alunoViewModel.DataNascimento,
+                Nome = alunoUpSertViewModel.Nome ?? string.Empty,
+                Matricula = alunoUpSertViewModel.Matricula ?? string.Empty,
+                DataNascimento = alunoUpSertViewModel.DataNascimento,
                 Sexo = sexo
             };
 
@@ -39,33 +39,33 @@ namespace Biblioteca.Repositorio
 
             await _context.SaveChangesAsync();
 
-            alunoViewModel.IdAluno = aluno.IdAluno;
+            alunoUpSertViewModel.IdAluno = aluno.IdAluno;
 
-            return alunoViewModel;
+            return alunoUpSertViewModel;
         }
 
-        public async Task<AlunoViewModel> Editar(AlunoViewModel alunoViewModel)
+        public async Task<AlunoUpSertViewModel> Editar(AlunoUpSertViewModel alunoUpSertViewModel)
         {
-            if (alunoViewModel == null)
+            if (alunoUpSertViewModel == null)
                 throw new BibliotecaException("Aluno inválido");
 
-            var aluno = await _context.Aluno.FirstOrDefaultAsync(a => a.IdAluno == alunoViewModel.IdAluno);
+            var aluno = await _context.Aluno.FirstOrDefaultAsync(a => a.IdAluno == alunoUpSertViewModel.IdAluno);
 
             if (aluno == null)
                 throw new BibliotecaException("Aluno não encontrado para editar");
 
             Sexo sexo;
 
-            Enum.TryParse(alunoViewModel.Sexo, out sexo);
+            Enum.TryParse(alunoUpSertViewModel.Sexo, out sexo);
 
-            aluno.Nome = alunoViewModel.Nome ?? string.Empty;
-            aluno.Matricula = alunoViewModel.Matricula ?? string.Empty;
-            aluno.DataNascimento = alunoViewModel.DataNascimento;
+            aluno.Nome = alunoUpSertViewModel.Nome ?? string.Empty;
+            aluno.Matricula = alunoUpSertViewModel.Matricula ?? string.Empty;
+            aluno.DataNascimento = alunoUpSertViewModel.DataNascimento;
             aluno.Sexo = sexo;
 
             await _context.SaveChangesAsync();
 
-            return alunoViewModel;
+            return alunoUpSertViewModel;
         }
 
         public async Task Excluir(Guid id)
@@ -82,6 +82,9 @@ namespace Biblioteca.Repositorio
 
             if (aluno.AlunoContatos != null && aluno.AlunoContatos.Any())
                 throw new BibliotecaException("O Aluno possui contatos associado a seu cadastro, portanto não é possivel excluir");
+
+            if (aluno.Emprestimos != null && aluno.Emprestimos.Any())
+                throw new BibliotecaException("O aluno possui empréstimos associado a seu cadastro, portanto não é possível excluir");
 
             _context.Aluno.Remove(aluno);
 
@@ -104,7 +107,7 @@ namespace Biblioteca.Repositorio
         }
 
 #nullable disable
-        public async Task<AlunoViewModel> ObterPorId(Guid id)
+        public async Task<AlunoQueryViewModel> ObterPorId(Guid id)
         {
             if (id == Guid.Empty)
                 throw new BibliotecaException("id do aluno inválido");
@@ -113,10 +116,10 @@ namespace Biblioteca.Repositorio
                 .AsNoTracking()
                 .Include(a => a.AlunoContatos)
                 .ThenInclude(ac => ac.Parentesco)
-                .Select(a => new AlunoViewModel
+                .Select(a => new AlunoQueryViewModel
                 {
                     IdAluno = a.IdAluno,
-                    DataNascimento = a.DataNascimento,
+                    DataNascimento = a.DataNascimento.Value.ToString("dd/MM/yyyy"),
                     Matricula = a.Matricula,
                     Nome = a.Nome,
                     Sexo = a.Sexo.ToString(),
@@ -127,87 +130,41 @@ namespace Biblioteca.Repositorio
             return aluno;
         }
 
-        public Pagination<AlunoViewModel> Obter(AlunoParametroViewModel parametro)
+        public Pagination<AlunoQueryViewModel> Obter(AlunoParametroViewModel parametro)
         {
             var query = _context.Aluno
-                .Select(a => new AlunoViewModel
-                {
-                    IdAluno = a.IdAluno,
-                    Nome = a.Nome,
-                    Matricula = a.Matricula,
-                    DataNascimento = a.DataNascimento,
-                    Desativado = a.Desativado,
-                    Sexo = a.Sexo.ToString()
-                })
-                .AsNoTracking();
-
-            if (!string.IsNullOrWhiteSpace(parametro.Nome))
-            {
-                var nome = parametro.Nome.ToLower().Trim();
-
-                query = query.Where(a => a.Nome.ToLower().Trim().Contains(nome));
-            }
-
-            if (!string.IsNullOrWhiteSpace(parametro.Matricula))
-            {
-                var matricula = parametro.Matricula.ToLower().Trim();
-
-                query = query.Where(a => a.Matricula.ToLower().Trim().Contains(matricula));
-            }
-
-            if (!string.IsNullOrWhiteSpace(parametro.DataNascimentoInicio))
-            {
-                try
-                {
-                    var dataNascimentoInicio = DateTime.Parse(parametro.DataNascimentoInicio);
-
-                    query = query.Where(a => a.DataNascimento >= dataNascimentoInicio);
-                }
-                catch
-                {
-                    throw new BibliotecaException("dataNascimentoInicio: parâmetro inválido");
-                }
-            }
-
-            if (!string.IsNullOrWhiteSpace(parametro.DataNascimentoFim))
-            {
-                try
-                {
-                    var dataNascimentoFim = DateTime.Parse(parametro.DataNascimentoFim);
-
-                    query = query.Where(a => a.DataNascimento <= dataNascimentoFim);
-                }
-                catch
-                {
-                    throw new BibliotecaException("dataNascimentoFim: parametro inválido");
-                }
-            }
-
-            if (parametro.SomenteAtivos ?? false)
-            {
-                query = query.Where(a => a.Desativado == false);
-            }
+                .AsNoTracking()
+                .Where(a => 
+                    (string.IsNullOrWhiteSpace(parametro.Nome) || a.Nome.ToLower().Trim().Contains(parametro.Nome))
+                    && 
+                    (string.IsNullOrWhiteSpace(parametro.Matricula) || a.Matricula.ToLower().Trim().Contains(parametro.Matricula)
+                    &&
+                    (parametro.DataNascimentoInicio == null || a.DataNascimento >= parametro.DataNascimentoInicio)
+                    && 
+                    (parametro.DataNascimentoFim == null || a.DataNascimento <= parametro.DataNascimentoFim))
+                    && 
+                    (parametro.SomenteAtivos == null || (parametro.SomenteAtivos.Value && a.Desativado == false))
+                );
 
             if (!string.IsNullOrWhiteSpace(parametro.SortProp))
             {
-                Expression<Func<AlunoViewModel, object>> sortFunc;
+                Expression<Func<Aluno, object>> sortFunc = null;
 
-                var sortDic = new Dictionary<string, Expression<Func<AlunoViewModel, object>>>
+                switch (parametro.SortProp)
                 {
-                    { "nome",  a => a.Nome },
-                    { "matricula", a => a.Matricula},
-                    { "dataNascimento", a => a.DataNascimento},
-                    { "desativado", a => a.Desativado }
-                };
-
-                try
-                {
-					sortFunc = sortDic[parametro.SortProp];
-				}
-                catch
-                {
-                    sortFunc = null;
-				}
+                    case "nome":
+                        sortFunc = a => a.Nome;
+                        break;
+                    case "matricula":
+                        sortFunc = a => a.Matricula;
+                        break;
+                    case "dataNascimento":
+                        sortFunc = a => a.DataNascimento;
+                        break;
+                    case "desativado":
+                        sortFunc = a => a.Desativado;
+                        break;
+                }
 
                 if (sortFunc != null)
                 {
@@ -218,7 +175,18 @@ namespace Biblioteca.Repositorio
                 }
             }
 
-            var resultado = new Pagination<AlunoViewModel>(query, parametro.PageIndex, parametro.PageSize);
+
+            var queryViewModel = query.Select(a => new AlunoQueryViewModel
+            {
+                IdAluno = a.IdAluno,
+                Nome = a.Nome,
+                Matricula = a.Matricula,
+                DataNascimento = a.DataNascimento.Value.ToString("dd/MM/yyyy"),
+                Desativado = a.Desativado,
+                Sexo = a.Sexo.ToString()
+            });
+
+            var resultado = new Pagination<AlunoQueryViewModel>(queryViewModel, parametro.PageIndex, parametro.PageSize);
 
             return resultado;
         }
