@@ -1,4 +1,6 @@
-﻿namespace Biblioteca.Dominio.ViewModel.AlunoVM
+﻿using Biblioteca.Dominio.ViewModel.AlunoContato;
+
+namespace Biblioteca.Dominio.ViewModel.AlunoVM
 {
     public class AlunoQueryViewModel
     {
@@ -8,10 +10,12 @@
 
         public string? Matricula { get; set; }
 
-        public string? DataNascimento { get; set; }
+        public DateTime? DataNascimento { get; set; }
 
-        public string? Sexo { get; set; }
+        public Enum? Sexo { get; set; }
 
         public bool? Desativado { get; set; }
+
+        public IEnumerable<AlunoContatoViewModel>? Contatos { get; set; } 
     }
 }

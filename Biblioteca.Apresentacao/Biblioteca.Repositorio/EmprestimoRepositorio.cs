@@ -190,9 +190,9 @@ namespace Biblioteca.Repositorio
                         IdAluno = e.Aluno.IdAluno,
                         Nome = e.Aluno.Nome,
                         Matricula = e.Aluno.Matricula,
-                        DataNascimento = e.Aluno.DataNascimento.Value.ToString("dd/MM/yyyy"),
+                        DataNascimento = e.Aluno.DataNascimento,
                         Desativado = e.Aluno.Desativado,
-                        Sexo = e.Aluno.Sexo.ToString()
+                        Sexo = e.Aluno.Sexo
                     },
 
                     Livro = new LivroViewModel

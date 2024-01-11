@@ -1,6 +1,7 @@
 ﻿using Biblioteca.Dominio.Entidades;
 using Biblioteca.Dominio.Enums;
 using Biblioteca.Dominio.Objetos;
+using Biblioteca.Dominio.ViewModel.AlunoContato;
 using Biblioteca.Dominio.ViewModel.AlunoVM;
 using Biblioteca.Repositorio.EntityFramework;
 using Microsoft.EntityFrameworkCore;
@@ -119,11 +120,22 @@ namespace Biblioteca.Repositorio
                 .Select(a => new AlunoQueryViewModel
                 {
                     IdAluno = a.IdAluno,
-                    DataNascimento = a.DataNascimento.Value.ToString("dd/MM/yyyy"),
+                    DataNascimento = a.DataNascimento,
                     Matricula = a.Matricula,
                     Nome = a.Nome,
-                    Sexo = a.Sexo.ToString(),
-                    Desativado = a.Desativado
+                    Sexo = a.Sexo,
+                    Desativado = a.Desativado,
+                    Contatos = a.AlunoContatos.Select(ac => new AlunoContatoViewModel
+                    {
+                        IdContato = ac.IdContato,
+						IdAluno = ac.IdAluno,
+						IdParentesco = ac.IdParentesco,
+                        NomeParentesco = ac.Parentesco.Nome,
+                        Nome = ac.Nome,
+                        Email = ac.Email,
+                        Telefone = ac.Telefone,
+                        Observacao = ac.Observacao
+                    })
                 })
                 .FirstOrDefaultAsync(a => a.IdAluno == id);
 
@@ -181,9 +193,9 @@ namespace Biblioteca.Repositorio
                 IdAluno = a.IdAluno,
                 Nome = a.Nome,
                 Matricula = a.Matricula,
-                DataNascimento = a.DataNascimento.Value.ToString("dd/MM/yyyy"),
+                DataNascimento = a.DataNascimento,
                 Desativado = a.Desativado,
-                Sexo = a.Sexo.ToString()
+                Sexo = a.Sexo
             });
 
             var resultado = new Pagination<AlunoQueryViewModel>(queryViewModel, parametro.PageIndex, parametro.PageSize);
